@@ -41,6 +41,7 @@ for p = 1:length(P_ID)
     % This vector is used for nomarlization
     sim_all = [baseline_vs_recovery(:); baseline_vs_anesthesia(:); recovery_vs_anesthesia(:)];
 
+    % Here we create the figure that will be saved
     handle = figure;
     subplot(1,3,1)
     plot_pli(baseline_vs_recovery, common_region, sim_all)

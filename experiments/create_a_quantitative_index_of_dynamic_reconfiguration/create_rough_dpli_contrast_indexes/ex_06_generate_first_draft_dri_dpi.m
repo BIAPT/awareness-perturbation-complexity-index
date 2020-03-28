@@ -1,5 +1,5 @@
 %% Yacine Mahdid March 27 2020
-% This script is addressing the task https://github.com/BIAPT/awareness-perturbation-complexity-index/issues/5
+% This script is addressing the task https://github.com/BIAPT/awareness-perturbation-complexity-index/issues/6
 
 %% Experiment Variables
 IN_DIR = "/media/yacine/My Book/datasets/consciousness/Dynamic Reconfiguration Index/";
@@ -12,6 +12,7 @@ P_ID = {'WSAS05', 'WSAS09', 'WSAS10', 'WSAS11', 'WSAS12', 'WSAS13', 'WSAS18', 'W
 %% Creating the figures
 % Here we iterate over each participant and each epochs to create the 3
 % subplots per figure
+dpli_dris_1 = [];
 for p = 1:length(P_ID)
     participant = P_ID{p};
     disp(participant);
@@ -38,25 +39,23 @@ for p = 1:length(P_ID)
     baseline_vs_anesthesia = 1 - abs(baseline_f_dpli - anesthesia_f_dpli);
     recovery_vs_anesthesia = 1 - abs(recovery_f_dpli - anesthesia_f_dpli);
     
-    % This vector is used for nomarlization
-    sim_all = [baseline_vs_recovery(:); baseline_vs_anesthesia(:); recovery_vs_anesthesia(:)];
+    % Calcualte the dpli-dri with w1 and w2 = 0
+    [dpli_dri] = calculate_dpli_dri_1(baseline_vs_recovery, baseline_vs_anesthesia, recovery_vs_anesthesia, 1.0, 1.0);
+    dpli_dris_1 = [dpli_dris_1, dpli_dri];
+end
 
-    handle = figure;
-    subplot(1,3,1)
-    plot_pli(baseline_vs_recovery, common_region, sim_all)
-    title(strcat(participant, " alpha baseline vs recovery"));
-    subplot(1,3,2)
-    plot_pli(baseline_vs_anesthesia, common_region, sim_all)
-    title(strcat(participant, " alpha baseline vs anesthesia"));
-    subplot(1,3,3)
-    plot_pli(recovery_vs_anesthesia, common_region, sim_all)
-    title(strcat(participant, " alpha recovery vs anesthesia"));
-    colorbar;
-    set(handle, 'Position', [70,152,1527,589]);
-    
-    filename = strcat(OUT_DIR, participant, "_alpha_sim_dpli.png");
-    saveas(handle,filename);
-    close all;    
+% Plot figure for the dpli-dri
+figure;
+bar(categorical(P_ID), dpli_dris_1)
+title("WSAS dpli-dri for alpha (attempt #1)");
+ylim([0.5 0.53])
+
+filename = strcat(OUT_DIR, "dpli_dri_1.png");
+saveas(handle,filename);
+close all; 
+
+function [dpli_dri] = calculate_dpli_dri_1(bvr, bva, rva, w1, w2)
+    dpli_dri = sum(bvr(:)) / (w1*(sum(bva(:))) + w2*(sum(rva(:))));
 end
 
 function [r_dpli, r_location, r_regions] = process_dpli(filename)
@@ -76,10 +75,10 @@ function plot_pli(pli,regions,pli_all)
     yticklabels(regions);  
     xticks(1:length(regions));
     yticks(1:length(regions));
-    min_color = minmean(pli_all) - 3*(std(pli_all)));
-    max_color = mean(pli_all) + 3*(std(pli_all)));
+    min_color = min(pli_all);
+    max_color = max(pli_all);
     caxis([min_color max_color])
-    colormap("jet");    
+    colormap("hot");    
 end
 
 function [common_location, common_region] = get_subset(baseline_location, anesthesia_location, recovery_location, baseline_r_regions, anesthesia_r_regions, recovery_r_regions)
