@@ -12,7 +12,8 @@ Within these experiments we have a naming convention that reflect which task it 
 
 ## Experiments
 - [ex_04_validate_dpli_matrices](https://github.com/BIAPT/awareness-perturbation-complexity-index/issues/4)
-
+- [ex_05_generate_dpli_contrast_matrices](https://github.com/BIAPT/awareness-perturbation-complexity-index/issues/5)
+- [ex_06_generate_first_draft_dri_dpi](https://github.com/BIAPT/awareness-perturbation-complexity-index/issues/6)
 
 # Notes
 - WSAS17 is missing recovery since we couldn't get cleaned data for this epoch.
