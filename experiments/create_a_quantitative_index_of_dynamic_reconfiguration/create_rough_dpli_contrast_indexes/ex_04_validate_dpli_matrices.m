@@ -59,8 +59,8 @@ function plot_pli(pli,regions,pli_all)
     yticklabels(regions);  
     xticks(1:length(regions));
     yticks(1:length(regions));
-    min_color = min(mean(pli_all) - 3*(std(pli_all)));
-    max_color = max(mean(pli_all) + 3*(std(pli_all)));
+    min_color = mean(pli_all) - 3*(std(pli_all));
+    max_color = mean(pli_all) + 3*(std(pli_all));
     caxis([min_color max_color])
     colormap("jet");    
 end
