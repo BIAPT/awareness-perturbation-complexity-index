@@ -47,7 +47,7 @@ end
 % Plot figure for the dpli-dri
 handle = figure;
 bar(categorical(P_ID), dpli_dris_1)
-title("WSAS dpli-dri for alpha (attempt #2)");
+title("WSAS dpli-dri for alpha (attempt #1)");
 
 filename = strcat(OUT_DIR, "dpli_dri_2.png");
 saveas(handle,filename);
