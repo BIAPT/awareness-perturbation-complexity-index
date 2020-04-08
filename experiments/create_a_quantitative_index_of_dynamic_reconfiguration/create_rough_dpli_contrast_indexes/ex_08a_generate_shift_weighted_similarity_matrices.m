@@ -63,11 +63,6 @@ function [sim_matrix] = calculate_sim_matrix(matrix1, matrix2, shift_weight)
 % CALCULATE SIM MATRIX this function will calculate an improved version of
 % the similarity matrix that takes into consideration posterior/anterior
 % shift
-
-    % This is where the previous iteration was stopping
-    % we will have a high score for similar values 1 - ~0 and a low score
-    % for very disimilar value 1 - ~1
-    naive_sim_matrix = 1 - abs(matrix1 - matrix2);
     
     % Here we shift the matrix1 matrix2 to check for crossing of the 0.5
     % mark
@@ -77,20 +72,16 @@ function [sim_matrix] = calculate_sim_matrix(matrix1, matrix2, shift_weight)
     % Here we want to have make a matrix that will give us a 1 for crossing
     % over and a 0 for not crossing over
     % We check which index in both shifted matrix are positive
-    pos_matrix1 = shift_matrix1(shift_matrix1 > 0);
-    pos_matrix2 = shift_matrix2(shift_matrix2 > 0);
+    pos_matrix1 = shift_matrix1 > 0;
+    pos_matrix2 = shift_matrix2 > 0;
     % We then add these two, we will get a value of 1 (one positive one
     % negative), 2 (both positive) or 0 (both negative)
     sign_matrix = pos_matrix1 + pos_matrix2;
-    % We then make the cross index by taking only the sign matrix location
-    % that are exactly equal to 1
-    cross_index = sign_matrix(sign_matrix == 1);
     
     % To get the amount of crossing we put zeros everywhere and then only
     % modify the cross matrix for the index that are actually crossing.
-    cross_matrix = zeros(shape(naive_sim_matrix));
     amount_crossing_matrix = abs(shift_matrix1 - shift_matrix2);
-    cross_matrix(cross_index) = amount_crossing_matrix(cross_index);
+    cross_matrix = amount_crossing_matrix.*(sign_matrix == 1);
     
     % Finally to calculate the weight matrix we put the cross matrix
     % through the tanh function. Should give 0 for 0 values and a positive
@@ -102,7 +93,7 @@ function [sim_matrix] = calculate_sim_matrix(matrix1, matrix2, shift_weight)
     
     % We finally multiply the naive version of the similarity matrix with
     % the weight matrix.
-    sim_matrix = naive_sim_matrix*weight_matrix;
+    sim_matrix = 1 - (abs(matrix1 - matrix2).*weight_matrix);
 
 end
 
