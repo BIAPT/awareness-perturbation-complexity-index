@@ -1,53 +1,66 @@
-egi_location,bp_location
-'E2','AF8'
-'E3','AF4'
-'E4','F2'
-'Fp2','Fp2'
-'Fz','Fz'
-'E15','Fpz'
-'Fp1','Fp1'
-'E23','AF3'
-'F3','F3'
-'E26','AF7'
-'E27','F5'
-'E28','FC3'
-'F7','F7'
-'E34','FC5'
-'C3','C3'
-'E39','FT7'
-'E40','C5'
-'E42','CP3'
-'T7','T7'
-'E46','CP5'
-'E51','P5'
-'E53','CP1'
-'E55','CPz'
-'P7','P7'
-'E59','P3'
-'E60','P1'
-'E65','PO7'
-'E66','PO3'
-'O1','O1'
-'E72','POz'
-'Oz','Oz'
-'E84','PO4'
-'E85','P2'
-'E90','PO8'
-'E91','P4'
-'E93','CP4'
-'P8','P8'
-'E97','P6'
-'E101','TP8'
-'E102','CP6'
-'C4','C4'
-'E105','C2'
-'T8','T8'
-'E109','C6'
-'E112','FC2'
-'E115','FT8'
-'E116','FC6'
-'E117','FC4'
-'F8','F8'
-'E123','F6'
-'F4','F4'
-'Cz','Cz'
+bp_location,egi_location,egi_nearest_1,egi_nearest_2,egi_nearest_3
+Fp1 ,Fp1 ,Fp1 ,E25 ,E21 
+Fp2 ,Fp2 ,Fp2 ,E8  ,E14 
+F7  ,F7  ,F7  ,E32 ,E26 
+F3  ,F3  ,F3  ,E27 ,E28 
+Fz  ,Fz  ,E5  ,E12 ,Fz  
+F4  ,F4  ,F4  ,E123,E117
+F8  ,F8  ,F8  ,E1  ,E2  
+FC5 ,E34 ,E34 ,E40 ,E35 
+FC1 ,E13 ,E13 ,E29 ,E20 
+FC2 ,E112,E112,E111,E118
+FC6 ,E116,E116,E109,E110
+T7  ,T7  ,E39 ,T7  ,E40 
+C3  ,C3  ,C3  ,E41 ,E35 
+Cz  ,Cz  ,Cz  ,E7  ,E106
+C4  ,C4  ,C4  ,E103,E110
+T8  ,T8  ,E115,T8  ,E109
+TP9 ,E56 ,E56 ,LM  ,E63 
+CP5 ,E46 ,E46 ,E47 ,E51 
+CP1 ,E53 ,E53 ,E54 ,E37 
+CP2 ,E86 ,E86 ,E79 ,E87 
+CP6 ,E102,E102,E98 ,E97 
+TP10,E107,E107,RM  ,E99 
+P7  ,P7  ,E50 ,P7  ,LM  
+P3  ,E59 ,E59 ,E60 ,P3  
+Pz  ,Pz  ,Pz  ,E72 ,E77 
+P4  ,E91 ,E91 ,E85 ,P4  
+P8  ,P8  ,E101,P8  ,RM  
+PO9 ,E68 ,E68 ,E64 ,E69 
+O1  ,O1  ,O1  ,E65 ,E69 
+Oz  ,Oz  ,Oz  ,E82 ,E74 
+O2  ,O2  ,O2  ,E90 ,E89 
+PO10,E94 ,E94 ,E95 ,E89 
+AF7 ,E26 ,E26 ,E25 ,E32 
+AF3 ,E23 ,E23 ,Fp1 ,E18 
+AF4 ,E3  ,E3  ,Fp2 ,E10 
+AF8 ,E2  ,E2  ,E8  ,E1  
+F5  ,E27 ,E27 ,E26 ,F7  
+F1  ,E19 ,E19 ,E20 ,E12 
+F2  ,E4  ,E4  ,E118,E5  
+F6  ,E123,E123,E2  ,F8  
+FT9 ,E43 ,E43 ,E44 ,E38 
+FT7 ,E39 ,E39 ,F7  ,E38 
+FC3 ,E28 ,E28 ,E29 ,E35 
+FC4 ,E117,E117,E111,E110
+FT8 ,E115,E115,F8  ,E121
+FT10,E120,E120,E114,E121
+C5  ,E40 ,E40 ,E41 ,E46 
+C1  ,E30 ,E30 ,E37 ,E31 
+C2  ,E105,E105,E87 ,E80 
+C6  ,E109,E109,E103,E102
+TP7 ,E50 ,T7  ,E50 ,LM  
+CP3 ,E42 ,E42 ,E47 ,P3  
+CPz ,E55 ,E55 ,E79 ,E54 
+CP4 ,E93 ,E93 ,E98 ,P4  
+TP8 ,E101,T8  ,E101,RM  
+P5  ,E51 ,E51 ,P7  ,E59 
+P1  ,E60 ,E60 ,E67 ,E61 
+P2  ,E85 ,E85 ,E77 ,E78 
+P6  ,E97 ,E97 ,P8  ,E91 
+PO7 ,E65 ,E65 ,P7  ,E64 
+PO3 ,E66 ,E66 ,O1  ,E71 
+POz ,E72 ,E76 ,E71 ,E72 
+PO4 ,E84 ,E84 ,O2  ,E76 
+PO8 ,E90 ,E90 ,P8  ,E95 
+Fpz,E15,E15,NaN,NaN
