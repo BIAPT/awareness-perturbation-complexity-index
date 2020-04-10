@@ -1,0 +1,131 @@
+%% Yacine Mahdid April 10 2020
+% This script is addressing the task
+% https://github.com/BIAPT/awareness-perturbation-complexity-index/issues/10
+
+%% Experiment Variables
+IN_DIR = "/media/yacine/My Book/datasets/consciousness/Dynamic Reconfiguration Index/";
+OUT_DIR = "/media/yacine/My Book/result_dri/dpli_dri/";
+
+% Here we will skip participant 17 since we do not have recovery
+% And participant 02 since it's headset nomenclature is different.
+P_ID = {'WSAS02','WSAS05', 'WSAS09', 'WSAS10', 'WSAS11', 'WSAS12', 'WSAS13', 'WSAS18', 'WSAS19', 'WSAS20', 'WSAS22'};
+
+%% Creating the figures
+% Here we iterate over each participant and each epochs to create the 3
+% subplots per figure
+for p = 1:length(P_ID)
+    participant = P_ID{p};
+    disp(participant);
+
+    % Process each of the three states
+    [baseline_r_dpli, baseline_r_location, baseline_r_regions] = process_dpli(strcat(IN_DIR,participant,filesep,'baseline_alpha_dpli.mat'));
+    [anesthesia_r_dpli, anesthesia_r_location, anesthesia_r_regions] = process_dpli(strcat(IN_DIR,participant,filesep,'anesthesia_alpha_dpli.mat'));
+    [recovery_r_dpli, recovery_r_location, recovery_r_regions] = process_dpli(strcat(IN_DIR,participant,filesep,'recovery_alpha_dpli.mat'));
+    
+    % This vector is used for nomarlization
+    dpli_all = [baseline_r_dpli(:); anesthesia_r_dpli(:); recovery_r_dpli(:)];
+
+    handle = figure;
+    subplot(1,3,1)
+    plot_pli(baseline_r_dpli, baseline_r_regions, dpli_all)
+    title(strcat(participant, " alpha dpli at baseline"));
+    subplot(1,3,2)
+    plot_pli(anesthesia_r_dpli, anesthesia_r_regions, dpli_all)
+    title(strcat(participant, " alpha dpli at anesthesia"));
+    subplot(1,3,3)
+    plot_pli(recovery_r_dpli, recovery_r_regions, dpli_all)
+    title(strcat(participant, " alpha dpli at recovery"));
+    colorbar;
+    set(handle, 'Position', [70,152,1527,589]);
+    
+    filename = strcat(OUT_DIR, participant, "_alpha_dpli.png");
+    saveas(handle,filename);
+    close all;
+end
+
+% Here this is what we will be modifying to get a translated version
+% of the bp headset
+function [r_dpli, r_location, r_regions] = process_bp_dpli(filename, map_file)
+   data = load(filename);
+
+   % Extracting the data and channel location
+   dpli = data.result_dpli.data.avg_dpli;
+   location = data.result_dpli.metadata.channels_location;
+   
+   % At this point we have the bp_location
+   bp_to_egi_convertion_table = readtable(map_file);
+   bp_labels = bp_to_egi_convertion_table.bp_location;
+   egi_labels = bp_to_egi_convertion_table.egi_location;
+   
+   index_to_remove = [];
+   for i = 1:length(location)
+      label = location(i).labels; 
+      index = get_label_index(label, bp_labels);
+      
+      % Removing all the channels that are not in the convertion table
+      % i.e. non-scalp channels
+      if index == 0
+         index_to_remove = [index_to_remove i];
+      else 
+         % Modify the label for this particular channel
+         location(i).labels = egi_labels{index};
+      end
+      
+      % Removing all the channels to the right of the brain
+      if location(i).is_left
+         index_to_remove = [index_to_remove i];
+      end
+      
+   end
+   
+   % Fix the location structure array
+   location(index_to_remove) = [];
+   % Fix the dpli matrix
+   dpli(index_to_remove,:) = [];
+   dpli(:, index_to_remove) = [];
+   
+   [r_dpli, r_location, r_regions] = reorder_channels(dpli, location, 'biapt_egi129.csv');
+end
+
+function [r_dpli, r_location, r_regions] = process_dpli(filename)
+    % This is a bit hacky, but I will have to restructure the whole thing
+    % to get my result otherwise, will need to change the structure at the
+    % end when my result are ok!
+    if contains(filename, 'WSAS02')
+       MAP_FILE = "bp_to_egi_mapping.csv";
+       [r_dpli, r_location, r_regions] = process_bp_dpli(filename, MAP_FILE);
+       return
+    end
+
+    data = load(filename);
+
+   % Extracting the data and channel location
+   dpli = data.result_dpli.data.avg_dpli;
+   location = data.result_dpli.metadata.channels_location;
+
+   [r_dpli, r_location, r_regions] = reorder_channels(dpli, location, 'biapt_egi129.csv');
+end
+            
+function plot_pli(pli,regions,pli_all)
+    imagesc(pli);
+    xtickangle(90)
+    xticklabels(regions);
+    yticklabels(regions);  
+    xticks(1:length(regions));
+    yticks(1:length(regions));
+    min_color = mean(pli_all) - 3*(std(pli_all));
+    max_color = mean(pli_all) + 3*(std(pli_all));
+    caxis([min_color max_color])
+    colormap("jet");    
+end
+
+% Function to check if a label is present in a given location
+function [label_index] = get_label_index(label, location)
+    label_index = 0;
+    for i = 1:length(location)
+       if(strcmp(label,location{i}))
+          label_index = i;
+          return
+       end
+    end
+end
