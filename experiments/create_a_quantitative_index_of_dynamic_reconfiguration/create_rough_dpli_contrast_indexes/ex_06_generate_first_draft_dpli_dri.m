@@ -12,7 +12,7 @@ P_ID = {'WSAS05', 'WSAS09', 'WSAS10', 'WSAS11', 'WSAS12', 'WSAS13', 'WSAS18', 'W
 %% Creating the figures
 % Here we iterate over each participant and each epochs to create the 3
 % subplots per figure
-dpli_dris_1 = [];
+dpli_dris_1 = zeros(1, length(P_ID));
 for p = 1:length(P_ID)
     participant = P_ID{p};
     disp(participant);
@@ -40,96 +40,16 @@ for p = 1:length(P_ID)
     recovery_vs_anesthesia = 1 - abs(recovery_f_dpli - anesthesia_f_dpli);
     
     % Calcualte the dpli-dri with w1 and w2 = 0
-    [dpli_dri] = calculate_dpli_dri_1(baseline_vs_recovery, baseline_vs_anesthesia, recovery_vs_anesthesia, 1.0, 1.0);
-    dpli_dris_1 = [dpli_dris_1, dpli_dri];
+    dpli_dris_1(p) = calculate_dpli_dri_1(baseline_vs_recovery, baseline_vs_anesthesia, recovery_vs_anesthesia, 1.0, 1.0);
 end
 
 % Plot figure for the dpli-dri
-figure;
+handle = figure;
 bar(categorical(P_ID), dpli_dris_1)
 title("WSAS dpli-dri for alpha (attempt #1)");
 ylim([0.5 0.53])
 
+% Save the figure to disk
 filename = strcat(OUT_DIR, "dpli_dri_1.png");
 saveas(handle,filename);
-close all; 
-
-function [dpli_dri] = calculate_dpli_dri_1(bvr, bva, rva, w1, w2)
-    dpli_dri = sum(bvr(:)) / (w1*(sum(bva(:))) + w2*(sum(rva(:))));
-end
-
-function [r_dpli, r_location, r_regions] = process_dpli(filename)
-    data = load(filename);
-
-   % Extracting the data and channel location
-   dpli = data.result_dpli.data.avg_dpli;
-   location = data.result_dpli.metadata.channels_location;
-
-   [r_dpli, r_location, r_regions] = reorder_channels(dpli, location, 'biapt_egi129.csv');
-end
-            
-function plot_pli(pli,regions,pli_all)
-    imagesc(pli);
-    xtickangle(90)
-    xticklabels(regions);
-    yticklabels(regions);  
-    xticks(1:length(regions));
-    yticks(1:length(regions));
-    min_color = min(pli_all);
-    max_color = max(pli_all);
-    caxis([min_color max_color])
-    colormap("hot");    
-end
-
-function [common_location, common_region] = get_subset(baseline_location, anesthesia_location, recovery_location, baseline_r_regions, anesthesia_r_regions, recovery_r_regions)
-
-    all_location = [baseline_location recovery_location anesthesia_location];
-    all_regions = [baseline_r_regions, anesthesia_r_regions, recovery_r_regions];
-
-    common_location = {};
-    common_region = {};
-    for l = 1:length(all_location)
-        label = all_location{l};
-        region = all_regions{l};
-        
-        % Index of each of these label
-        b_index = get_label_index(label, baseline_location);
-        a_index = get_label_index(label, anesthesia_location);
-        r_index = get_label_index(label, recovery_location);
-        
-        if(b_index ~= 0 && a_index ~= 0 && r_index ~= 0)
-           common_location = [common_location all_location(l)];
-           common_region = [common_region region];
-           baseline_location(b_index) = [];
-           anesthesia_location(a_index) = [];
-           recovery_location(r_index) = [];
-        end
-    end
-
-end
-
-function [f_matrix] = filter_matrix(matrix, location, f_location)
-    num_channels = length(f_location);
-    
-    good_index = zeros(1, num_channels);
-    for l = 1:length(f_location)
-        label = location{l};
-        
-        m_index = get_label_index(label, location);
-        
-        good_index(l) = m_index;
-    end
-    
-    f_matrix = matrix(good_index, good_index);
-end
-
-% Function to check if a label is present in a given location
-function [label_index] = get_label_index(label, location)
-    label_index = 0;
-    for i = 1:length(location)
-       if(strcmp(label,location{i}))
-          label_index = i;
-          return
-       end
-    end
-end
+close all;
