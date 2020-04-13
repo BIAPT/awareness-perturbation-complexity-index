@@ -8,12 +8,14 @@ OUT_DIR = "/media/yacine/My Book/result_dri/dpli_dri/";
 % Here we will skip participant 17 since we do not have recovery
 % And participant 02 since it's headset nomenclature is different.
 P_ID = {'WSAS05', 'WSAS09', 'WSAS10', 'WSAS11', 'WSAS12', 'WSAS13', 'WSAS18', 'WSAS19', 'WSAS20', 'WSAS22'};
-SHIFT_WEIGHT = 2; % this is used in the definition of the similarity matrix to scale the tanh function
 
-%% Creating the figures
+% this is used in the definition of the similarity matrix to scale the tanh function
+SHIFT_WEIGHT = 2; 
+
+%% Calculating the dPLI-DRIs
 % Here we iterate over each participant and each epochs to create the 3
 % subplots per figure
-dpli_dris_1 = [];
+dpli_dris_2 = zeros(1,length(P_ID));
 for p = 1:length(P_ID)
     participant = P_ID{p};
     disp(participant);
@@ -41,61 +43,18 @@ for p = 1:length(P_ID)
     baseline_vs_anesthesia = calculate_sim_matrix(baseline_f_dpli, anesthesia_f_dpli, SHIFT_WEIGHT);
     recovery_vs_anesthesia = calculate_sim_matrix(recovery_f_dpli, anesthesia_f_dpli, SHIFT_WEIGHT);
     
-    % Calcualte the dpli-dri with w1 and w2 = 0
-    [dpli_dri] = calculate_dpli_dri_1(baseline_vs_recovery, baseline_vs_anesthesia, recovery_vs_anesthesia, 1.0, 1.0);
-    dpli_dris_1 = [dpli_dris_1, dpli_dri];
+    % Calcualte the dpli-dri with w1 and w2 = 1.0
+    w1 = 1.0;
+    w2 = 1.0;
+    dpli_dris_2(p) = calculate_dpli_dri_2(baseline_vs_recovery, baseline_vs_anesthesia, recovery_vs_anesthesia, w1, w2);
 end
 
+%% Creating the figure
 % Plot figure for the dpli-dri
 handle = figure;
-bar(categorical(P_ID), dpli_dris_1)
+bar(categorical(P_ID), dpli_dris_2)
 title("WSAS dpli-dri for alpha (attempt #3)");
 
 filename = strcat(OUT_DIR, "dpli_dri_3.png");
 saveas(handle,filename);
 close all; 
-
-% This is the the major thing that has changed here
-% We will be doing a sum and a substraction to avoid having too narrow a
-% range
-function [dpli_dri] = calculate_dpli_dri_1(bvr, bva, rva, w1, w2)
-    dpli_dri = 2*sum(bvr(:)) - (w1*(sum(bva(:))) + w2*(sum(rva(:))));
-end
-
-function [sim_matrix] = calculate_sim_matrix(matrix1, matrix2, shift_weight)
-% CALCULATE SIM MATRIX this function will calculate an improved version of
-% the similarity matrix that takes into consideration posterior/anterior
-% shift
-    
-    % Here we shift the matrix1 matrix2 to check for crossing of the 0.5
-    % mark
-    shift_matrix1 = matrix1 - 0.5;
-    shift_matrix2 = matrix2 - 0.5;
-    
-    % Here we want to have make a matrix that will give us a 1 for crossing
-    % over and a 0 for not crossing over
-    % We check which index in both shifted matrix are positive
-    pos_matrix1 = shift_matrix1 > 0;
-    pos_matrix2 = shift_matrix2 > 0;
-    % We then add these two, we will get a value of 1 (one positive one
-    % negative), 2 (both positive) or 0 (both negative)
-    sign_matrix = pos_matrix1 + pos_matrix2;
-    
-    % To get the amount of crossing we put zeros everywhere and then only
-    % modify the cross matrix for the index that are actually crossing.
-    amount_crossing_matrix = abs(shift_matrix1 - shift_matrix2);
-    cross_matrix = amount_crossing_matrix.*(sign_matrix == 1);
-    
-    % Finally to calculate the weight matrix we put the cross matrix
-    % through the tanh function. Should give 0 for 0 values and a positive
-    % value for positive input saturating at 1. We then shift that matrix
-    % by 1 and weight it by the shift_weight. This will give us a 1 for the
-    % region which don't cross and a scaling proportional to the amount of
-    % crossing for actual cross.
-    weight_matrix = shift_weight*tanh(cross_matrix) + 1;
-    
-    % We finally multiply the naive version of the similarity matrix with
-    % the weight matrix.
-    sim_matrix = 1 - (abs(matrix1 - matrix2).*weight_matrix);
-
-end

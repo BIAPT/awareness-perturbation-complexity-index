@@ -15,7 +15,7 @@ function [f_matrix] = filter_matrix(matrix, location, new_location)
     
     % Iterate over each location in new location and check if we have that
     % location in the old location
-    for l = 1:length(num_channels)
+    for l = 1:num_channels
         label = new_location{l};
         
         % use this helper to find the location of label in old location

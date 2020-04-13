@@ -12,7 +12,7 @@ P_ID = {'WSAS05', 'WSAS09', 'WSAS10', 'WSAS11', 'WSAS12', 'WSAS13', 'WSAS18', 'W
 %% Creating the figures
 % Here we iterate over each participant and each epochs to create the 3
 % subplots per figure
-dpli_dris_1 = [];
+dpli_dris_1 = zeros(1, length(P_ID));
 for p = 1:length(P_ID)
     participant = P_ID{p};
     disp(participant);
@@ -40,20 +40,16 @@ for p = 1:length(P_ID)
     recovery_vs_anesthesia = 1 - abs(recovery_f_dpli - anesthesia_f_dpli);
     
     % Calcualte the dpli-dri with w1 and w2 = 0
-    [dpli_dri] = calculate_dpli_dri_1(baseline_vs_recovery, baseline_vs_anesthesia, recovery_vs_anesthesia, 1.0, 1.0);
-    dpli_dris_1 = [dpli_dris_1, dpli_dri];
+    dpli_dris_1(p) = calculate_dpli_dri_1(baseline_vs_recovery, baseline_vs_anesthesia, recovery_vs_anesthesia, 1.0, 1.0);
 end
 
 % Plot figure for the dpli-dri
-figure;
+handle = figure;
 bar(categorical(P_ID), dpli_dris_1)
 title("WSAS dpli-dri for alpha (attempt #1)");
 ylim([0.5 0.53])
 
+% Save the figure to disk
 filename = strcat(OUT_DIR, "dpli_dri_1.png");
 saveas(handle,filename);
-close all; 
-
-function [dpli_dri] = calculate_dpli_dri_1(bvr, bva, rva, w1, w2)
-    dpli_dri = sum(bvr(:)) / (w1*(sum(bva(:))) + w2*(sum(rva(:))));
-end
+close all;
