@@ -9,6 +9,7 @@ The documentation was in the wiki page of Github, I (yacine mahdid) decided to s
 I'm open to other suggestions to document the code and the analysis, however due to the highly changing nature of the analysis it is difficult to keep the documentation up-to-date the further away from the code it lies.
 
 ## Table of Content
+- [Code Structure](#code-structure)
 - [dPLI per Participant](#dpli-per-participant)
 - [dPLI Dynamic Reconfiguration Index](#dpli-dynamic-reconfiguration-index)
   - [Attempt #1](#attempt-1)
@@ -16,6 +17,9 @@ I'm open to other suggestions to document the code and the analysis, however due
   - [Attempt #3](#attempt-3)
   - [Attempt #4 (Current Version)](#attempt-4)
 - [Meeting 1 Notes](#meeting-1-notes)
+
+## Code Structure
+The codebase is structured in experiments where each one is directly tied to one of the issues on our task management system (here it is Github kanban functionality). The nomenclature you will find is `ex_XX` where XX means is a digit that maps to the issue number on this repository. If you see an experiment with a given number missing, it might be due by the fact that the given issue was not directly tied to code in the repository. For instance it could have been a documentation task or a reporting task which didn't require any sort of scripting.
 
 ## dPLI per Participant
 
