@@ -13,3 +13,14 @@ I'm open to other suggestions to document the code and the analysis, however due
 
 
 ## Meeting 1 Notes
+Two features seems to be important, hub location and dPLI. However, hub location as it currently stands is very experimental and has conceptual problems. The dPLI feature is stable however.
+For the dPLI we want to do similarity/difference matrix
+- Baseline vs Recovery similarity matrix
+- Baseline vs Anesthesia difference matrix
+- Recovery vs Anesthesia difference matrix
+
+These difference matrix will tell us if our intuition is correct and will help out in developing a metric. One thing to keep in mind is that for the visual we should be using the full matrix, however half of the matrix is fully redundant. **Keeping only the top or the bottom triangle will help reduce the dimensionality**.
+
+There was something about cosine similarity of alpha hubs and something about k-mean clustering with 2 clusters and training a classifier on these clusters.
+
+**Should really take more notes or record such meeting since we lost a lot of information**
