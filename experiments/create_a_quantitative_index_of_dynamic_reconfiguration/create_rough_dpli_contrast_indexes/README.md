@@ -23,6 +23,18 @@ The codebase is structured in experiments where each one is directly tied to one
 
 ## dPLI per Participant
 
+### WSAS02
+### WSAS05
+### WSAS09
+### WSAS10
+### WSAS11
+### WSAS12
+### WSAS13
+### WSAS18
+### WSAS19
+### WSAS20
+### WSAS22
+
 ## dPLI Dynamic Reconfiguration Index
 
 ### Attempt 1
