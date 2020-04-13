@@ -63,16 +63,6 @@ for p = 1:length(P_ID)
     close all;    
 end
 
-function [r_dpli, r_location, r_regions] = process_dpli(filename)
-    data = load(filename);
-
-   % Extracting the data and channel location
-   dpli = data.result_dpli.data.avg_dpli;
-   location = data.result_dpli.metadata.channels_location;
-
-   [r_dpli, r_location, r_regions] = reorder_channels(dpli, location, 'biapt_egi129.csv');
-end
-
 function [common_location, common_region] = get_subset(baseline_location, anesthesia_location, recovery_location, baseline_r_regions, anesthesia_r_regions, recovery_r_regions)
 
     all_location = [baseline_location recovery_location anesthesia_location];

@@ -27,6 +27,7 @@ for p = 1:length(P_ID)
     % This vector is used for nomarlization
     dpli_all = [baseline_r_dpli(:); anesthesia_r_dpli(:); recovery_r_dpli(:)];
 
+    % Creat the 3 subplot vertical figure for comparions
     handle = figure;
     subplot(1,3,1)
     plot_pli(baseline_r_dpli, baseline_r_regions, dpli_all, COLOR)
@@ -40,17 +41,8 @@ for p = 1:length(P_ID)
     colorbar;
     set(handle, 'Position', [70,152,1527,589]);
     
+    % Save the figure at the right spot in disk
     filename = strcat(OUT_DIR, participant, "_alpha_dpli.png");
     saveas(handle,filename);
     close all;
-end
-
-function [r_dpli, r_location, r_regions] = process_dpli(filename)
-    data = load(filename);
-
-   % Extracting the data and channel location
-   dpli = data.result_dpli.data.avg_dpli;
-   location = data.result_dpli.metadata.channels_location;
-
-   [r_dpli, r_location, r_regions] = reorder_channels(dpli, location, 'biapt_egi129.csv');
 end

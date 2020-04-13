@@ -98,64 +98,6 @@ function [sim_matrix] = calculate_sim_matrix(matrix1, matrix2, shift_weight)
     sim_matrix = 1 - (abs(matrix1 - matrix2).*weight_matrix);
 
 end
-
-% Here this is what we will be modifying to get a translated version
-% of the bp headset
-function [r_dpli, r_location, r_regions] = process_bp_dpli(filename, map_file)
-   data = load(filename);
-
-   % Extracting the data and channel location
-   dpli = data.result_dpli.data.avg_dpli;
-   location = data.result_dpli.metadata.channels_location;
-   
-   % At this point we have the bp_location
-   bp_to_egi_convertion_table = readtable(map_file);
-   bp_labels = bp_to_egi_convertion_table.bp_location;
-   egi_labels = bp_to_egi_convertion_table.egi_location;
-   
-   index_to_remove = [];
-   for i = 1:length(location)
-      label = location(i).labels; 
-      index = get_label_index(label, bp_labels);
-      
-      % Removing all the channels that are not in the convertion table
-      % i.e. non-scalp channels
-      if index == 0
-         index_to_remove = [index_to_remove i];
-      else 
-         % Modify the label for this particular channel
-         location(i).labels = egi_labels{index};
-      end
-      
-   end
-   
-   % Fix the location structure array
-   location(index_to_remove) = [];
-   % Fix the dpli matrix
-   dpli(index_to_remove,:) = [];
-   dpli(:, index_to_remove) = [];
-   
-   [r_dpli, r_location, r_regions] = reorder_channels(dpli, location, 'biapt_egi129.csv');
-end
-
-function [r_dpli, r_location, r_regions] = process_dpli(filename)
-    % This is a bit hacky, but I will have to restructure the whole thing
-    % to get my result otherwise, will need to change the structure at the
-    % end when my result are ok!
-    if contains(filename, 'WSAS02')
-       MAP_FILE = "bp_to_egi_mapping.csv";
-       [r_dpli, r_location, r_regions] = process_bp_dpli(filename, MAP_FILE);
-       return
-    end
-
-    data = load(filename);
-
-   % Extracting the data and channel location
-   dpli = data.result_dpli.data.avg_dpli;
-   location = data.result_dpli.metadata.channels_location;
-
-   [r_dpli, r_location, r_regions] = reorder_channels(dpli, location, 'biapt_egi129.csv');
-end
             
 function [common_location, common_region] = get_subset(baseline_location, anesthesia_location, recovery_location, baseline_r_regions, anesthesia_r_regions, recovery_r_regions)
 
