@@ -7,8 +7,8 @@ There is an experiment folder per project for all code that is meant as a steppi
 Within these experiments we have a naming convention that reflect which task it is addressing. This means we have `ex_XX_` where XX means a task number on github. 
 
 ## Projects
-- [create_a_quantitative_index_of_dynamic_reconfiguration](https://github.com/BIAPT/awareness-perturbation-complexity-index/projects/1)
-	- [create_rough_dpli_contrast_indexes](https://github.com/BIAPT/awareness-perturbation-complexity-index/milestone/1)
+- [create_a_quantitative_index_of_dynamic_reconfiguration](https://github.com/BIAPT/awareness-perturbation-complexity-index/tree/chores/refactor-documentation/experiments/create_a_quantitative_index_of_dynamic_reconfiguration)
+	- [create_rough_dpli_contrast_indexes](https://github.com/BIAPT/awareness-perturbation-complexity-index/tree/chores/refactor-documentation/experiments/create_a_quantitative_index_of_dynamic_reconfiguration/create_rough_dpli_contrast_indexes)
 
 ## Experiments
 For more information on each of the experiments per projects, please take a look inside the projects/milestone directory and read the README.md file!
