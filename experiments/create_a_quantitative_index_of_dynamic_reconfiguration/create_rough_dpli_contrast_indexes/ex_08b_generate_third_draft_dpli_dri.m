@@ -136,29 +136,3 @@ function [common_location, common_region] = get_subset(baseline_location, anesth
     end
 
 end
-
-function [f_matrix] = filter_matrix(matrix, location, f_location)
-    num_channels = length(f_location);
-    
-    good_index = zeros(1, num_channels);
-    for l = 1:length(f_location)
-        label = location{l};
-        
-        m_index = get_label_index(label, location);
-        
-        good_index(l) = m_index;
-    end
-    
-    f_matrix = matrix(good_index, good_index);
-end
-
-% Function to check if a label is present in a given location
-function [label_index] = get_label_index(label, location)
-    label_index = 0;
-    for i = 1:length(location)
-       if(strcmp(label,location{i}))
-          label_index = i;
-          return
-       end
-    end
-end

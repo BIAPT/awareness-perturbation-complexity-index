@@ -67,19 +67,6 @@ function [r_dpli, r_location, r_regions] = process_dpli(filename)
 
    [r_dpli, r_location, r_regions] = reorder_channels(dpli, location, 'biapt_egi129.csv');
 end
-            
-function plot_pli(pli,regions,pli_all)
-    imagesc(pli);
-    xtickangle(90)
-    xticklabels(regions);
-    yticklabels(regions);  
-    xticks(1:length(regions));
-    yticks(1:length(regions));
-    min_color = min(pli_all);
-    max_color = max(pli_all);
-    caxis([min_color max_color])
-    colormap("hot");    
-end
 
 function [common_location, common_region] = get_subset(baseline_location, anesthesia_location, recovery_location, baseline_r_regions, anesthesia_r_regions, recovery_r_regions)
 
@@ -106,30 +93,4 @@ function [common_location, common_region] = get_subset(baseline_location, anesth
         end
     end
 
-end
-
-function [f_matrix] = filter_matrix(matrix, location, f_location)
-    num_channels = length(f_location);
-    
-    good_index = zeros(1, num_channels);
-    for l = 1:length(f_location)
-        label = location{l};
-        
-        m_index = get_label_index(label, location);
-        
-        good_index(l) = m_index;
-    end
-    
-    f_matrix = matrix(good_index, good_index);
-end
-
-% Function to check if a label is present in a given location
-function [label_index] = get_label_index(label, location)
-    label_index = 0;
-    for i = 1:length(location)
-       if(strcmp(label,location{i}))
-          label_index = i;
-          return
-       end
-    end
 end

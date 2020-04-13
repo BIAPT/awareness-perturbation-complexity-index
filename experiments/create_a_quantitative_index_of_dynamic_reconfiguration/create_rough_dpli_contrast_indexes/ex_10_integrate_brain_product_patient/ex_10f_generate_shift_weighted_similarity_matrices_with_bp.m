@@ -1,5 +1,5 @@
 %% Yacine Mahdid March 27 2020
-% This script is addressing the task https://github.com/BIAPT/awareness-perturbation-complexity-index/issues/6
+% This script is addressing the task https://github.com/BIAPT/awareness-perturbation-complexity-index/issues/8
 
 %% Experiment Variables
 IN_DIR = "/media/yacine/My Book/datasets/consciousness/Dynamic Reconfiguration Index/";
@@ -13,7 +13,6 @@ SHIFT_WEIGHT = 2; % this is used in the definition of the similarity matrix to s
 %% Creating the figures
 % Here we iterate over each participant and each epochs to create the 3
 % subplots per figure
-dpli_dris_1 = [];
 for p = 1:length(P_ID)
     participant = P_ID{p};
     disp(participant);
@@ -23,9 +22,6 @@ for p = 1:length(P_ID)
     [anesthesia_r_dpli, anesthesia_r_location, anesthesia_r_regions] = process_dpli(strcat(IN_DIR,participant,filesep,'anesthesia_alpha_dpli.mat'));
     [recovery_r_dpli, recovery_r_location, recovery_r_regions] = process_dpli(strcat(IN_DIR,participant,filesep,'recovery_alpha_dpli.mat'));
     
-    % This vector is used for nomarlization
-    sim_all = [baseline_r_dpli(:); anesthesia_r_dpli(:); recovery_r_dpli(:)];
-
     % Get the common location
     [common_location, common_region] = get_subset(baseline_r_location, anesthesia_r_location, recovery_r_location, baseline_r_regions, anesthesia_r_regions, recovery_r_regions);
     
@@ -41,26 +37,26 @@ for p = 1:length(P_ID)
     baseline_vs_anesthesia = calculate_sim_matrix(baseline_f_dpli, anesthesia_f_dpli, SHIFT_WEIGHT);
     recovery_vs_anesthesia = calculate_sim_matrix(recovery_f_dpli, anesthesia_f_dpli, SHIFT_WEIGHT);
     
-    % Calcualte the dpli-dri with w1 and w2 = 0
-    [dpli_dri] = calculate_dpli_dri_1(baseline_vs_recovery, baseline_vs_anesthesia, recovery_vs_anesthesia, 1.0, 1.0);
-    dpli_dris_1 = [dpli_dris_1, dpli_dri];
-end
+    % This vector is used for nomarlization
+    sim_all = [baseline_vs_recovery(:); baseline_vs_anesthesia(:); recovery_vs_anesthesia(:)];
 
-% Plot figure for the dpli-dri
-handle = figure;
-bar(categorical(P_ID), dpli_dris_1)
-title("WSAS dpli-dri for alpha (attempt #3)");
-
-filename = strcat(OUT_DIR, "dpli_dri_3.png");
-saveas(handle,filename);
-close all; 
-
-% This is the the major thing that has changed here
-% We will be doing a sum and a substraction to avoid having too narrow a
-% range
-function [dpli_dri] = calculate_dpli_dri_1(bvr, bva, rva, w1, w2)
-    dpli_dri = 2*sum(bvr(:)) - (w1*(sum(bva(:))) + w2*(sum(rva(:))));
-    dpli_dri = dpli_dri / length(bvr(:));
+    % Here we create the figure that will be saved
+    handle = figure;
+    subplot(1,3,1)
+    plot_pli(baseline_vs_recovery, common_region, sim_all)
+    title(strcat(participant, " alpha baseline vs recovery"));
+    subplot(1,3,2)
+    plot_pli(baseline_vs_anesthesia, common_region, sim_all)
+    title(strcat(participant, " alpha baseline vs anesthesia"));
+    subplot(1,3,3)
+    plot_pli(recovery_vs_anesthesia, common_region, sim_all)
+    title(strcat(participant, " alpha recovery vs anesthesia"));
+    colorbar;
+    set(handle, 'Position', [70,152,1527,589]);
+    
+    filename = strcat(OUT_DIR, participant, "_alpha_sim_dpli_augmented.png");
+    saveas(handle,filename);
+    close all;    
 end
 
 function [sim_matrix] = calculate_sim_matrix(matrix1, matrix2, shift_weight)
@@ -155,8 +151,21 @@ function [r_dpli, r_location, r_regions] = process_dpli(filename)
    % Extracting the data and channel location
    dpli = data.result_dpli.data.avg_dpli;
    location = data.result_dpli.metadata.channels_location;
-   
+
    [r_dpli, r_location, r_regions] = reorder_channels(dpli, location, 'biapt_egi129.csv');
+end
+            
+function plot_pli(pli,regions,pli_all)
+    imagesc(pli);
+    xtickangle(90)
+    xticklabels(regions);
+    yticklabels(regions);  
+    xticks(1:length(regions));
+    yticks(1:length(regions));
+    min_color = min(pli_all);
+    max_color = max(pli_all);
+    caxis([min_color max_color])
+    colormap("hot");    
 end
 
 function [common_location, common_region] = get_subset(baseline_location, anesthesia_location, recovery_location, baseline_r_regions, anesthesia_r_regions, recovery_r_regions)
@@ -184,30 +193,4 @@ function [common_location, common_region] = get_subset(baseline_location, anesth
         end
     end
 
-end
-
-function [f_matrix] = filter_matrix(matrix, location, f_location)
-    num_channels = length(f_location);
-    
-    good_index = zeros(1, num_channels);
-    for l = 1:length(f_location)
-        label = f_location{l};
-        
-        m_index = get_label_index(label, location);
-        
-        good_index(l) = m_index;
-    end
-    
-    f_matrix = matrix(good_index, good_index);
-end
-
-% Function to check if a label is present in a given location
-function [label_index] = get_label_index(label, location)
-    label_index = 0;
-    for i = 1:length(location)
-       if(strcmp(label,location{i}))
-          label_index = i;
-          return
-       end
-    end
 end

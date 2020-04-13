@@ -47,15 +47,3 @@ function [r_dpli, r_location, r_regions] = process_bp_dpli(filename, map_file)
    
    [r_dpli, r_location, r_regions] = reorder_channels(dpli, location, 'biapt_egi129.csv');
 end
-
-% Function to check if a label is present in a given location
-function [label_index] = get_label_index(label, location)
-    label_index = 0;
-    for i = 1:length(location)
-        loc_label = strtrim(location{i});
-       if(strcmp(label, loc_label))
-          label_index = i;
-          return
-       end
-    end
-end
