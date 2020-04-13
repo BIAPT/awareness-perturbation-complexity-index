@@ -79,30 +79,3 @@ for p = 1:length(P_ID)
     saveas(handle,filename);
     close all;    
 end
-
-function [common_location, common_region] = get_subset(baseline_location, anesthesia_location, recovery_location, baseline_r_regions, anesthesia_r_regions, recovery_r_regions)
-
-    all_location = [baseline_location recovery_location anesthesia_location];
-    all_regions = [baseline_r_regions, anesthesia_r_regions, recovery_r_regions];
-
-    common_location = {};
-    common_region = {};
-    for l = 1:length(all_location)
-        label = all_location{l};
-        region = all_regions{l};
-        
-        % Index of each of these label
-        b_index = get_label_index(label, baseline_location);
-        a_index = get_label_index(label, anesthesia_location);
-        r_index = get_label_index(label, recovery_location);
-        
-        if(b_index ~= 0 && a_index ~= 0 && r_index ~= 0)
-           common_location = [common_location all_location(l)];
-           common_region = [common_region region];
-           baseline_location(b_index) = [];
-           anesthesia_location(a_index) = [];
-           recovery_location(r_index) = [];
-        end
-    end
-
-end
