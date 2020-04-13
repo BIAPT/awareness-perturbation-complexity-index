@@ -5,6 +5,9 @@
 IN_DIR = "/media/yacine/My Book/datasets/consciousness/Dynamic Reconfiguration Index/";
 OUT_DIR = "/media/yacine/My Book/result_dri/dpli_dri/";
 
+% Esthetic Variables
+COLOR = "hot";
+
 % Here we will skip participant 17 since we do not have recovery
 % And participant 02 since it's headset nomenclature is different.
 P_ID = {'WSAS05', 'WSAS09', 'WSAS10', 'WSAS11', 'WSAS12', 'WSAS13', 'WSAS18', 'WSAS19', 'WSAS20', 'WSAS22'};
@@ -44,13 +47,13 @@ for p = 1:length(P_ID)
     % Here we create the figure that will be saved
     handle = figure;
     subplot(1,3,1)
-    plot_pli(baseline_vs_recovery, common_region, sim_all)
+    plot_pli(baseline_vs_recovery, common_region, sim_all, COLOR)
     title(strcat(participant, " alpha baseline vs recovery"));
     subplot(1,3,2)
-    plot_pli(baseline_vs_anesthesia, common_region, sim_all)
+    plot_pli(baseline_vs_anesthesia, common_region, sim_all, COLOR)
     title(strcat(participant, " alpha baseline vs anesthesia"));
     subplot(1,3,3)
-    plot_pli(recovery_vs_anesthesia, common_region, sim_all)
+    plot_pli(recovery_vs_anesthesia, common_region, sim_all, COLOR)
     title(strcat(participant, " alpha recovery vs anesthesia"));
     colorbar;
     set(handle, 'Position', [70,152,1527,589]);
@@ -68,19 +71,6 @@ function [r_dpli, r_location, r_regions] = process_dpli(filename)
    location = data.result_dpli.metadata.channels_location;
 
    [r_dpli, r_location, r_regions] = reorder_channels(dpli, location, 'biapt_egi129.csv');
-end
-            
-function plot_pli(pli,regions,pli_all)
-    imagesc(pli);
-    xtickangle(90)
-    xticklabels(regions);
-    yticklabels(regions);  
-    xticks(1:length(regions));
-    yticks(1:length(regions));
-    min_color = min(pli_all);
-    max_color = max(pli_all);
-    caxis([min_color max_color])
-    colormap("hot");    
 end
 
 function [common_location, common_region] = get_subset(baseline_location, anesthesia_location, recovery_location, baseline_r_regions, anesthesia_r_regions, recovery_r_regions)

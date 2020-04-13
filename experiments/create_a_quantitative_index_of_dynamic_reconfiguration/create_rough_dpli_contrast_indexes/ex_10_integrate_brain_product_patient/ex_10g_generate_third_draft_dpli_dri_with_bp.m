@@ -6,7 +6,6 @@ IN_DIR = "/media/yacine/My Book/datasets/consciousness/Dynamic Reconfiguration I
 OUT_DIR = "/media/yacine/My Book/result_dri/dpli_dri/";
 
 % Here we will skip participant 17 since we do not have recovery
-% And participant 02 since it's headset nomenclature is different.
 P_ID = {'WSAS02', 'WSAS05', 'WSAS09', 'WSAS10', 'WSAS11', 'WSAS12', 'WSAS13', 'WSAS18', 'WSAS19', 'WSAS20', 'WSAS22'};
 SHIFT_WEIGHT = 2; % this is used in the definition of the similarity matrix to scale the tanh function
 
