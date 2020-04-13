@@ -9,12 +9,15 @@ The documentation was in the wiki page of Github, I (yacine mahdid) decided to s
 I'm open to other suggestions to document the code and the analysis, however due to the highly changing nature of the analysis it is difficult to keep the documentation up-to-date the further away from the code it lies.
 
 ## Table of Content
+- [dPLI per Participant](#dpli-per-participant)
 - [dPLI Dynamic Reconfiguration Index](#dpli-dynamic-reconfiguration-index)
   - [Attempt #1](#attempt-1)
   - [Attempt #2](#attempt-2)
   - [Attempt #3](#attempt-3)
   - [Attempt #4 (Current Version)](#attempt-4)
 - [Meeting 1 Notes](#meeting-1-notes)
+
+## dPLI per Participant
 
 ## dPLI Dynamic Reconfiguration Index
 
