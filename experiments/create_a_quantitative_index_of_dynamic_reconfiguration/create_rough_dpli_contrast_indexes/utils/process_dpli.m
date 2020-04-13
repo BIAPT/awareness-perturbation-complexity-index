@@ -3,16 +3,6 @@ function [r_dpli, r_location, r_regions] = process_dpli(filename)
 % filename
 %
 % filename: filename of the dPLI data to load and process
-
-    % If we are dealing with WSAS02 we need to go through process_bp_dpli 
-    % instead of the normal process
-    % TODO: fix this
-    if contains(filename, 'WSAS02')
-       MAP_FILE = "bp_to_egi_mapping.csv";
-       [r_dpli, r_location, r_regions] = process_bp_dpli(filename, MAP_FILE);
-       return
-    end
-
    %Load the data at the right spot on disk
    data = load(filename);
 

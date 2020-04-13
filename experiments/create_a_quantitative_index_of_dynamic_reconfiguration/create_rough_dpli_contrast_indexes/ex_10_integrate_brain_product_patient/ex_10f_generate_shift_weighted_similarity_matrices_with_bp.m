@@ -4,6 +4,7 @@
 %% Experiment Variables
 IN_DIR = "/media/yacine/My Book/datasets/consciousness/Dynamic Reconfiguration Index/";
 OUT_DIR = "/media/yacine/My Book/result_dri/dpli_dri/";
+MAP_FILE = "data/bp_to_egi_mapping_yacine.csv";
 
 % Esthetic Variables
 COLOR = "hot";
@@ -19,10 +20,18 @@ for p = 1:length(P_ID)
     participant = P_ID{p};
     disp(participant);
 
-    % Process each of the three states
-    [baseline_r_dpli, baseline_r_location, baseline_r_regions] = process_dpli(strcat(IN_DIR,participant,filesep,'baseline_alpha_dpli.mat'));
-    [anesthesia_r_dpli, anesthesia_r_location, anesthesia_r_regions] = process_dpli(strcat(IN_DIR,participant,filesep,'anesthesia_alpha_dpli.mat'));
-    [recovery_r_dpli, recovery_r_location, recovery_r_regions] = process_dpli(strcat(IN_DIR,participant,filesep,'recovery_alpha_dpli.mat'));
+    % Process each of the three states, since participant WSAS02 is special
+    % in the sense that is has the Brain Product headset we check for it
+    % to processing it correctly
+    if strcmp(participant, "WSAS02")
+        [baseline_r_dpli, baseline_r_location, baseline_r_regions] = process_bp_dpli(strcat(IN_DIR,participant,filesep,'baseline_alpha_dpli.mat'), MAP_FILE);
+        [anesthesia_r_dpli, anesthesia_r_location, anesthesia_r_regions] = process_bp_dpli(strcat(IN_DIR,participant,filesep,'anesthesia_alpha_dpli.mat'), MAP_FILE);
+        [recovery_r_dpli, recovery_r_location, recovery_r_regions] = process_bp_dpli(strcat(IN_DIR,participant,filesep,'recovery_alpha_dpli.mat'), MAP_FILE);
+    else
+        [baseline_r_dpli, baseline_r_location, baseline_r_regions] = process_dpli(strcat(IN_DIR,participant,filesep,'baseline_alpha_dpli.mat'));
+        [anesthesia_r_dpli, anesthesia_r_location, anesthesia_r_regions] = process_dpli(strcat(IN_DIR,participant,filesep,'anesthesia_alpha_dpli.mat'));
+        [recovery_r_dpli, recovery_r_location, recovery_r_regions] = process_dpli(strcat(IN_DIR,participant,filesep,'recovery_alpha_dpli.mat'));        
+    end
     
     % Get the common location
     [common_location, common_region] = get_subset(baseline_r_location, anesthesia_r_location, recovery_r_location, baseline_r_regions, anesthesia_r_regions, recovery_r_regions);
@@ -56,45 +65,8 @@ for p = 1:length(P_ID)
     colorbar;
     set(handle, 'Position', [70,152,1527,589]);
     
+    % Save the figure to disk
     filename = strcat(OUT_DIR, participant, "_alpha_sim_dpli_augmented.png");
     saveas(handle,filename);
     close all;    
-end
-
-function [sim_matrix] = calculate_sim_matrix(matrix1, matrix2, shift_weight)
-% CALCULATE SIM MATRIX this function will calculate an improved version of
-% the similarity matrix that takes into consideration posterior/anterior
-% shift
-    
-    % Here we shift the matrix1 matrix2 to check for crossing of the 0.5
-    % mark
-    shift_matrix1 = matrix1 - 0.5;
-    shift_matrix2 = matrix2 - 0.5;
-    
-    % Here we want to have make a matrix that will give us a 1 for crossing
-    % over and a 0 for not crossing over
-    % We check which index in both shifted matrix are positive
-    pos_matrix1 = shift_matrix1 > 0;
-    pos_matrix2 = shift_matrix2 > 0;
-    % We then add these two, we will get a value of 1 (one positive one
-    % negative), 2 (both positive) or 0 (both negative)
-    sign_matrix = pos_matrix1 + pos_matrix2;
-    
-    % To get the amount of crossing we put zeros everywhere and then only
-    % modify the cross matrix for the index that are actually crossing.
-    amount_crossing_matrix = abs(shift_matrix1 - shift_matrix2);
-    cross_matrix = amount_crossing_matrix.*(sign_matrix == 1);
-    
-    % Finally to calculate the weight matrix we put the cross matrix
-    % through the tanh function. Should give 0 for 0 values and a positive
-    % value for positive input saturating at 1. We then shift that matrix
-    % by 1 and weight it by the shift_weight. This will give us a 1 for the
-    % region which don't cross and a scaling proportional to the amount of
-    % crossing for actual cross.
-    weight_matrix = shift_weight*tanh(cross_matrix) + 1;
-    
-    % We finally multiply the naive version of the similarity matrix with
-    % the weight matrix.
-    sim_matrix = 1 - (abs(matrix1 - matrix2).*weight_matrix);
-
 end
