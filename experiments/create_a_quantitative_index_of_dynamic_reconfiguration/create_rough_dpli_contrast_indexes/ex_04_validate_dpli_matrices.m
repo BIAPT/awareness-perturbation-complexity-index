@@ -5,6 +5,9 @@
 IN_DIR = "/media/yacine/My Book/datasets/consciousness/Dynamic Reconfiguration Index/";
 OUT_DIR = "/media/yacine/My Book/result_dri/dpli_dri/";
 
+% esthetic variables
+COLOR = "jet";
+
 % Here we will skip participant 17 since we do not have recovery
 % And participant 02 since it's headset nomenclature is different.
 P_ID = {'WSAS05', 'WSAS09', 'WSAS10', 'WSAS11', 'WSAS12', 'WSAS13', 'WSAS18', 'WSAS19', 'WSAS20', 'WSAS22'};
@@ -26,13 +29,13 @@ for p = 1:length(P_ID)
 
     handle = figure;
     subplot(1,3,1)
-    plot_pli(baseline_r_dpli, baseline_r_regions, dpli_all)
+    plot_pli(baseline_r_dpli, baseline_r_regions, dpli_all, COLOR)
     title(strcat(participant, " alpha dpli at baseline"));
     subplot(1,3,2)
-    plot_pli(anesthesia_r_dpli, anesthesia_r_regions, dpli_all)
+    plot_pli(anesthesia_r_dpli, anesthesia_r_regions, dpli_all, COLOR)
     title(strcat(participant, " alpha dpli at anesthesia"));
     subplot(1,3,3)
-    plot_pli(recovery_r_dpli, recovery_r_regions, dpli_all)
+    plot_pli(recovery_r_dpli, recovery_r_regions, dpli_all, COLOR)
     title(strcat(participant, " alpha dpli at recovery"));
     colorbar;
     set(handle, 'Position', [70,152,1527,589]);
@@ -50,17 +53,4 @@ function [r_dpli, r_location, r_regions] = process_dpli(filename)
    location = data.result_dpli.metadata.channels_location;
 
    [r_dpli, r_location, r_regions] = reorder_channels(dpli, location, 'biapt_egi129.csv');
-end
-            
-function plot_pli(pli,regions,pli_all)
-    imagesc(pli);
-    xtickangle(90)
-    xticklabels(regions);
-    yticklabels(regions);  
-    xticks(1:length(regions));
-    yticks(1:length(regions));
-    min_color = mean(pli_all) - 3*(std(pli_all));
-    max_color = mean(pli_all) + 3*(std(pli_all));
-    caxis([min_color max_color])
-    colormap("jet");    
 end
