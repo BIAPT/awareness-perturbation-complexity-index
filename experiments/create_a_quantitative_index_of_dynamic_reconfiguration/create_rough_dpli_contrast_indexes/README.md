@@ -9,8 +9,23 @@ The documentation was in the wiki page of Github, I (yacine mahdid) decided to s
 I'm open to other suggestions to document the code and the analysis, however due to the highly changing nature of the analysis it is difficult to keep the documentation up-to-date the further away from the code it lies.
 
 ## Table of Content
+- [dPLI Dynamic Reconfiguration Index](#dpli-dynamic-reconfiguration-index)
+  - [Attempt #1](#attempt-1)
+  - [Attempt #2](#attempt-2)
+  - [Attempt #3](#attempt-3)
+  - [Attempt #4 (Current Version)](#attempt-4)
 - [Meeting 1 Notes](#meeting-1-notes)
 
+## dPLI Dynamic Reconfiguration Index
+
+### Attempt 1
+
+### Attempt 2
+
+### Attempt 3
+
+### Attempt 4
+**This is the current version**
 
 ## Meeting 1 Notes
 Two features seems to be important, hub location and dPLI. However, hub location as it currently stands is very experimental and has conceptual problems. The dPLI feature is stable however.
