@@ -66,7 +66,7 @@ for p = 1:length(P_ID)
     set(handle, 'Position', [70,152,1527,589]);
     
     % Save the figure to disk
-    filename = strcat(OUT_DIR, participant, "_alpha_sim_dpli_augmented.png");
+    filename = strcat(OUT_DIR, participant, "_alpha_sim_weighted_dpli.png");
     saveas(handle,filename);
     close all;    
 end
