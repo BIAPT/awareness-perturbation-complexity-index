@@ -71,8 +71,74 @@ The matrix are normalized within subject with mean() +- 3*std. This was done sin
 ## dPLI Similarity Matrix
 These matrices are used for the first, second and third attempt at making a dpli Dynamic Reconfiguration Index (dpli-dri). 
 
+### WSAS02
+![WSAS02 dpli Similarity Matrix at Alpha](./.figure/WSAS02_alpha_sim_dpli.png)
+
+### WSAS05
+![WSAS05 dpli Similarity Matrix at Alpha](./.figure/WSAS05_alpha_sim_dpli.png)
+
+### WSAS09
+![WSAS09 dpli Similarity Matrix at Alpha](./.figure/WSAS09_alpha_sim_dpli.png)
+
+### WSAS10
+![WSAS10 dpli Similarity Matrix at Alpha](./.figure/WSAS10_alpha_sim_dpli.png)
+
+### WSAS11
+![WSAS11 dpli Similarity Matrix at Alpha](./.figure/WSAS11_alpha_sim_dpli.png)
+
+### WSAS12
+![WSAS12 dpli Similarity Matrix at Alpha](./.figure/WSAS12_alpha_sim_dpli.png)
+
+### WSAS13
+![WSAS13 dpli Similarity Matrix at Alpha](./.figure/WSAS13_alpha_sim_dpli.png)
+
+### WSAS18
+![WSAS18 dpli Similarity Matrix at Alpha](./.figure/WSAS18_alpha_sim_dpli.png)
+
+### WSAS19
+![WSAS19 dpli Similarity Matrix at Alpha](./.figure/WSAS19_alpha_sim_dpli.png)
+
+### WSAS20
+![WSAS20 dpli Similarity Matrix at Alpha](./.figure/WSAS20_alpha_sim_dpli.png)
+
+### WSAS22
+![WSAS22 dpli Similarity Matrix at Alpha](./.figure/WSAS22_alpha_sim_dpli.png)
+
 ## dPLI Contrast Matrix
 These matrix are used for the fourth version of the dpli-dri in which we have an equivalent formula than before, but with a contrast instead of a similarity.
+
+### WSAS02
+![WSAS02 dpli Contrast Matrix at Alpha](./.figure/WSAS02_alpha_contrast_dpli.png)
+
+### WSAS05
+![WSAS05 dpli Contrast Matrix at Alpha](./.figure/WSAS05_alpha_contrast_dpli.png)
+
+### WSAS09
+![WSAS09 dpli Contrast Matrix at Alpha](./.figure/WSAS09_alpha_contrast_dpli.png)
+
+### WSAS10
+![WSAS10 dpli Contrast Matrix at Alpha](./.figure/WSAS10_alpha_contrast_dpli.png)
+
+### WSAS11
+![WSAS11 dpli Contrast Matrix at Alpha](./.figure/WSAS11_alpha_contrast_dpli.png)
+
+### WSAS12
+![WSAS12 dpli Contrast Matrix at Alpha](./.figure/WSAS12_alpha_contrast_dpli.png)
+
+### WSAS13
+![WSAS13 dpli Contrast Matrix at Alpha](./.figure/WSAS13_alpha_contrast_dpli.png)
+
+### WSAS18
+![WSAS18 dpli Contrast Matrix at Alpha](./.figure/WSAS18_alpha_contrast_dpli.png)
+
+### WSAS19
+![WSAS19 dpli Contrast Matrix at Alpha](./.figure/WSAS19_alpha_contrast_dpli.png)
+
+### WSAS20
+![WSAS20 dpli Contrast Matrix at Alpha](./.figure/WSAS20_alpha_contrast_dpli.png)
+
+### WSAS22
+![WSAS22 dpli Contrast Matrix at Alpha](./.figure/WSAS22_alpha_contrast_dpli.png)
 
 ## dPLI Dynamic Reconfiguration Index
 Here is where I document all of our incremental attempt in making the dpli-dri.
