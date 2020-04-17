@@ -22,7 +22,16 @@ I'm open to other suggestions to document the code and the analysis, however due
 The codebase is structured in experiments where each one is directly tied to one of the issues on our task management system (here it is Github kanban functionality). The nomenclature you will find is `ex_XX` where XX means is a digit that maps to the issue number on this repository. If you see an experiment with a given number missing, it might be due by the fact that the given issue was not directly tied to code in the repository. For instance it could have been a documentation task or a reporting task which didn't require any sort of scripting.
 
 ## dPLI per Participant
-This is the dPLI matrices that were generate using the code at `ex_10e_validate_dpli_matrices_with_bp.mat`. This particular script allows us to analyze the Brain Product headset as well as the Electrical Geodesic one. It make uses of a KNN-based algorithm to map the two electrodes position to have a similar nomenclature. This allows us to reorder easily the connectivity matrices in the `FTCPO` format. 
+This is the dPLI matrices that were generate using the code at `ex_10e_validate_dpli_matrices_with_bp.mat`. This particular script allows us to analyze the Brain Product headset as well as the Electrical Geodesic one. It make uses of a KNN-based algorithm to map the two electrodes position to have a similar nomenclature. This allows us to reorder easily the connectivity matrices in the `FTCPO` format (frontal, temporal, central, parietal and occipital). 
+
+We have three states:
+- baseline
+- anesthesia
+- recovery
+
+The matrix are normalized within subject with mean() +- 3*std. This was done since normalizing the color map with the real min/max was giving mostly green matrices for baseline and recovery. 
+
+**WSAS17 is currently excluded since it doesn't have a recovery.**
 
 ### WSAS02
 ![WSAS02 dpli at Alpha](./.figure/WSAS02_alpha_dpli.png)
@@ -58,6 +67,7 @@ This is the dPLI matrices that were generate using the code at `ex_10e_validate_
 ![WSAS22 dpli at Alpha](./.figure/WSAS22_alpha_dpli.png)
 
 ## dPLI Dynamic Reconfiguration Index
+Here is where I document all of our incremental attempt in making the dpli-dri.
 
 ### Attempt 1
 
