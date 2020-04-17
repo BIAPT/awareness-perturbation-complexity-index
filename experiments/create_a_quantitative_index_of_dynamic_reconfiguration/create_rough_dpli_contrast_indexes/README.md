@@ -70,7 +70,26 @@ The matrix are normalized within subject with mean() +- 3*std. This was done sin
 Here is where I document all of our incremental attempt in making the dpli-dri.
 
 ### Attempt 1
+This is the first attempt at building the dpli-dri index. Here what we did: We assume that Baseline vs Anesthesia (BvA) and Recovery vs Anesthesia (RvA) have the same weight, which might not be the case depending on the amount of time the recovery took. The more general form is then: `dri_dpli = sum(BvR) / (w1*(sum(BvA)) + w2*(sum(RvA))) where w1 and w2 = 1`. We might need to change these parameters depending on whatever prior we have.
 
+The matlab code is the following:
+
+```matlab
+function [dpli_dri] = calculate_dpli_dri_1(bvr, bva, rva, w1, w2)
+% CALCULATE DPLI DRI 1 is the first attempt at calculating the dpli-dri
+% which uses division
+%
+% bvr: baseline vs recovery SIMILARITY matrix
+% bva: baseline vs anesthesia SIMILARITY matrix
+% rva: recovery vs anesthesia SIMILIARTY matrix
+% w1: weight for the bva
+% w2: weight for the rva
+
+    dpli_dri = sum(bvr(:)) / (w1*(sum(bva(:))) + w2*(sum(rva(:))));
+end
+```
+
+![dPLI-DRI attempt number 1](./.figure/dpli_dri_1.png)
 ### Attempt 2
 
 ### Attempt 3
