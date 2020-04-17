@@ -4,7 +4,7 @@
 %% Experiment Variables
 IN_DIR = "/media/yacine/My Book/datasets/consciousness/Dynamic Reconfiguration Index/";
 OUT_DIR = "/media/yacine/My Book/result_dri/dpli_dri/";
-MAP_FILE = "data/bp_to_egi_mapping_yacine.csv";
+MAP_FILE = "/home/yacine/Documents/BIAPT/awareness-perturbation-complexity-index/experiments/create_a_quantitative_index_of_dynamic_reconfiguration/create_rough_dpli_contrast_indexes/data/bp_to_egi_mapping_yacine.csv";
 
 % Here we will skip participant 17 since we do not have recovery
 P_ID = {'WSAS02', 'WSAS05', 'WSAS09', 'WSAS10', 'WSAS11', 'WSAS12', 'WSAS13', 'WSAS18', 'WSAS19', 'WSAS20', 'WSAS22'};
