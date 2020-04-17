@@ -1,5 +1,5 @@
 # Report of Create Rough dPLI Contrast Indexes 
-This is the report for the milestone `create rough dpli contrast indexes`. You will find figures, results and general explanation on the codebase.
+This is the report for the milestone `create rough dpli contrast indexes`. You will find figures, results and general explanation on the codebase ( all the figures are in the hidden folder `.figure`).
 
 ## Why is the documentation here?
 The documentation was in the wiki page of Github, I (yacine mahdid) decided to switch to an in-code documentation for two reasons:
@@ -22,18 +22,40 @@ I'm open to other suggestions to document the code and the analysis, however due
 The codebase is structured in experiments where each one is directly tied to one of the issues on our task management system (here it is Github kanban functionality). The nomenclature you will find is `ex_XX` where XX means is a digit that maps to the issue number on this repository. If you see an experiment with a given number missing, it might be due by the fact that the given issue was not directly tied to code in the repository. For instance it could have been a documentation task or a reporting task which didn't require any sort of scripting.
 
 ## dPLI per Participant
+This is the dPLI matrices that were generate using the code at `ex_10e_validate_dpli_matrices_with_bp.mat`. This particular script allows us to analyze the Brain Product headset as well as the Electrical Geodesic one. It make uses of a KNN-based algorithm to map the two electrodes position to have a similar nomenclature. This allows us to reorder easily the connectivity matrices in the `FTCPO` format. 
 
 ### WSAS02
+![WSAS02 dpli at Alpha](./.figure/WSAS02_alpha_dpli.png)
+
 ### WSAS05
+![WSAS05 dpli at Alpha](./.figure/WSAS05_alpha_dpli.png)
+
 ### WSAS09
+![WSAS09 dpli at Alpha](./.figure/WSAS09_alpha_dpli.png)
+
 ### WSAS10
+![WSAS10 dpli at Alpha](./.figure/WSAS10_alpha_dpli.png)
+
 ### WSAS11
+![WSAS11 dpli at Alpha](./.figure/WSAS11_alpha_dpli.png)
+
 ### WSAS12
+![WSAS12 dpli at Alpha](./.figure/WSAS12_alpha_dpli.png)
+
 ### WSAS13
+![WSAS13 dpli at Alpha](./.figure/WSAS13_alpha_dpli.png)
+
 ### WSAS18
+![WSAS18 dpli at Alpha](./.figure/WSAS18_alpha_dpli.png)
+
 ### WSAS19
+![WSAS19 dpli at Alpha](./.figure/WSAS19_alpha_dpli.png)
+
 ### WSAS20
+![WSAS20 dpli at Alpha](./.figure/WSAS20_alpha_dpli.png)
+
 ### WSAS22
+![WSAS22 dpli at Alpha](./.figure/WSAS22_alpha_dpli.png)
 
 ## dPLI Dynamic Reconfiguration Index
 
