@@ -19,6 +19,7 @@ I'm open to other suggestions to document the code and the analysis, however due
   - [Attempt #3](#attempt-3)
   - [Attempt #4 (Current Version)](#attempt-4)
 - [Meeting 1 Notes](#meeting-1-notes)
+- [Brain Product to EGI Mapping](#brain-product-to-egi-mapping)
 
 ## Code Structure
 The codebase is structured in experiments where each one is directly tied to one of the issues on our task management system (here it is Github kanban functionality). The nomenclature you will find is `ex_XX` where XX means is a digit that maps to the issue number on this repository. If you see an experiment with a given number missing, it might be due by the fact that the given issue was not directly tied to code in the repository. For instance it could have been a documentation task or a reporting task which didn't require any sort of scripting.
@@ -71,6 +72,17 @@ The matrix are normalized within subject with mean() +- 3*std. This was done sin
 ## dPLI Similarity Matrix
 These matrices are used for the first, second and third attempt at making a dpli Dynamic Reconfiguration Index (dpli-dri). 
 
+These result were generated with `ex_10e_validate_dpli_matrices_with_bp`
+
+We have three similarity matrices we want to create: 
+- baseline vs recovery
+- baseline vs anesthesia 
+- recovery vs anesthesia
+
+The similarity matrix was calculated as follow: `sim_matrix = 1 - abs(matrix1 - matrix2)`.
+If the matrix are highly similar channel-wise then they will have similar dPLI values and the max score of 1 will be achieved. If the matrix are highly dissimilar in the positive or negative direction we will get a number smaller than 1. At the extreme we have one channel a 1 in mat1 and a channel at 0 for mat2 which given 1 - 1 = 0.
+
+
 ### WSAS02
 ![WSAS02 dpli Similarity Matrix at Alpha](./.figure/WSAS02_alpha_sim_dpli.png)
 
@@ -106,6 +118,11 @@ These matrices are used for the first, second and third attempt at making a dpli
 
 ## dPLI Contrast Matrix
 These matrix are used for the fourth version of the dpli-dri in which we have an equivalent formula than before, but with a contrast instead of a similarity.
+
+The contrast matrix is 1 - the similarity matrix. Which gives us:
+`contrast_matrix = abs(matrix1 - matrix2)`.
+
+We have everyone here except WSAS17.
 
 ### WSAS02
 ![WSAS02 dpli Contrast Matrix at Alpha](./.figure/WSAS02_alpha_contrast_dpli.png)
@@ -185,3 +202,83 @@ These difference matrix will tell us if our intuition is correct and will help o
 There was something about cosine similarity of alpha hubs and something about k-mean clustering with 2 clusters and training a classifier on these clusters.
 
 **Should really take more notes or record such meeting since we lost a lot of information**
+
+## Brain Product to EGI Mapping
+One of our participant `WSAS02` was recorded with the brain product headset which has 66 electrodes. All of our other participant were recorded with the high density EGI headset which has 129 electrodes. To be able to use this dataset along with the other we need to be able to find a mapping between the two.
+
+This mapping was initially found by Danielle Nadin using the K-nearest-neighbour algorithm. Here are the findings.
+
+# Maping
+The KNN algorithm was run with K = 3, which gives us the three column we see in the table below. If we want a mapping based solely on the euclidean distance we can use `egi_nearest_1`, however some channels have the same labels in the two headset but are not necessary the nearest to one another. The column egi_location is the mapping where when the same label isn't the nearest it was picked anyway. 
+
+The mapping file `bp_to_egi_mapping.csv` can be found [in the .doc folder](https://github.com/BIAPT/awareness-perturbation-complexity-index/tree/master/.doc/wsas02_information) along with the helper script that generated it. 
+
+| bp_location | egi_location | egi_nearest_1 | egi_nearest_2 | egi_nearest_3 |
+|-------------|--------------|---------------|---------------|---------------|
+| Fp1         | Fp1          | **Fp1**       | E25           | E21           |
+| Fp2         | Fp2          | **Fp2**       | E8            | E14           |
+| F7          | F7           | **F7**        | E32           | E26           |
+| F3          | F3           | **F3**        | E27           | E28           |
+| Fz          | Fz           | E5            | E12           | **Fz**        |
+| F4          | F4           | **F4**        | E123          | E117          |
+| F8          | F8           | **F8**        | E1            | E2            |
+| FC5         | E34          | **E34**       | E40           | E35           |
+| FC1         | E13          | **E13**       | E29           | E20           |
+| FC2         | E112         | **E112**      | E111          | E118          |
+| FC6         | E116         | **E116**      | E109          | E110          |
+| T7          | T7           | E39           | **T7**        | E40           |
+| C3          | C3           | **C3**        | E41           | E35           |
+| Cz          | Cz           | **Cz**        | E7            | E106          |
+| C4          | C4           | **C4**        | E103          | E110          |
+| T8          | T8           | E115          | **T8**        | E109          |
+| TP9         | E56          | **E56**       | LM            | E63           |
+| CP5         | E46          | **E46**       | E47           | E51           |
+| CP1         | E53          | **E53**       | E54           | E37           |
+| CP2         | E86          | **E86**       | E79           | E87           |
+| CP6         | E102         | **E102**      | E98           | E97           |
+| TP10        | E107         | **E107**      | RM            | E99           |
+| P7          | P7           | E50           | **P7**        | LM            |
+| P3          | E59          | **E59**       | E60           | P3            |
+| Pz          | Pz           | **Pz**        | E72           | E77           |
+| P4          | E91          | **E91**       | E85           | P4            |
+| P8          | P8           | E101          | **P8**        | RM            |
+| PO9         | E68          | **E68**       | E64           | E69           |
+| O1          | O1           | **O1**        | E65           | E69           |
+| Oz          | Oz           | **Oz**        | E82           | E74           |
+| O2          | O2           | **O2**        | E90           | E89           |
+| PO10        | E94          | **E94**       | E95           | E89           |
+| AF7         | E26          | **E26**       | E25           | E32           |
+| AF3         | E23          | **E23**       | Fp1           | E18           |
+| AF4         | E3           | **E3**        | Fp2           | E10           |
+| AF8         | E2           | **E2**        | E8            | E1            |
+| F5          | E27          | **E27**       | E26           | F7            |
+| F1          | E19          | **E19**       | E20           | E12           |
+| F2          | E4           | **E4**        | E118          | E5            |
+| F6          | E123         | **E123**      | E2            | F8            |
+| FT9         | E43          | **E43**       | E44           | E38           |
+| FT7         | E39          | **E39**       | F7            | E38           |
+| FC3         | E28          | **E28**       | E29           | E35           |
+| FC4         | E117         | **E117**      | E111          | E110          |
+| FT8         | E115         | **E115**      | F8            | E121          |
+| FT10        | E120         | **E120**      | E114          | E121          |
+| C5          | E40          | **E40**       | E41           | E46           |
+| C1          | E30          | **E30**       | E37           | E31           |
+| C2          | E105         | **E105**      | E87           | E80           |
+| C6          | E109         | **E109**      | E103          | E102          |
+| TP7         | E50          | T7            | **E50**       | LM            |
+| CP3         | E42          | **E42**       | E47           | P3            |
+| CPz         | E55          | **E55**       | E79           | E54           |
+| CP4         | E93          | **E93**       | E98           | P4            |
+| TP8         | E101         | T8            | **E101**      | RM            |
+| P5          | E51          | **E51**       | P7            | E59           |
+| P1          | E60          | **E60**       | E67           | E61           |
+| P2          | E85          | **E85**       | E77           | E78           |
+| P6          | E97          | **E97**       | P8            | E91           |
+| PO7         | E65          | **E65**       | P7            | E64           |
+| PO3         | E66          | **E66**       | O1            | E71           |
+| POz         | E72          | E76           | E71           | **E72**       |
+| PO4         | E84          | **E84**       | O2            | E76           |
+| PO8         | E90          | **E90**       | P8            | E95           |
+| Fpz         | E15          | **E15**       | NaN           | NaN           |
+
+We cannot use however this mapping file as it stands for this current study because some recording don't have the same label nomenclature as the bp row. We need to dynamically find the best mapping in code. 
