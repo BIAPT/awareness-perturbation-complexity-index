@@ -4,7 +4,7 @@
 %% Experiment Variables
 IN_DIR = "/media/yacine/My Book/datasets/consciousness/Dynamic Reconfiguration Index/";
 OUT_DIR = "/media/yacine/My Book/result_dri/dpli_dri/";
-MAP_FILE = "data/bp_to_egi_mapping_yacine.csv";
+MAP_FILE = "/home/yacine/Documents/BIAPT/awareness-perturbation-complexity-index/experiments/create_a_quantitative_index_of_dynamic_reconfiguration/create_rough_dpli_contrast_indexes/data/bp_to_egi_mapping_yacine.csv";
 
 % Esthetic Variables
 COLOR = "hot";
@@ -66,7 +66,7 @@ for p = 1:length(P_ID)
     set(handle, 'Position', [70,152,1527,589]);
     
     % Save the figure to disk
-    filename = strcat(OUT_DIR, participant, "_alpha_sim_dpli_augmented.png");
+    filename = strcat(OUT_DIR, participant, "_alpha_sim_weighted_dpli.png");
     saveas(handle,filename);
     close all;    
 end
