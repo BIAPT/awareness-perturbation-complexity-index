@@ -55,7 +55,7 @@ for p = 1:length(P_ID)
     baseline_vs_anesthesia = abs(baseline_f_dpli - anesthesia_f_dpli);
     recovery_vs_anesthesia = abs(recovery_f_dpli - anesthesia_f_dpli);
     
-    % Calcualte the dpli-dri with w1, w2 and w3
+    % Calculate the dpli-dri with w1, w2 and w3
     dpli_dris_3(p) = calculate_dpli_dri_3(baseline_vs_recovery, baseline_vs_anesthesia, recovery_vs_anesthesia, w1, w2, w3);
     % normalize it so that headset with more channels aren't artificially
     % inflated

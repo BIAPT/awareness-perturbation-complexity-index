@@ -297,7 +297,43 @@ For the dpli-dri we use the same definition as the attempt #2 and we generate th
 Which is similar to what we had before except with increased values everywhere. Also, the participant WSAS22 gained proportionally more dpli-dri. This participant had a different dpli similarity matrix than the other with high phase lead/lag shift only within the occipital region.
 
 ### Attempt 4
-**This is the current version**
+**This is the latest version**
+
+For the new version we want to rework the formula to instead use [contrast matrix](#dpli-contrast-matrix) and to remove the arbitrary 2 as a weight for bva:
+`dpli_dri = w1*sum(BvA) + w2*sum(RvA) - w3*sum(BvR)`
+
+We use the third version of the dpli_dri which looks like this:
+
+```matlab
+function [dpli_dri] = calculate_dpli_dri_3(bvr, bva, rva, w1, w2, w3)
+% CALCULATE DPLI DRI 3 is the third version of the dpli-dri formula
+%
+% bvr: baseline vs recovery SIMILARITY matrix
+% bva: baseline vs anesthesia SIMILARITY matrix
+% rva: recovery vs anesthesia SIMILIARTY matrix
+% w1: weight for the bva
+% w2: weight for the rva
+% w3: weight for the bvr
+
+    dpli_dri = w1*sum(bva(:)) + w2*sum(rva(:)) - w3*sum(bvr(:));
+end
+```
+
+**Here BvA, RvA and BvR are contrast matrix and not similarity matrices**.
+
+We also use w1,w2,w3 = 1.0 currently and we normalize the dpli-dri by the number of connexion in a contrast matrix:
+
+```matlab
+% Calculate the dpli-dri with w1, w2 and w3
+dpli_dris_3(p) = calculate_dpli_dri_3(baseline_vs_recovery, baseline_vs_anesthesia, recovery_vs_anesthesia, w1, w2, w3);
+% normalize it so that headset with more channels aren't artificially
+% inflated
+dpli_dris_3(p) = dpli_dris_3(p)/length(baseline_vs_recovery(:));
+```
+The figure of dpli-dri was generated using `ex_12b_generate_fourth_draft_dpli_dri.m`
+
+![dPLI-DRI attempt number 4](./.figure/dpli_dri_4.png)
+
 
 ## Meeting 1 Notes
 Two features seems to be important, hub location and dPLI. However, hub location as it currently stands is very experimental and has conceptual problems. The dPLI feature is stable however.
