@@ -10,6 +10,7 @@ I'm open to other suggestions to document the code and the analysis, however due
 
 ## Table of Content
 - [Code Structure](#code-structure)
+- [Participant Information](#participant-information)
 - [dPLI per Participant](#dpli-per-participant)
 - [dPLI Similarity Matrix](#dpli-similarity-matrix)
 - [dPLI Contrast Matrx](#dpli-contrast-matrix)
@@ -23,6 +24,12 @@ I'm open to other suggestions to document the code and the analysis, however due
 
 ## Code Structure
 The codebase is structured in experiments where each one is directly tied to one of the issues on our task management system (here it is Github kanban functionality). The nomenclature you will find is `ex_XX` where XX means is a digit that maps to the issue number on this repository. If you see an experiment with a given number missing, it might be due by the fact that the given issue was not directly tied to code in the repository. For instance it could have been a documentation task or a reporting task which didn't require any sort of scripting.
+
+## Participant Information
+It is very difficult to know the exact state a participant is in. For this experiment we will be using the recovery outcomes instead of point-in-time label.
+- The participant that recovered for sure are: **WSAS02,WSAS09,WSAS19 and WSAS20**
+- The participant that didn't recover are: **WSAS05, WSAS11, WSAS12, WSAS13, WSAS18, WSAS22**
+- The participant which we can't put a recovery outcome is: **WSAS10 and WSAS17**
 
 ## dPLI per Participant
 This is the dPLI matrices that were generate using the code at `ex_10e_validate_dpli_matrices_with_bp.mat`. This particular script allows us to analyze the Brain Product headset as well as the Electrical Geodesic one. It make uses of a KNN-based algorithm to map the two electrodes position to have a similar nomenclature. This allows us to reorder easily the connectivity matrices in the `FTCPO` format (frontal, temporal, central, parietal and occipital). 
