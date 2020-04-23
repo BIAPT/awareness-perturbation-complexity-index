@@ -19,6 +19,7 @@ I'm open to other suggestions to document the code and the analysis, however due
   - [Attempt #2](#attempt-2)
   - [Attempt #3](#attempt-3)
   - [Attempt #4 (Current Version)](#attempt-4)
+- [dPLI-DRI Prediction of Recovery of Consciousness](#dpli-dri-prediction-of-recovery-of-consciousness)
 - [Meeting 1 Notes](#meeting-1-notes)
 - [Brain Product to EGI Mapping](#brain-product-to-egi-mapping)
 
@@ -341,6 +342,7 @@ The figure of dpli-dri was generated using `ex_12b_generate_fourth_draft_dpli_dr
 
 ![dPLI-DRI attempt number 4](./.figure/dpli_dri_4.png)
 
+## dPLI-DRI Prediction of Recovery of Consciousness
 
 ## Meeting 1 Notes
 Two features seems to be important, hub location and dPLI. However, hub location as it currently stands is very experimental and has conceptual problems. The dPLI feature is stable however.
