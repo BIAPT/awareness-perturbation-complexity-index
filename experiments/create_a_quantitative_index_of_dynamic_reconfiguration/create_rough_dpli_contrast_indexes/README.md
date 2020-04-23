@@ -343,6 +343,24 @@ The figure of dpli-dri was generated using `ex_12b_generate_fourth_draft_dpli_dr
 ![dPLI-DRI attempt number 4](./.figure/dpli_dri_4.png)
 
 ## dPLI-DRI Prediction of Recovery of Consciousness
+With attempt `#4` we have an index that illustrate that there is something there in terms of prediction of RoC. However, it is not fullfilling the 'prediction' part of our narrative. We need to use either statistical analysis of significance or machine learning to build a predictive model.
+
+My (Yacine Mahdid) exchange with my collegue:
+```
+@sbmoraes and @cduclos could you remind me of the big picture for the dpli-dri analysis. What are we trying to say with that index?
+
+cduclos  8:17 PM
+We are trying a capture, with a single index, how much the brain network re-organizes under anesthesia. Our aim is to show that this reorganization can reliably predict potential for consciousness (i.e. eventual recovery of consciousness) in unresponsive patients.
+
+8:19
+Our other argument is that baseline connectivity/network hubs alone aren’t sufficient to predict recovery, and that the adaptive reconfiguration under anesthesia is what is most predictive of potential for recovery.
+```
+
+So the objectives of this index of consciousness is two-fold:
+- Aim 1: show that reorganization under anesthesia can reliably predict RoC in WSASXX patient.
+- Aim 2: show that baseline connectivity alone is performing worse in predicting RoC in WSASXX patient than reorganization.
+
+
 
 ## Meeting 1 Notes
 Two features seems to be important, hub location and dPLI. However, hub location as it currently stands is very experimental and has conceptual problems. The dPLI feature is stable however.
