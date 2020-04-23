@@ -360,7 +360,16 @@ So the objectives of this index of consciousness is two-fold:
 - Aim 1: show that reorganization under anesthesia can reliably predict RoC in WSASXX patient.
 - Aim 2: show that baseline connectivity alone is performing worse in predicting RoC in WSASXX patient than reorganization.
 
+If we want to attain aim 1 or 2 we will need more than the number of timepoints we currently have (only `10` points). A solution for this problem is to make a classifier of the binary recovery outcome based on all of the windows of data we currently have and make it interpretable. 
 
+I propose that we go with the following plan:
+- Calculate dPLI on 10second windows for each state (~30 windows)
+- Generate a dataset where we take all the permutation of the three state windows to generate BvA, RvA and BvR.
+- Store in a dataframe sum(BvA), sum(RvA) and sum(BvR). This will generate a 270 000 data points * 3 feature data set.
+- Train a logistic regression or a decision tree (interpretable models) on the dataset using a Leave-One-Subject-Out (LOSO) cross validation. This will allow us to quantify the predictive power of our index.
+- Train the best model on the full dataset and look at the resulting weights to define our dpli-dri index (it will be a linear combination of sum(BvA) sum(RvA) and sum(BvR).
+
+We are making the assumption that by using the full sum of the contrast matrix we will have separable state, but we can see that by eye that it is the case for the average so I am pretty confident we can get a robust classifier.
 
 ## Meeting 1 Notes
 Two features seems to be important, hub location and dPLI. However, hub location as it currently stands is very experimental and has conceptual problems. The dPLI feature is stable however.
