@@ -52,15 +52,15 @@ for p = 1:length(P_ID)
     create_dir_if_not_exist(OUT_DIR, participant);
     
     % Save BvR
-    filename = strcat(OUT_DIR, filesep, participant, "baseline_vs_recovery.mat");
+    filename = strcat(OUT_DIR, filesep, participant, filesep, "baseline_vs_recovery.mat");
     save(filename, 'baseline_vs_recovery');
     
     % Save BvA
-    filename = strcat(OUT_DIR, filesep, participant, "baseline_vs_anesthesia.mat");
+    filename = strcat(OUT_DIR, filesep, participant, filesep, "baseline_vs_anesthesia.mat");
     save(filename, 'baseline_vs_anesthesia');
     
     % Save RvA
-    filename = strcat(OUT_DIR, filesep, participant, "recovery_vs_anesthesia.mat");
+    filename = strcat(OUT_DIR, filesep, participant, filesep, "recovery_vs_anesthesia.mat");
     save(filename, 'recovery_vs_anesthesia');
 end
 
