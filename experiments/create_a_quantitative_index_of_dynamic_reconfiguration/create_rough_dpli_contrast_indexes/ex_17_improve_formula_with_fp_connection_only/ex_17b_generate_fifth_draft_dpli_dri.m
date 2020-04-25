@@ -48,6 +48,11 @@ for p = 1:length(P_ID)
     anesthesia_f_dpli = filter_matrix(anesthesia_r_dpli, anesthesia_r_location, common_location);
     recovery_f_dpli = filter_matrix(recovery_r_dpli, recovery_r_location, common_location);
     
+    % Filter the matrices to keep only the frontal and parietal regions
+    [baseline_f_dpli, x_region, y_region] = filter_fp_regions(baseline_f_dpli, common_region);
+    [anesthesia_f_dpli, ~, ~] = filter_fp_regions(anesthesia_f_dpli, common_region);
+    [recovery_f_dpli, ~, ~] = filter_fp_regions(recovery_f_dpli, common_region);
+    
     % Calculate a contrast matrix, this is different than before.
     % now we want to have high score for large differences and low
     % score for similarities
@@ -66,9 +71,9 @@ end
 % Plot figure for the dpli-dri
 handle = figure;
 bar(categorical(P_ID), dpli_dris_3)
-title("WSAS dpli-dri for alpha (attempt #4)");
+title("WSAS dpli-dri for alpha (attempt #5)");
 
 % Save it to disk
-filename = strcat(OUT_DIR, "dpli_dri_4.png");
+filename = strcat(OUT_DIR, "dpli_dri_5.png");
 saveas(handle,filename);
 close all; 
