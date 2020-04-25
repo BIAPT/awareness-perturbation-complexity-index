@@ -20,7 +20,7 @@ I'm open to other suggestions to document the code and the analysis, however due
   - [Attempt #2](#attempt-2)
   - [Attempt #3](#attempt-3)
   - [Attempt #4](#attempt-4)
-  - [Attempt #5 (Current Version)] (#attempt-5)
+  - [Attempt #5 (Current Version)](#attempt-5)
 - [dPLI-DRI Prediction of Recovery of Consciousness](#dpli-dri-prediction-of-recovery-of-consciousness)
 - [Meeting 1 Notes](#meeting-1-notes)
 - [Brain Product to EGI Mapping](#brain-product-to-egi-mapping)
