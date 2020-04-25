@@ -67,6 +67,9 @@ The matrix are normalized within subject with mean() +- 3*std. This was done sin
 ### WSAS13
 ![WSAS13 dpli at Alpha](./.figure/WSAS13_alpha_dpli.png)
 
+### WSAS17
+![WSAS17 dpli at Alpha](./.figure/WSAS17_alpha_dpli.png)
+
 ### WSAS18
 ![WSAS18 dpli at Alpha](./.figure/WSAS18_alpha_dpli.png)
 
@@ -114,6 +117,9 @@ If the matrix are highly similar channel-wise then they will have similar dPLI v
 ### WSAS13
 ![WSAS13 dpli Similarity Matrix at Alpha](./.figure/WSAS13_alpha_sim_dpli.png)
 
+### WSAS17
+![WSAS17 dpli Similarity Matrix at Alpha](./.figure/WSAS17_alpha_sim_dpli.png)
+
 ### WSAS18
 ![WSAS18 dpli Similarity Matrix at Alpha](./.figure/WSAS18_alpha_sim_dpli.png)
 
@@ -155,6 +161,9 @@ We have everyone here except WSAS17.
 ### WSAS13
 ![WSAS13 dpli Contrast Matrix at Alpha](./.figure/WSAS13_alpha_contrast_dpli.png)
 
+### WSAS17
+![WSAS17 dpli Contrast Matrix at Alpha](./.figure/WSAS17_alpha_contrast_dpli.png)
+
 ### WSAS18
 ![WSAS18 dpli Contrast Matrix at Alpha](./.figure/WSAS18_alpha_contrast_dpli.png)
 
@@ -192,6 +201,9 @@ We have everyone here except WSAS17.
 
 ### WSAS13
 ![WSAS13 FP dpli Contrast Matrix at Alpha](./.figure/WSAS13_alpha_contrast_fp_dpli.png)
+
+### WSAS17
+![WSAS17 FP dpli Contrast Matrix at Alpha](./.figure/WSAS17_alpha_contrast_fp_dpli.png)
 
 ### WSAS18
 ![WSAS18 FP dpli Contrast Matrix at Alpha](./.figure/WSAS18_alpha_contrast_fp_dpli.png)
