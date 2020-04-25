@@ -14,11 +14,13 @@ I'm open to other suggestions to document the code and the analysis, however due
 - [dPLI per Participant](#dpli-per-participant)
 - [dPLI Similarity Matrix](#dpli-similarity-matrix)
 - [dPLI Contrast Matrx](#dpli-contrast-matrix)
+- [dPLI Fronto-Parietal Contrast Matrix](#dpli-fronto-parietal-contrast-matrix)
 - [dPLI Dynamic Reconfiguration Index](#dpli-dynamic-reconfiguration-index)
   - [Attempt #1](#attempt-1)
   - [Attempt #2](#attempt-2)
   - [Attempt #3](#attempt-3)
-  - [Attempt #4 (Current Version)](#attempt-4)
+  - [Attempt #4](#attempt-4)
+  - [Attempt #5 (Current Version)] (#attempt-5)
 - [dPLI-DRI Prediction of Recovery of Consciousness](#dpli-dri-prediction-of-recovery-of-consciousness)
 - [Meeting 1 Notes](#meeting-1-notes)
 - [Brain Product to EGI Mapping](#brain-product-to-egi-mapping)
@@ -165,6 +167,44 @@ We have everyone here except WSAS17.
 ### WSAS22
 ![WSAS22 dpli Contrast Matrix at Alpha](./.figure/WSAS22_alpha_contrast_dpli.png)
 
+## dPLI Fronto-Parietal Contrast Matrix
+These matrix are used for the fifth version of the dpli-dri in which we have an equivalent formula than before, but with a contrast only calculated for the front-parietal regions.
+
+We have everyone here except WSAS17.
+
+### WSAS02
+![WSAS02 FP dpli Contrast Matrix at Alpha](./.figure/WSAS02_alpha_contrast_fp_dpli.png)
+
+### WSAS05
+![WSAS05 FP dpli Contrast Matrix at Alpha](./.figure/WSAS05_alpha_contrast_fp_dpli.png)
+
+### WSAS09
+![WSAS09 FP dpli Contrast Matrix at Alpha](./.figure/WSAS09_alpha_contrast_fp_dpli.png)
+
+### WSAS10
+![WSAS10 FP dpli Contrast Matrix at Alpha](./.figure/WSAS10_alpha_contrast_fp_dpli.png)
+
+### WSAS11
+![WSAS11 FP dpli Contrast Matrix at Alpha](./.figure/WSAS11_alpha_contrast_fp_dpli.png)
+
+### WSAS12
+![WSAS12 FP dpli Contrast Matrix at Alpha](./.figure/WSAS12_alpha_contrast_fp_dpli.png)
+
+### WSAS13
+![WSAS13 FP dpli Contrast Matrix at Alpha](./.figure/WSAS13_alpha_contrast_fp_dpli.png)
+
+### WSAS18
+![WSAS18 FP dpli Contrast Matrix at Alpha](./.figure/WSAS18_alpha_contrast_fp_dpli.png)
+
+### WSAS19
+![WSAS19 FP dpli Contrast Matrix at Alpha](./.figure/WSAS19_alpha_contrast_fp_dpli.png)
+
+### WSAS20
+![WSAS20 FP dpli Contrast Matrix at Alpha](./.figure/WSAS20_alpha_contrast_fp_dpli.png)
+
+### WSAS22
+![WSAS22 FP dpli Contrast Matrix at Alpha](./.figure/WSAS22_alpha_contrast_fp_dpli.png)
+
 ## dPLI Dynamic Reconfiguration Index
 Here is where I document all of our incremental attempt in making the dpli-dri.
 
@@ -305,7 +345,6 @@ For the dpli-dri we use the same definition as the attempt #2 and we generate th
 Which is similar to what we had before except with increased values everywhere. Also, the participant WSAS22 gained proportionally more dpli-dri. This participant had a different dpli similarity matrix than the other with high phase lead/lag shift only within the occipital region.
 
 ### Attempt 4
-**This is the latest version**
 
 For the new version we want to rework the formula to instead use [contrast matrix](#dpli-contrast-matrix) and to remove the arbitrary 2 as a weight for bva:
 `dpli_dri = w1*sum(BvA) + w2*sum(RvA) - w3*sum(BvR)`
@@ -341,6 +380,14 @@ dpli_dris_3(p) = dpli_dris_3(p)/length(baseline_vs_recovery(:));
 The figure of dpli-dri was generated using `ex_12b_generate_fourth_draft_dpli_dri.m`
 
 ![dPLI-DRI attempt number 4](./.figure/dpli_dri_4.png)
+### Attempt 5
+**This is the latest version**
+This version of the dpli-dri is almost identical than attempt 4 except that we filter the regions to only keep the fronto-parietal connections. 
+
+The figure of dpli-dri was generated using
+`ex_17b_generate_fifth_draft_dpli_dri.m`
+
+![dPLI-DRI attempt number 5](./.figure/dpli_dri_5.png)
 
 ## dPLI-DRI Prediction of Recovery of Consciousness
 With attempt `#4` we have an index that illustrate that there is something there in terms of prediction of RoC. However, it is not fullfilling the 'prediction' part of our narrative. We need to use either statistical analysis of significance or machine learning to build a predictive model.
@@ -370,6 +417,8 @@ I propose that we go with the following plan:
 - Train the best model on the full dataset and look at the resulting weights to define our dpli-dri index (it will be a linear combination of sum(BvA) sum(RvA) and sum(BvR).
 
 We are making the assumption that by using the full sum of the contrast matrix we will have separable state, but we can see that by eye that it is the case for the average so I am pretty confident we can get a robust classifier.
+
+**This is put on hold**
 
 ## Meeting 1 Notes
 Two features seems to be important, hub location and dPLI. However, hub location as it currently stands is very experimental and has conceptual problems. The dPLI feature is stable however.
