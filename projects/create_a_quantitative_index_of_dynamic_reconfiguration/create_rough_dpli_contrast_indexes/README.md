@@ -1,13 +1,6 @@
 # Report of Create Rough dPLI Contrast Indexes 
 This is the report for the milestone `create rough dpli contrast indexes`. You will find figures, results and general explanation on the codebase ( all the figures are in the hidden folder `.figure`).
 
-## Why is the documentation here?
-The documentation was in the wiki page of Github, I (yacine mahdid) decided to switch to an in-code documentation for two reasons:
-1. To not be tied to Github for documenting and reporting
-2. To be able to version control the documentation page
-
-I'm open to other suggestions to document the code and the analysis, however due to the highly changing nature of the analysis it is difficult to keep the documentation up-to-date the further away from the code it lies.
-
 ## Table of Content
 - [Code Structure](#code-structure)
 - [Participant Information](#participant-information)
