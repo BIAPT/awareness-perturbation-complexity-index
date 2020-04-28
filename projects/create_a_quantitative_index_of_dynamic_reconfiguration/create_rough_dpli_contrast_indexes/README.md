@@ -13,7 +13,7 @@ This is the report for the milestone `create rough dpli contrast indexes`. You w
   - [Attempt #2](#attempt-2)
   - [Attempt #3](#attempt-3)
   - [Attempt #4](#attempt-4)
-  - [Attempt #5 (Current Version)](#attempt-5)
+  - [Attempt #5](#attempt-5)
 - [dPLI-DRI Prediction of Recovery of Consciousness](#dpli-dri-prediction-of-recovery-of-consciousness)
 - [Meeting 1 Notes](#meeting-1-notes)
 - [Brain Product to EGI Mapping](#brain-product-to-egi-mapping)
@@ -386,13 +386,12 @@ The figure of dpli-dri was generated using `ex_12b_generate_fourth_draft_dpli_dr
 
 ![dPLI-DRI attempt number 4](./.figure/dpli_dri_4.png)
 ### Attempt 5
-**This is the latest version**
 This version of the dpli-dri is almost identical than attempt 4 except that we filter the regions to only keep the fronto-parietal connections. 
 
 The figure of dpli-dri was generated using
 `ex_17b_generate_fifth_draft_dpli_dri.m`
 
-![dPLI-DRI attempt number 5](./.figure/dpli_dri_5.png)
+![dPLI-DRI attempt number 5](../.figure/dpli_dri_5.png)
 
 ## dPLI-DRI Prediction of Recovery of Consciousness
 With attempt `#4` we have an index that illustrate that there is something there in terms of prediction of RoC. However, it is not fullfilling the 'prediction' part of our narrative. We need to use either statistical analysis of significance or machine learning to build a predictive model.
