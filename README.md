@@ -1,18 +1,22 @@
-# awareness-perturbation-complexity-index
+# Awareness Perturbation Complexity index
 Development of an index for assessing the level of consciousness of healthy and disorder of consciousness individuals.
 
-# Structure of the codebase
-At the top level we have code that are used by all experiments throughout.
-There is an experiment folder per project for all code that is meant as a stepping stone in order to reach milestones. Inside this project folder we have code ordered in milestones, which are the same as those on github.
-Within these experiments we have a naming convention that reflect which task it is addressing. This means we have `ex_XX_` where XX means a task number on github. 
+## Why is the documentation here?
+The documentation was in the wiki page of Github, I (yacine mahdid) decided to switch to an in-code documentation for two reasons:
+1. To not be tied to Github for documenting and reporting
+2. To be able to version control the documentation page
 
-## Projects
-- [create_a_quantitative_index_of_dynamic_reconfiguration](https://github.com/BIAPT/awareness-perturbation-complexity-index/tree/chores/refactor-documentation/experiments/create_a_quantitative_index_of_dynamic_reconfiguration)
-	- [create_rough_dpli_contrast_indexes](https://github.com/BIAPT/awareness-perturbation-complexity-index/tree/chores/refactor-documentation/experiments/create_a_quantitative_index_of_dynamic_reconfiguration/create_rough_dpli_contrast_indexes)
+I'm open to other suggestions to document the code and the analysis, however due to the highly changing nature of the analysis it is difficult to keep the documentation up-to-date the further away from the code it lies.
 
-## Experiments
-For more information on each of the experiments per projects, please take a look inside the projects/milestone directory and read the README.md file!
+## Structure of the codebase
+This repository is structured into projects/milestone/experiments.
+- Project are defined as overarching objectives that needs many iteration to get right. They are vague objectives that usually lead to a paper publication. For example `create a quantitative index of dynamic reconfiguration`.
+- Milestone is a step into achieving this objective without being as abstract as a project. For instance `create_rough_dpli_contrast_indexes`is a milestone in the objective to create a quantitative index of dynamic reconfiguration. One milestone require many experiments to get done.
+- Experiment is a single piece of work that can be executed. In this repository the experiment are tied to a single task on Github. We have a naming convention that reflect which task it is addressing. This means we have `ex_XX_` where XX means a task number on github. 
 
-# Notes
-- WSAS17 is missing recovery since we couldn't get cleaned data for this epoch.
-- WSAS02 data was gathered with brainVision headset (see .doc/wsas02_information). This headset has a convertion file that was crafted by Danielle Nadin and Dr. Blain-Moraes to go from one headset nomenclature to another.
+The documentation for this repository is located inside the codebase. You can browse over here the different project/milestone docs.
+- [Create a Quantitative Index of Dynamic Reconfiguration](./projects/create_a_quantitative_index_of_dynamic_reconfiguration/README.md)
+	- [Create Rough dPLI Contrast Indexes](./projects/create_a_quantitative_index_of_dynamic_reconfiguration/create_rough_dpli_contrast_indexes/README.md)
+	- [Augment DRI Power by Including Hub and Better dPLI](./projects/create_a_quantitative_index_of_dynamic_reconfiguration/augment_dri_power_by_including_hub_and_better_dpli/README.md)
+
+
