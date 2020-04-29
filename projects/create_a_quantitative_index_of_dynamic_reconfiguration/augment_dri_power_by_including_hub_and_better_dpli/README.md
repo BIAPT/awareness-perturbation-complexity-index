@@ -84,3 +84,16 @@ shift_weight = 100:
 As expected we get plot with higher contrast as we move up weighting. We should try all the weighting when creating the dpli-dri, however the choice of weight here is still a bit arbitrary.
 
 ### Attempt 6
+Here are the dpli-dri attempt 6 with varying amount of shift_weight (1,2,10 and 100). These figures where generated with `ex_21b_generate_sixth_draft_dpli_dri.m`
+
+shitf_weight = 1:
+![dPLI DRI weight 1 for attempt 6](./.figure/dpli_dri_w_1_6.png)
+
+shift_weight = 2:
+![dPLI DRI weight 2 for attempt 6](./.figure/dpli_dri_w_2_6.png)
+
+shift_weight = 10:
+![dPLI DRI weight 10 for attempt 6](./.figure/dpli_dri_w_10_6.png)
+
+shift_weight = 100:
+![dPLI DRI weight 100 for attempt 6](./.figure/dpli_dri_w_100_6.png)
