@@ -8,6 +8,8 @@ This is the report for the milestone `Augment DRI Power by Including Hub and Bet
   - [Weighted FP Contrast Matrix](#weighted-fp-contrast-matrix)
   - [Attempt #6](#attempt-6)
 - [wPLI per Participant](#wpli-per-participant)
+- [Binarized wPLI per Participant](#binarized-wpli-per-participant)
+- [Hub per Participant](#hub-per-participant)
 
 ## dPLI Dynamic Reconfiguration Index
 The current version of the dpli-dri make use of contrast matrices and filters out all the region except the fronto-parietal ones. What we currently get in terms of dpli-dri for each of the participant is this:
@@ -100,7 +102,7 @@ shift_weight = 100:
 ![dPLI DRI weight 100 for attempt 6](./.figure/dpli_dri_w_100_6.png)
 
 ## wPLI per Participant
-The matrix are normalized within subject with mean() +- 3*std.
+The matrix are normalized within subject with mean() +- 3*std. These matrices were generated using `ex_23_validate_wpli_matrices.m`:
 
 ### WSAS02
 ![WSAS02 wpli at Alpha](./.figure/WSAS02_alpha_wpli.png)
@@ -137,3 +139,29 @@ The matrix are normalized within subject with mean() +- 3*std.
 
 ### WSAS22
 ![WSAS22 wpli at Alpha](./.figure/WSAS22_alpha_wpli.png)
+
+## Binarized wPLI per Participant
+Here we are trying various binary threshold in order to visualize their effect on the resulting binary wpli. This is important as the hub location currently needs a binarized matrix to work with. We show only participant 09 and 20, but all the other participant follow the same trend.
+
+These plots were generated using `ex_24_generate_binarized_wpli_matrices.m`:
+
+### WSAS09
+threshold = 0.1:
+![WSAS09 binarized wPLI at 0.1 matrix](./.figure/bin_wpli/WSAS09_alpha_wpli_binarized_0.1.png)
+threshold = 0.2:
+![WSAS09 binarized wPLI at 0.2 matrix](./.figure/bin_wpli/WSAS09_alpha_wpli_binarized_0.2.png)
+threshold = 0.3:
+![WSAS09 binarized wPLI at 0.3 matrix](./.figure/bin_wpli/WSAS09_alpha_wpli_binarized_0.3.png)
+
+
+### WSAS20
+threshold = 0.1:
+![WSAS20 binarized wPLI at 0.1 matrix](./.figure/bin_wpli/WSAS20_alpha_wpli_binarized_0.1.png)
+threshold = 0.2:
+![WSAS20 binarized wPLI at 0.2 matrix](./.figure/bin_wpli/WSAS20_alpha_wpli_binarized_0.2.png)
+threshold = 0.3:
+![WSAS20 binarized wPLI at 0.3 matrix](./.figure/bin_wpli/WSAS20_alpha_wpli_binarized_0.3.png)
+
+
+## Hub per Participant
+**[currently being analyzed]**
