@@ -1,6 +1,6 @@
-%% Yacine Mahdid April 23 2020
+%% Yacine Mahdid April 29 2020
 % This script is addressing the task
-% https://github.com/BIAPT/awareness-perturbation-complexity-index/issues/17
+% https://github.com/BIAPT/awareness-perturbation-complexity-index/issues/21
 
 %% Experiment Variables
 IN_DIR = "/media/yacine/My Book/datasets/consciousness/Dynamic Reconfiguration Index/";

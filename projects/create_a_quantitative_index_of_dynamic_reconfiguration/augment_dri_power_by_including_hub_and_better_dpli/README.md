@@ -9,3 +9,9 @@ This is the report for the milestone `Augment DRI Power by Including Hub and Bet
 
 ## dPLI Dynamic Reconfiguration Index
 The current version of the dpli-dri make use of contrast matrices and filters out all the region except the fronto-parietal ones. What we currently get in terms of dpli-dri for each of the participant is this:
+
+![dPLI DRI Attempt #5](../.figure/dpli_dri_5.png)
+
+We will mix the attempt 3 (which was weighting the contrast matrix more heavily if they were doing a switch lead/lag) with attempt 5 which was only taking the fronto-parietal regions into consideration.
+
+### Attempt 6
