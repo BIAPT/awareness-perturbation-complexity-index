@@ -37,8 +37,6 @@ We have three states:
 
 The matrix are normalized within subject with mean() +- 3*std. This was done since normalizing the color map with the real min/max was giving mostly green matrices for baseline and recovery. 
 
-**WSAS17 is currently excluded since it doesn't have a recovery.**
-
 ### WSAS02
 ![WSAS02 dpli at Alpha](./.figure/WSAS02_alpha_dpli.png)
 

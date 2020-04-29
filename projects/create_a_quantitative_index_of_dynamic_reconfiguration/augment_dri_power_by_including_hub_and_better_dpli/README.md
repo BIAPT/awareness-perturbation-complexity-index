@@ -7,6 +7,7 @@ This is the report for the milestone `Augment DRI Power by Including Hub and Bet
 - [dPLI Dynamic Reconfiguration Index](#dpli-dynamic-reconfiguration-index)
   - [Weighted FP Contrast Matrix](#weighted-fp-contrast-matrix)
   - [Attempt #6](#attempt-6)
+- [wPLI per Participant](#wpli-per-participant)
 
 ## dPLI Dynamic Reconfiguration Index
 The current version of the dpli-dri make use of contrast matrices and filters out all the region except the fronto-parietal ones. What we currently get in terms of dpli-dri for each of the participant is this:
@@ -97,3 +98,42 @@ shift_weight = 10:
 
 shift_weight = 100:
 ![dPLI DRI weight 100 for attempt 6](./.figure/dpli_dri_w_100_6.png)
+
+## wPLI per Participant
+The matrix are normalized within subject with mean() +- 3*std.
+
+### WSAS02
+![WSAS02 wpli at Alpha](./.figure/WSAS02_alpha_wpli.png)
+
+### WSAS05
+![WSAS05 wpli at Alpha](./.figure/WSAS05_alpha_wpli.png)
+
+### WSAS09
+![WSAS09 wpli at Alpha](./.figure/WSAS09_alpha_wpli.png)
+
+### WSAS10
+![WSAS10 wpli at Alpha](./.figure/WSAS10_alpha_wpli.png)
+
+### WSAS11
+![WSAS11 wpli at Alpha](./.figure/WSAS11_alpha_wpli.png)
+
+### WSAS12
+![WSAS12 wpli at Alpha](./.figure/WSAS12_alpha_wpli.png)
+
+### WSAS13
+![WSAS13 wpli at Alpha](./.figure/WSAS13_alpha_wpli.png)
+
+### WSAS17
+![WSAS17 wpli at Alpha](./.figure/WSAS17_alpha_wpli.png)
+
+### WSAS18
+![WSAS18 wpli at Alpha](./.figure/WSAS18_alpha_wpli.png)
+
+### WSAS19
+![WSAS19 wpli at Alpha](./.figure/WSAS19_alpha_wpli.png)
+
+### WSAS20
+![WSAS20 wpli at Alpha](./.figure/WSAS20_alpha_wpli.png)
+
+### WSAS22
+![WSAS22 wpli at Alpha](./.figure/WSAS22_alpha_wpli.png)
