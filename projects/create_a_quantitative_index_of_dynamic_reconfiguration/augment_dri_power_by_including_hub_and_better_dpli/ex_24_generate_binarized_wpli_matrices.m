@@ -57,14 +57,14 @@ for b = 1:length(binary_thresholds)
 
         handle = figure;
         subplot(1,num_sub,1)
-        plot_pli(baseline_r_wpli, baseline_r_regions, COLOR)
+        plot_pli_raw(baseline_r_wpli, baseline_r_regions, COLOR)
         title(sprintf("%s alpha wpli b(%.1f) at baseline",participant,threshold));
         subplot(1,num_sub,2)
-        plot_pli(anesthesia_r_wpli, anesthesia_r_regions, COLOR)
+        plot_pli_raw(anesthesia_r_wpli, anesthesia_r_regions, COLOR)
         title(sprintf("%s alpha wpli b(%.1f) at anesthesia",participant,threshold));
         if strcmp(participant,"WSAS17") == 0
             subplot(1,num_sub,3)
-            plot_pli(recovery_r_wpli, recovery_r_regions, COLOR)
+            plot_pli_raw(recovery_r_wpli, recovery_r_regions, COLOR)
             title(sprintf("%s alpha wpli b(%.1f) at recovery",participant,threshold));
         end
         colorbar;
@@ -76,24 +76,4 @@ for b = 1:length(binary_thresholds)
         saveas(handle,filename);
         close all;
     end
-end
-
-% Here we are not using the normalization
-% TODO: refactor this so that we can use it normalized or not normalize (a
-% new function would be great)
-function plot_pli(pli,regions, color)
-% PLOT PLI is a helper function to plot a pli/dpli matrix with the right
-% format.
-%
-% pli: a N*N square matrix for pli or dpli
-% regions: the regions label to put on the x and y axis
-% color: this is the color we want for the matrix (jet or hot is usually a
-% good default choice)
-    imagesc(pli);
-    xtickangle(90)
-    xticklabels(regions);
-    yticklabels(regions);  
-    xticks(1:length(regions));
-    yticks(1:length(regions));
-    colormap(color);    
 end

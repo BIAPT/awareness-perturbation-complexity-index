@@ -164,4 +164,101 @@ threshold = 0.3:
 
 
 ## Hub per Participant
-**[currently being analyzed]**
+Here we used three level of threshold to calculate the hub location. Threshold = 0.1, 0.2 and 0.3. We did this in order to be able to understand a bit better what effect the thresholding had on the resulting hub location. 
+The script used to generate these topographic map is `ex_25_generate_hub_location_at_different_thresholds.m`
+
+### WSAS02
+threshold = 0.1
+![WSAS02 Hub Location at 0.1](./.figure/hub_location/WSAS02_alpha_hub_0.1.png)
+threshold = 0.2
+![WSAS02 Hub Location at 0.2](./.figure/hub_location/WSAS02_alpha_hub_0.2.png)
+threshold = 0.3
+![WSAS02 Hub Location at 0.3](./.figure/hub_location/WSAS02_alpha_hub_0.3.png)
+
+### WSAS05
+threshold = 0.1
+![WSAS05 Hub Location at 0.1](./.figure/hub_location/WSAS05_alpha_hub_0.1.png)
+threshold = 0.2
+![WSAS05 Hub Location at 0.2](./.figure/hub_location/WSAS02_alpha_hub_0.2.png)
+threshold = 0.3
+![WSAS05 Hub Location at 0.3](./.figure/hub_location/WSAS05_alpha_hub_0.3.png)
+
+### WSAS09
+threshold = 0.1
+![WSAS09 Hub Location at 0.1](./.figure/hub_location/WSAS09_alpha_hub_0.1.png)
+threshold = 0.2
+![WSAS09 Hub Location at 0.2](./.figure/hub_location/WSAS09_alpha_hub_0.2.png)
+threshold = 0.3
+![WSAS09 Hub Location at 0.3](./.figure/hub_location/WSAS09_alpha_hub_0.3.png)
+
+### WSAS10
+threshold = 0.1
+![WSAS10 Hub Location at 0.1](./.figure/hub_location/WSAS10_alpha_hub_0.1.png)
+threshold = 0.2
+![WSAS10 Hub Location at 0.2](./.figure/hub_location/WSAS10_alpha_hub_0.2.png)
+threshold = 0.3
+![WSAS10 Hub Location at 0.3](./.figure/hub_location/WSAS10_alpha_hub_0.3.png)
+
+### WSAS11
+threshold = 0.1
+![WSAS11 Hub Location at 0.1](./.figure/hub_location/WSAS11_alpha_hub_0.1.png)
+threshold = 0.2
+![WSAS11 Hub Location at 0.2](./.figure/hub_location/WSAS11_alpha_hub_0.2.png)
+threshold = 0.3
+![WSAS11 Hub Location at 0.3](./.figure/hub_location/WSAS11_alpha_hub_0.3.png)
+
+### WSAS12
+threshold = 0.1
+![WSAS12 Hub Location at 0.1](./.figure/hub_location/WSAS12_alpha_hub_0.1.png)
+threshold = 0.2
+![WSAS12 Hub Location at 0.2](./.figure/hub_location/WSAS12_alpha_hub_0.2.png)
+threshold = 0.3
+![WSAS12 Hub Location at 0.3](./.figure/hub_location/WSAS12_alpha_hub_0.3.png)
+
+### WSAS13
+threshold = 0.1
+![WSAS13 Hub Location at 0.1](./.figure/hub_location/WSAS13_alpha_hub_0.1.png)
+threshold = 0.2
+![WSAS13 Hub Location at 0.2](./.figure/hub_location/WSAS13_alpha_hub_0.2.png)
+threshold = 0.3
+![WSAS13 Hub Location at 0.3](./.figure/hub_location/WSAS13_alpha_hub_0.3.png)
+
+### WSAS17
+threshold = 0.1
+![WSAS17 Hub Location at 0.1](./.figure/hub_location/WSAS17_alpha_hub_0.1.png)
+threshold = 0.2
+![WSAS17 Hub Location at 0.2](./.figure/hub_location/WSAS17_alpha_hub_0.2.png)
+threshold = 0.3
+![WSAS17 Hub Location at 0.3](./.figure/hub_location/WSAS17_alpha_hub_0.3.png)
+
+### WSAS18
+threshold = 0.1
+![WSAS18 Hub Location at 0.1](./.figure/hub_location/WSAS18_alpha_hub_0.1.png)
+threshold = 0.2
+![WSAS18 Hub Location at 0.2](./.figure/hub_location/WSAS18_alpha_hub_0.2.png)
+threshold = 0.3
+![WSAS18 Hub Location at 0.3](./.figure/hub_location/WSAS18_alpha_hub_0.3.png)
+
+### WSAS19
+threshold = 0.1
+![WSAS19 Hub Location at 0.1](./.figure/hub_location/WSAS19_alpha_hub_0.1.png)
+threshold = 0.2
+![WSAS19 Hub Location at 0.2](./.figure/hub_location/WSAS19_alpha_hub_0.2.png)
+threshold = 0.3
+![WSAS19 Hub Location at 0.3](./.figure/hub_location/WSAS19_alpha_hub_0.3.png)
+
+### WSAS20
+threshold = 0.1
+![WSAS20 Hub Location at 0.1](./.figure/hub_location/WSAS20_alpha_hub_0.1.png)
+threshold = 0.2
+![WSAS20 Hub Location at 0.2](./.figure/hub_location/WSAS20_alpha_hub_0.2.png)
+threshold = 0.3
+![WSAS20 Hub Location at 0.3](./.figure/hub_location/WSAS20_alpha_hub_0.3.png)
+
+### WSAS22
+threshold = 0.1
+![WSAS22 Hub Location at 0.1](./.figure/hub_location/WSAS22_alpha_hub_0.1.png)
+threshold = 0.2
+![WSAS22 Hub Location at 0.2](./.figure/hub_location/WSAS22_alpha_hub_0.2.png)
+threshold = 0.3
+![WSAS22 Hub Location at 0.3](./.figure/hub_location/WSAS22_alpha_hub_0.3.png)
