@@ -1,4 +1,4 @@
-function [r_wpli, r_location, r_regions] = process_bp_wpli(filename, map_file)
+function [r_wpli, r_labels, r_regions, r_location] = process_bp_wpli(filename, map_file)
 % PROCESS BP wPLI is a helper function to load the data from the filename,
 % translate it in the right format (bp -> egi) nomenclature, to reorder the
 % channels and to finally filter out non-scalp electrodes
@@ -44,6 +44,6 @@ function [r_wpli, r_location, r_regions] = process_bp_wpli(filename, map_file)
    wpli(:, index_to_remove) = [];
    
    % Reorder the channels and return 
-   [r_wpli, r_location, r_regions] = reorder_channels(wpli, location, ...
+   [r_wpli, r_labels, r_regions, r_location] = reorder_channels(wpli, location, ...
                                                      'biapt_egi129.csv');
 end

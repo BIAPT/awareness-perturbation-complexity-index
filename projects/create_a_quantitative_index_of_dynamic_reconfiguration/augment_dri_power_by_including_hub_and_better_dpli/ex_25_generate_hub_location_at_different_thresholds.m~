@@ -28,30 +28,31 @@ for b = 1:length(binary_thresholds)
 
         % Process each of the three states
         if strcmp(participant, "WSAS02")
-            [baseline_r_wpli, baseline_r_location, baseline_r_regions] = process_bp_wpli(strcat(IN_DIR,participant,filesep,'baseline_alpha_wpli.mat'), MAP_FILE);
-            [anesthesia_r_wpli, anesthesia_r_location, anesthesia_r_regions] = process_bp_wpli(strcat(IN_DIR,participant,filesep,'anesthesia_alpha_wpli.mat'), MAP_FILE);
-            [recovery_r_wpli, recovery_r_location, recovery_r_regions] = process_bp_wpli(strcat(IN_DIR,participant,filesep,'recovery_alpha_wpli.mat'), MAP_FILE);
+            [baseline_r_wpli, baseline_r_labels, baseline_r_regions, baseline_r_location] = process_bp_wpli(strcat(IN_DIR,participant,filesep,'baseline_alpha_wpli.mat'), MAP_FILE);
+            [anesthesia_r_wpli, anesthesia_r_labels, anesthesia_r_regions, anesthesia_r_location] = process_bp_wpli(strcat(IN_DIR,participant,filesep,'anesthesia_alpha_wpli.mat'), MAP_FILE);
+            [recovery_r_wpli, recovery_r_labels, recovery_r_regions, recovery_r_location] = process_bp_wpli(strcat(IN_DIR,participant,filesep,'recovery_alpha_wpli.mat'), MAP_FILE);
         else
-            [baseline_r_wpli, baseline_r_location, baseline_r_regions] = process_wpli(strcat(IN_DIR,participant,filesep,'baseline_alpha_wpli.mat'));
-            [anesthesia_r_wpli, anesthesia_r_location, anesthesia_r_regions] = process_wpli(strcat(IN_DIR,participant,filesep,'anesthesia_alpha_wpli.mat'));
+            [baseline_r_wpli, baseline_r_labels, baseline_r_regions, baseline_r_location] = process_wpli(strcat(IN_DIR,participant,filesep,'baseline_alpha_wpli.mat'));
+            [anesthesia_r_wpli, anesthesia_r_labels, anesthesia_r_regions, anesthesia_r_location] = process_wpli(strcat(IN_DIR,participant,filesep,'anesthesia_alpha_wpli.mat'));
 
             if strcmp(participant, "WSAS17") == 0
-                [recovery_r_wpli, recovery_r_location, recovery_r_regions] = process_wpli(strcat(IN_DIR,participant,filesep,'recovery_alpha_wpli.mat'));              
+                [recovery_r_wpli, recovery_r_labels, recovery_r_regions] = process_wpli(strcat(IN_DIR,participant,filesep,'recovery_alpha_wpli.mat'));              
             end
         end
         
-        % Binarize the three states
+        % Binarize the three states and calculate the hub location
         [baseline_r_wpli] = binarize_matrix(threshold_matrix(baseline_r_wpli, threshold));
+        [~, baseline_weights] = binary_hub_location(baseline_r_wpli, baseline_r_labels);
+        
         [anesthesia_r_wpli] = binarize_matrix(threshold_matrix(anesthesia_r_wpli, threshold));
-
+        [~, anesthesia_weights] = binary_hub_location(anesthesia_r_wpli, anesthesia_r_labels);
+        
         if strcmp(participant, "WSAS17") == 0
             [recovery_r_wpli] = binarize_matrix(threshold_matrix(recovery_r_wpli, threshold));        
+            [~, recovery_weights] = binary_hub_location(recovery_r_wpli, recovery_r_labels);
+
         end
         
-        % Calculate the hub location
-        % Calculating hub data for the segment
-        [hub_index, weights] = binary_hub_location(b_wpli, location);
-
         % Create the 2 or 3 subplot vertical figure for comparions
         % depending if this is participant WSAS17 or not (no recovery)
         num_sub = 3;
@@ -61,33 +62,39 @@ for b = 1:length(binary_thresholds)
 
         handle = figure;
         subplot(1,num_sub,1)
-        plot_pli_raw(baseline_r_wpli, baseline_r_regions, COLOR)
-        title(sprintf("%s alpha wpli b(%.1f) at baseline",participant,threshold));
+        plot_hub_location(baseline_weights, baseline_r_labels, COLOR)
+        title(sprintf("%s alpha hub b(%.1f) at baseline",participant,threshold));
         subplot(1,num_sub,2)
-        plot_pli_raw(anesthesia_r_wpli, anesthesia_r_regions, COLOR)
-        title(sprintf("%s alpha wpli b(%.1f) at anesthesia",participant,threshold));
+        plot_hub_location(anesthesia_weights, anesthesia_r_labels, COLOR)
+        title(sprintf("%s alpha hub b(%.1f) at anesthesia",participant,threshold));
         if strcmp(participant,"WSAS17") == 0
             subplot(1,num_sub,3)
-            plot_pli_raw(recovery_r_wpli, recovery_r_regions, COLOR)
-            title(sprintf("%s alpha wpli b(%.1f) at recovery",participant,threshold));
+            plot_hub_location(recovery_weights, recovery_r_labels, COLOR)
+            title(sprintf("%s alpha hub b(%.1f) at recovery",participant,threshold));
         end
         colorbar;
         set(handle, 'Position', [70,152,1527,589]);
 
         % Save the figure at the right spot in disk
-        
-        filename = sprintf("%s%s_alpha_wpli_binarized_%.1f.png",OUT_DIR,participant,threshold);
+        filename = sprintf("%s%s_alpha_hub_%.1f.png",OUT_DIR,participant,threshold);
         saveas(handle,filename);
         close all;
     end
 end
 
-function plot_hub_location(weights, title_name, channels_location, color)
+function plot_hub_location(weights, channels_location, color)
 %PLOT HUB LOCATION will create a topographic map of the hub location
 %weights
 %   This function is using the built-in eeglab plotting capabilities to
 %   make a topographic map. This is mostly a wrapper function so that the
-%   code is easier to read
+%   code is easier to read without having to worry about the eeglab parameters.
+%
+%   input:
+%   weights: a 1*N vector where N is the hub location weights for a given
+%   channel
+%   channels_location: this is a 1*N struct array containing eeglab channel
+%   location
+%   color: This is an visual parameters for the plot
     topoplot(weights,channels_location,'maplimits','absmax', 'electrodes', 'off');
     colormap(color);
 end

@@ -1,4 +1,4 @@
-function [r_wpli, r_location, r_regions] = process_wpli(filename)
+function [r_wpli, r_labels, r_regions, r_location] = process_wpli(filename)
 % PROCESS wPLI is a helper function to load and process the wPLI given a
 % filename
 %
@@ -11,6 +11,6 @@ function [r_wpli, r_location, r_regions] = process_wpli(filename)
    location = data.result_wpli.metadata.channels_location;
 
    % Reordering the channels and returning
-   [r_wpli, r_location, r_regions] = reorder_channels(wpli, location, ...
+   [r_wpli, r_labels, r_regions, r_location] = reorder_channels(wpli, location, ...
                                                      'biapt_egi129.csv');
 end
