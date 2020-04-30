@@ -179,7 +179,7 @@ threshold = 0.3
 threshold = 0.1
 ![WSAS05 Hub Location at 0.1](./.figure/hub_location/WSAS05_alpha_hub_0.1.png)
 threshold = 0.2
-![WSAS05 Hub Location at 0.2](./.figure/hub_location/WSAS02_alpha_hub_0.2.png)
+![WSAS05 Hub Location at 0.2](./.figure/hub_location/WSAS05_alpha_hub_0.2.png)
 threshold = 0.3
 ![WSAS05 Hub Location at 0.3](./.figure/hub_location/WSAS05_alpha_hub_0.3.png)
 
