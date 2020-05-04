@@ -393,3 +393,7 @@ threshold = 0.2
 ![Both DRI at 0.2 attempt 2](./.figure/both_dri_0.2_2.png)
 threshold = 0.3
 ![Both DRI at 0.3 attempt 2](./.figure/both_dri_0.3_2.png)
+
+Finally we did a dynamic thresholding in order to not have to set up the threshold ourselves. We disconnected the graph until we got a minimally spanning graph. The plot was generated using `ex_33_generate_second_draft_dri_with_disconnection.m`
+
+![Both DRI at dynamic threshold attempt 3](./.figure/both_dri_3.png)
