@@ -10,9 +10,9 @@ This is the report for the milestone `Augment DRI Power by Including Hub and Bet
 - [wPLI per Participant](#wpli-per-participant)
 - [Binarized wPLI per Participant](#binarized-wpli-per-participant)
 - [Hub per Participant](#hub-per-participant)
-- [Cosine Similarity per Participant]
-(#cosine-similarity-per-participant)
+- [Cosine Similarity per Participant](#cosine-similarity-per-participant)
 - [Hub Dynamic Reconfiguration Index](#hub-dynamic-reconfiguration-index)
+- [Both Dynamic Reconfiguration Index](#both-dynamic-reconfiguration-index)
 
 ## dPLI Dynamic Reconfiguration Index
 The current version of the dpli-dri make use of contrast matrices and filters out all the region except the fronto-parietal ones. What we currently get in terms of dpli-dri for each of the participant is this:
@@ -375,3 +375,21 @@ threshold = 0.2
 ![Hub DRI at 0.2](./.figure/hub_dri/hub_dri_0.2_1.png)
 threshold = 0.3
 ![Hub DRI at 0.3](./.figure/hub_dri/hub_dri_0.3_1.png)
+
+## Both Dynamic Reconfiguration Index
+Here we use the Hub-DRI formula we have just calculated (still under the three thresholds) and we also calculate the 5th attempt of dpli-dri without the directional weighting. The patient that were marked as in recovery stage are WSAS02, 09, 19, 20 and the patient not recovered were marked as the rest. This was generated using `ex_28a_cluster_participant_on_dri_using_dpli_dri_5.m`
+
+threshold = 0.1
+![Both DRI at 0.1 attempt 1](./.figure/both_dri_0.1_1.png)
+threshold = 0.2
+![Both DRI at 0.2 attempt 2](./.figure/both_dri_0.2_1.png)
+threshold = 0.3
+![Both DRI at 0.3 attempt 3](./.figure/both_dri_0.3_1.png)
+
+We also tested using the 6th definition of dpli-dri with switch_weight set to 100. This was generated using `ex_28b_cluster_participant_on_dri_using_dpli_dri_6.m`
+
+![Both DRI at 0.1 attempt 2](./.figure/both_dri_0.1_2.png)
+threshold = 0.2
+![Both DRI at 0.2 attempt 2](./.figure/both_dri_0.2_2.png)
+threshold = 0.3
+![Both DRI at 0.3 attempt 2](./.figure/both_dri_0.3_2.png)
