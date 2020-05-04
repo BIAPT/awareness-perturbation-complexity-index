@@ -10,6 +10,7 @@ This is the report for the milestone `Augment DRI Power by Including Hub and Bet
 - [wPLI per Participant](#wpli-per-participant)
 - [Binarized wPLI per Participant](#binarized-wpli-per-participant)
 - [Hub per Participant](#hub-per-participant)
+- [Cosine Similarity per Participant](#cosine-similarity-per-participant)
 
 ## dPLI Dynamic Reconfiguration Index
 The current version of the dpli-dri make use of contrast matrices and filters out all the region except the fronto-parietal ones. What we currently get in terms of dpli-dri for each of the participant is this:
@@ -262,3 +263,102 @@ threshold = 0.2
 ![WSAS22 Hub Location at 0.2](./.figure/hub_location/WSAS22_alpha_hub_0.2.png)
 threshold = 0.3
 ![WSAS22 Hub Location at 0.3](./.figure/hub_location/WSAS22_alpha_hub_0.3.png)
+
+## Cosine Similarity per Participant
+After calculating the hubs at different threshold we can then calculate the cosine simliarity between each of the state with each other states. The cosine similarity here ranges between -1 and 1 since we do have negative values. Before calculating the cosine similarity we do a standard normalization :`norm_weights = (weights - mean(weights))  / std(weights)`. We still calculate the hubs on three thresholds before feeding it to the cosine similarity. The plot were generated using `ex_26_calculate_cosine_similarity_across_states.m`.
+
+### WSAS02
+threshold = 0.1
+![WSAS02 Cosine Similarity at 0.1](./.figure/cosine_similarity/WSAS02_alpha_cosine_similarity_0.1.png)
+threshold = 0.2
+![WSAS02 Cosine Similarity at 0.2](./.figure/cosine_similarity/WSAS02_alpha_cosine_similarity_0.2.png)
+threshold = 0.3
+![WSAS02 Cosine Similarity at 0.3](./.figure/cosine_similarity/WSAS02_alpha_cosine_similarity_0.3.png)
+
+### WSAS05
+threshold = 0.1
+![WSAS05 Cosine Similarity at 0.1](./.figure/cosine_similarity/WSAS05_alpha_cosine_similarity_0.1.png)
+threshold = 0.2
+![WSAS05 Cosine Similarity at 0.2](./.figure/cosine_similarity/WSAS05_alpha_cosine_similarity_0.2.png)
+threshold = 0.3
+![WSAS05 Cosine Similarity at 0.3](./.figure/cosine_similarity/WSAS05_alpha_cosine_similarity_0.3.png)
+
+### WSAS09
+threshold = 0.1
+![WSAS09 Cosine Similarity at 0.1](./.figure/cosine_similarity/WSAS09_alpha_cosine_similarity_0.1.png)
+threshold = 0.2
+![WSAS09 Cosine Similarity at 0.2](./.figure/cosine_similarity/WSAS09_alpha_cosine_similarity_0.2.png)
+threshold = 0.3
+![WSAS09 Cosine Similarity at 0.3](./.figure/cosine_similarity/WSAS09_alpha_cosine_similarity_0.3.png)
+
+### WSAS10
+threshold = 0.1
+![WSAS10 Cosine Similarity at 0.1](./.figure/cosine_similarity/WSAS10_alpha_cosine_similarity_0.1.png)
+threshold = 0.2
+![WSAS10 Cosine Similarity at 0.2](./.figure/cosine_similarity/WSAS10_alpha_cosine_similarity_0.2.png)
+threshold = 0.3
+![WSAS10 Cosine Similarity at 0.3](./.figure/cosine_similarity/WSAS10_alpha_cosine_similarity_0.3.png)
+
+### WSAS11
+threshold = 0.1
+![WSAS11 Cosine Similarity at 0.1](./.figure/cosine_similarity/WSAS11_alpha_cosine_similarity_0.1.png)
+threshold = 0.2
+![WSAS11 Cosine Similarity at 0.2](./.figure/cosine_similarity/WSAS11_alpha_cosine_similarity_0.2.png)
+threshold = 0.3
+![WSAS11 Cosine Similarity at 0.3](./.figure/cosine_similarity/WSAS11_alpha_cosine_similarity_0.3.png)
+
+### WSAS12
+threshold = 0.1
+![WSAS12 Cosine Similarity at 0.1](./.figure/cosine_similarity/WSAS12_alpha_cosine_similarity_0.1.png)
+threshold = 0.2
+![WSAS12 Cosine Similarity at 0.2](./.figure/cosine_similarity/WSAS12_alpha_cosine_similarity_0.2.png)
+threshold = 0.3
+![WSAS12 Cosine Similarity at 0.3](./.figure/cosine_similarity/WSAS12_alpha_cosine_similarity_0.3.png)
+
+### WSAS13
+threshold = 0.1
+![WSAS13 Cosine Similarity at 0.1](./.figure/cosine_similarity/WSAS13_alpha_cosine_similarity_0.1.png)
+threshold = 0.2
+![WSAS13 Cosine Similarity at 0.2](./.figure/cosine_similarity/WSAS13_alpha_cosine_similarity_0.2.png)
+threshold = 0.3
+![WSAS13 Cosine Similarity at 0.3](./.figure/cosine_similarity/WSAS13_alpha_cosine_similarity_0.3.png)
+
+### WSAS17
+threshold = 0.1
+![WSAS17 Cosine Similarity at 0.1](./.figure/cosine_similarity/WSAS17_alpha_cosine_similarity_0.1.png)
+threshold = 0.2
+![WSAS17 Cosine Similarity at 0.2](./.figure/cosine_similarity/WSAS17_alpha_cosine_similarity_0.2.png)
+threshold = 0.3
+![WSAS17 Cosine Similarity at 0.3](./.figure/cosine_similarity/WSAS17_alpha_cosine_similarity_0.3.png)
+
+### WSAS18
+threshold = 0.1
+![WSAS18 Cosine Similarity at 0.1](./.figure/cosine_similarity/WSAS18_alpha_cosine_similarity_0.1.png)
+threshold = 0.2
+![WSAS18 Cosine Similarity at 0.2](./.figure/cosine_similarity/WSAS18_alpha_cosine_similarity_0.2.png)
+threshold = 0.3
+![WSAS18 Cosine Similarity at 0.3](./.figure/cosine_similarity/WSAS18_alpha_cosine_similarity_0.3.png)
+
+### WSAS19
+threshold = 0.1
+![WSAS19 Cosine Similarity at 0.1](./.figure/cosine_similarity/WSAS19_alpha_cosine_similarity_0.1.png)
+threshold = 0.2
+![WSAS19 Cosine Similarity at 0.2](./.figure/cosine_similarity/WSAS19_alpha_cosine_similarity_0.2.png)
+threshold = 0.3
+![WSAS19 Cosine Similarity at 0.3](./.figure/cosine_similarity/WSAS19_alpha_cosine_similarity_0.3.png)
+
+### WSAS20
+threshold = 0.1
+![WSAS20 Cosine Similarity at 0.1](./.figure/cosine_similarity/WSAS20_alpha_cosine_similarity_0.1.png)
+threshold = 0.2
+![WSAS20 Cosine Similarity at 0.2](./.figure/cosine_similarity/WSAS20_alpha_cosine_similarity_0.2.png)
+threshold = 0.3
+![WSAS20 Cosine Similarity at 0.3](./.figure/cosine_similarity/WSAS20_alpha_cosine_similarity_0.3.png)
+
+### WSAS22
+threshold = 0.1
+![WSAS22 Cosine Similarity at 0.1](./.figure/cosine_similarity/WSAS22_alpha_cosine_similarity_0.1.png)
+threshold = 0.2
+![WSAS22 Cosine Similarity at 0.2](./.figure/cosine_similarity/WSAS22_alpha_cosine_similarity_0.2.png)
+threshold = 0.3
+![WSAS22 Cosine Similarity at 0.3](./.figure/cosine_similarity/WSAS22_alpha_cosine_similarity_0.3.png)
