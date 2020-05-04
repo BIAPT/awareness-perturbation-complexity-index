@@ -10,7 +10,9 @@ This is the report for the milestone `Augment DRI Power by Including Hub and Bet
 - [wPLI per Participant](#wpli-per-participant)
 - [Binarized wPLI per Participant](#binarized-wpli-per-participant)
 - [Hub per Participant](#hub-per-participant)
-- [Cosine Similarity per Participant](#cosine-similarity-per-participant)
+- [Cosine Similarity per Participant]
+(#cosine-similarity-per-participant)
+- [Hub Dynamic Reconfiguration Index](#hub-dynamic-reconfiguration-index)
 
 ## dPLI Dynamic Reconfiguration Index
 The current version of the dpli-dri make use of contrast matrices and filters out all the region except the fronto-parietal ones. What we currently get in terms of dpli-dri for each of the participant is this:
@@ -362,3 +364,14 @@ threshold = 0.2
 ![WSAS22 Cosine Similarity at 0.2](./.figure/cosine_similarity/WSAS22_alpha_cosine_similarity_0.2.png)
 threshold = 0.3
 ![WSAS22 Cosine Similarity at 0.3](./.figure/cosine_similarity/WSAS22_alpha_cosine_similarity_0.3.png)
+
+## Hub Dynamic Reconfiguration Index
+The hub dynamic reconfiguration index takes the cosine similarity scalar and add them in a linear fashion. The formula that is currently being used is: `w1*BvR - (w2*BvA + w3*RvA)`
+We are still generating the cosine similarity scalar at the three threshold 0.1, 0.2 and 0.3. The plot were generate using `ex_27_calculate_first_draft_hub_dri.m`
+
+threshold = 0.1
+![Hub DRI at 0.1](./.figure/hub_dri/hub_dri_0.1_1.png)
+threshold = 0.2
+![Hub DRI at 0.2](./.figure/hub_dri/hub_dri_0.2_1.png)
+threshold = 0.3
+![Hub DRI at 0.3](./.figure/hub_dri/hub_dri_0.3_1.png)
