@@ -20,9 +20,10 @@ binary_thresholds = [0.1, 0.2, 0.3];
 for b = 1:length(binary_thresholds)
     threshold = binary_thresholds(b);
     
+    disp(strcat('Threshold: ', string(threshold)))
     for p = 1:length(P_ID)
         participant = P_ID{p};
-        disp(participant);
+        disp(strcat('Participant: ', participant));
 
         % Process each of the three states
         if strcmp(participant, "WSAS02")
@@ -98,6 +99,8 @@ for b = 1:length(binary_thresholds)
             labels = reordercats(labels,{'BvR', 'BvA', 'RvA'});
         end
 
+        disp(cosine_similarities)
+        
         handle = figure;
         bar(labels, cosine_similarities)
         title(sprintf("%s alpha cosine similarity at t=%.1f across all states",participant,threshold))

@@ -77,7 +77,7 @@ end
 hub_dris_1 = zeros(1, length(P_ID));
 for p = 1:length(P_ID)
     participant = P_ID{p};
-    disp(participant);
+    disp(strcat("Participant: ", participant));
 
     % Process each of the three states
     if strcmp(participant, "WSAS02")
@@ -103,26 +103,36 @@ for p = 1:length(P_ID)
     common_location = generate_common_location(common_labels, baseline_r_labels, baseline_r_location);
 
     % Binarize the three states and calculate the hub location
+    disp("Baseline Threshold: ")
     [threshold] = find_smallest_connected_threshold(baseline_f_wpli, threshold_range);
     [baseline_b_wpli] = binarize_matrix(threshold_matrix(baseline_f_wpli, threshold));
     [~, baseline_weights] = binary_hub_location(baseline_b_wpli, common_location);
     baseline_norm_weights = (baseline_weights - mean(baseline_weights))  / std(baseline_weights);
 
-        [threshold] = find_smallest_connected_threshold(anesthesia_f_wpli, threshold_range);
+
+    disp("Anesthesia Threshold: ")    
+    [threshold] = find_smallest_connected_threshold(anesthesia_f_wpli, threshold_range);
     [anesthesia_b_wpli] = binarize_matrix(threshold_matrix(anesthesia_f_wpli, threshold));
     [~, anesthesia_weights] = binary_hub_location(anesthesia_b_wpli, common_location);
     anesthesia_norm_weights = (anesthesia_weights - mean(anesthesia_weights))  / std(anesthesia_weights);
-
-        [threshold] = find_smallest_connected_threshold(recovery_f_wpli, threshold_range);
+    
+    disp("Recovery Threshold: ")
+    [threshold] = find_smallest_connected_threshold(recovery_f_wpli, threshold_range);
     [recovery_b_wpli] = binarize_matrix(threshold_matrix(recovery_f_wpli, threshold));        
     [~, recovery_weights] = binary_hub_location(recovery_b_wpli, common_location);
     recovery_norm_weights = (recovery_weights - mean(recovery_weights))  / std(recovery_weights);
 
+    
     % Calculate the cosine similarities between each of the states
     baseline_vs_anesthesia = vector_cosine_similarity(baseline_norm_weights, anesthesia_norm_weights);
     baseline_vs_recovery = vector_cosine_similarity(baseline_norm_weights, recovery_norm_weights);
     recovery_vs_anesthesia = vector_cosine_similarity(recovery_norm_weights, anesthesia_norm_weights);
 
+    disp(strcat("Cosine BvA: ", string(baseline_vs_anesthesia)))
+    disp(strcat("Cosine BvR: ", string(baseline_vs_recovery)))
+    disp(strcat("Cosine RvA: ", string(recovery_vs_anesthesia)))
+    
+    disp("-----")
     % Calculate the hub dri
     w1 = 1.0;
     w2 = 1.0;
@@ -183,8 +193,7 @@ function [smallest_threshold] = find_smallest_connected_threshold(pli_matrix, th
     %loop through thresholds
     for j = 1:length(threshold_range) 
         current_threshold = threshold_range(j);
-        disp(strcat("Doing the threshold : ", string(current_threshold)));
-
+        
         % Thresholding and binarization using the current threshold
         t_network = threshold_matrix(pli_matrix, current_threshold);
         b_network = binarize_matrix(t_network);
