@@ -1,7 +1,15 @@
-%% Yacine Mahdid May 04 2020
+%% Yacine Mahdid July 31 2020
 % This script is addressing the task
-% https://github.com/BIAPT/awareness-perturbation-complexity-index/issues/33
-
+% https://github.com/BIAPT/awareness-perturbation-complexity-index/issues/35
+% and
+% https://github.com/BIAPT/awareness-perturbation-complexity-index/issues/36
+%
+% 1) Change here is that the hub will be ran with only node degree with custom
+% threshold per participant
+% 2) We will use contrast vector instead of cosine similarity for hub like
+% we do for dpli
+% 3) use the new Hub-DRI + attempt 4 of dpli-DRI in order to generate final
+% plot.
 %% Experiment Variable
 IN_DIR = "/media/yacine/My Book/datasets/consciousness/Dynamic Reconfiguration Index/";
 OUT_DIR = "/media/yacine/My Book/result_dri/";
@@ -49,11 +57,6 @@ for p = 1:length(P_ID)
     anesthesia_f_dpli = filter_matrix(anesthesia_r_dpli, anesthesia_r_location, common_location);
     recovery_f_dpli = filter_matrix(recovery_r_dpli, recovery_r_location, common_location);
     
-    % Filter the matrices to keep only the frontal and parietal regions
-    [baseline_f_dpli, x_region, y_region] = filter_fp_regions(baseline_f_dpli, common_region);
-    [anesthesia_f_dpli, ~, ~] = filter_fp_regions(anesthesia_f_dpli, common_region);
-    [recovery_f_dpli, ~, ~] = filter_fp_regions(recovery_f_dpli, common_region);
-    
     % Calculate a contrast matrix, this is different than before.
     % now we want to have high score for large differences and low
     % score for similarities
@@ -74,7 +77,7 @@ end
 
 % At this point we have the dpli_dri_3
 %% Calculate the Hub-DRI
-hub_dris_1 = zeros(1, length(P_ID));
+hub_dris_2 = zeros(1, length(P_ID));
 for p = 1:length(P_ID)
     participant = P_ID{p};
     disp(strcat("Participant: ", participant));
@@ -106,48 +109,55 @@ for p = 1:length(P_ID)
     disp("Baseline Threshold: ")
     [threshold] = find_smallest_connected_threshold(baseline_f_wpli, threshold_range);
     [baseline_b_wpli] = binarize_matrix(threshold_matrix(baseline_f_wpli, threshold));
-    [~, baseline_weights] = binary_hub_location(baseline_b_wpli, common_location);
+
+    % here we are using only the degree and not the betweeness centrality
+    [~, baseline_weights] = binary_hub_location(baseline_b_wpli, common_location, 1.0, 0.0);
     baseline_norm_weights = (baseline_weights - mean(baseline_weights))  / std(baseline_weights);
 
 
     disp("Anesthesia Threshold: ")    
     [threshold] = find_smallest_connected_threshold(anesthesia_f_wpli, threshold_range);
     [anesthesia_b_wpli] = binarize_matrix(threshold_matrix(anesthesia_f_wpli, threshold));
-    [~, anesthesia_weights] = binary_hub_location(anesthesia_b_wpli, common_location);
+
+    % here we are using only the degree and not the betweeness centrality
+    [~, anesthesia_weights] = binary_hub_location(anesthesia_b_wpli, common_location,  1.0, 0.0);
     anesthesia_norm_weights = (anesthesia_weights - mean(anesthesia_weights))  / std(anesthesia_weights);
     
     disp("Recovery Threshold: ")
     [threshold] = find_smallest_connected_threshold(recovery_f_wpli, threshold_range);
     [recovery_b_wpli] = binarize_matrix(threshold_matrix(recovery_f_wpli, threshold));        
-    [~, recovery_weights] = binary_hub_location(recovery_b_wpli, common_location);
+    
+    % here we are using only the degree and not the betweeness centrality
+    [~, recovery_weights] = binary_hub_location(recovery_b_wpli, common_location,  1.0, 0.0);
     recovery_norm_weights = (recovery_weights - mean(recovery_weights))  / std(recovery_weights);
 
-    
-    % Calculate the cosine similarities between each of the states
-    baseline_vs_anesthesia = vector_cosine_similarity(baseline_norm_weights, anesthesia_norm_weights);
-    baseline_vs_recovery = vector_cosine_similarity(baseline_norm_weights, recovery_norm_weights);
-    recovery_vs_anesthesia = vector_cosine_similarity(recovery_norm_weights, anesthesia_norm_weights);
-
-    disp(strcat("Cosine BvA: ", string(baseline_vs_anesthesia)))
-    disp(strcat("Cosine BvR: ", string(baseline_vs_recovery)))
-    disp(strcat("Cosine RvA: ", string(recovery_vs_anesthesia)))
+    % Calculate a contrast matrix, this is same thing as for dpli-dri
+    % now we want to have high score for large differences and low
+    % score for similarities
+    bvr = abs(baseline_norm_weights - recovery_norm_weights);
+    bva = abs(baseline_norm_weights - anesthesia_norm_weights);
+    rva = abs(recovery_norm_weights - anesthesia_norm_weights);
+    disp(strcat("Cosine BvA: ", string(bva)))
+    disp(strcat("Cosine BvR: ", string(bvr)))
+    disp(strcat("Cosine RvA: ", string(rva)))
     
     disp("-----")
     % Calculate the hub dri
     w1 = 1.0;
     w2 = 1.0;
     w3 = 1.0;
-    hub_dris_1(p) = w1*baseline_vs_recovery - (w2*baseline_vs_anesthesia + w3*recovery_vs_anesthesia);
+    hub_dris_2(p) = w1*sum(bva(:)) + w2*sum(rva(:)) - w3*sum(bvr(:));
+    hub_dris_2(p) = hub_dris_2(p)/length(bvr(:));
 end
 
 %% Create the figure
 % Plot figure for the dpli-dri
 handle = figure;
-scatter(dpli_dris_3,hub_dris_1,[],P_LABEL,'filled')
+scatter(dpli_dris_3,hub_dris_2,[],P_LABEL,'filled')
 xlabel("dPLI-DRI");
 ylabel("Hub-DRI");
 colormap(COLOR);
-title(sprintf("WSAS Both DRI for alpha at dynamic threshold (attempt #3)",threshold));
+title(sprintf("WSAS Both DRI for alpha at dynamic threshold (attempt #4)",threshold));
 
 % Save it to disk
 filename = sprintf("%sboth_dri_3.png",OUT_DIR,threshold);
@@ -159,7 +169,7 @@ for p = 1:length(P_ID)
     participant = P_ID{p};
     label = P_LABEL(p);
     dpli_dri = dpli_dris_3(p);
-    hub_dri = hub_dris_1(p);
+    hub_dri = hub_dris_2(p);
     
     msg = sprintf("Participant: %s\nLabel: %d\ndPLI-DRI: %.2f\nHub-DRI: %.2f\n------\n",participant,label,dpli_dri,hub_dri);
     disp(msg);
