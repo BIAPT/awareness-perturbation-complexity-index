@@ -13,7 +13,7 @@
 %% Experiment Variable
 IN_DIR = "/media/yacine/My Book/datasets/consciousness/Dynamic Reconfiguration Index/";
 OUT_DIR = "/media/yacine/My Book/result_dri/";
-MAP_FILE = "/home/yacine/Documents/BIAPT/awareness-perturbation-complexity-index/projects/create_a_quantitative_index_of_dynamic_reconfiguration/data/bp_to_egi_mapping_yacine.csv";
+MAP_FILE = "/home/yacine/Documents/BIAPT/awareness-perturbation-complexity-index/milestones/data/bp_to_egi_mapping_yacine.csv";
 
 % Here we will skip participant 17 since we do not have recovery
 P_ID = {'WSAS02','WSAS05', 'WSAS09', 'WSAS10', 'WSAS11', 'WSAS12', 'WSAS13', 'WSAS18', 'WSAS19', 'WSAS20', 'WSAS22'};
@@ -160,7 +160,7 @@ colormap(COLOR);
 title(sprintf("WSAS Both DRI for alpha at dynamic threshold (attempt #4)",threshold));
 
 % Save it to disk
-filename = sprintf("%sboth_dri_3.png",OUT_DIR,threshold);
+filename = sprintf("%sboth_dri_4.png",OUT_DIR,threshold);
 saveas(handle,filename);
 close all; 
 
@@ -171,7 +171,7 @@ for p = 1:length(P_ID)
     dpli_dri = dpli_dris_3(p);
     hub_dri = hub_dris_2(p);
     
-    msg = sprintf("Participant: %s\nLabel: %d\ndPLI-DRI: %.2f\nHub-DRI: %.2f\n------\n",participant,label,dpli_dri,hub_dri);
+    msg = sprintf("Participant: %s\nLabel: %d\ndPLI-DRI: %f\nHub-DRI: %f\n------\n",participant,label,dpli_dri,hub_dri);
     disp(msg);
 end
 
