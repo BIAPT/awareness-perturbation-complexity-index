@@ -9,14 +9,15 @@ FREQUENCY = "alpha";
 
 % Remote Source Setup
 %
-INPUT_DIR = 'C:\Users\User\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\data\raw';
-OUTPUT_DIR = 'C:\Users\User\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\data\';
+INPUT_DIR = 'C:\Users\BIAPT\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\data\raw';
+OUTPUT_DIR = 'C:\Users\BIAPT\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\data\';
 
-NEUROALGO_PATH = 'C:\Users\User\Documents\GitHub\NeuroAlgo\MATLAB';
+NEUROALGO_PATH = 'C:\Users\BIAPT\Documents\GitHub\NeuroAlgo\MATLAB';
 addpath(genpath(NEUROALGO_PATH)); % Add NA library to our path so that we can use it
 
 % This list contains all participant IDs
 P_IDS = {'WSAS02', 'WSAS05', 'WSAS09', 'WSAS10', 'WSAS11', 'WSAS12', 'WSAS13','WSAS18', 'WSAS19', 'WSAS20', 'WSAS22'};
+
 Phase = {'Base', 'Anes', 'Reco'};
 
 %% d/w pli Parameters:
@@ -61,7 +62,7 @@ for p = 1:length(P_IDS)
         
         frequency_band = [low_frequency high_frequency]; % This is in Hz
 
-        %% calcu
+        %% calculate FC
         % calculate dPLI with NEUROALGO
         result_dpli = na_dpli(recording, frequency_band, window_size, step_size, number_surrogate, p_value);
         
@@ -69,8 +70,8 @@ for p = 1:length(P_IDS)
         result_wpli = na_wpli(recording, frequency_band, window_size, step_size, number_surrogate, p_value);
         
         %% save data
-        save(participant_out_path,'dpli_tofill')
-        save(participant_channel_path,'channels')
+        save(participant_out_path_wpli,'result_wpli')
+        save(participant_out_path_dpli,'result_dpli')
 
     end
 end
