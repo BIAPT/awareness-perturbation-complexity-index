@@ -9,22 +9,24 @@
 %% Experiment Variable
 IN_DIR = 'C:\Users\User\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\data';
 MAP_FILE = "C:\Users\User\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\utils\bp_to_egi_mapping_yacine.csv";
-OUT_DIR = 'C:\Users\User\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\results\all_electrodes';
+OUT_DIR = 'C:\Users\User\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\results\test';
 
 % Here we will skip participant 17 since we do not have recovery
 P_ID = {'WSAS02','WSAS05', 'WSAS09', 'WSAS10', 'WSAS11', 'WSAS12', 'WSAS13', 'WSAS18', 'WSAS19', 'WSAS20', 'WSAS22'};
 P_LABEL = [1,0,1,0,0,0,0,0,1,1,0]; %here 1 means recover and 0 means not recover
 
-REDUCED = "Yes";
+REDUCED = "No";
 
 threshold_range = 0.70:-0.01:0.01; % More connected to less connected
 
 COLOR = 'jet';
 
 if REDUCED == "Yes"
-    %Subset = ['Fp1','Fp2','F7','F3','Fz','F4','F8','T7','C3','Cz','C4','T8','P7','P3','Pz','P4','P8','O1','O2'];
-    Subset = {'E22','E9','E33','E24','E11','E124','E122','E45','E36','Cz','E104','E108','E58','E52','E62','E92','E96','E70','E83'};
-    OUT_DIR = 'C:\Users\User\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\results\reduced_wd';
+    %Subset_20 = {'E22','E9','E33','E24','E11','E124','E122','E45','E36','Cz','E104','E108','E58','E52','E62','E92','E96','E70','E83','E75'};
+    Subset_left = {'E11','E13','E22','E24','E28','E33','E36','E37','E45','E47','E52','E57','E58','E62','E68','E70','E75','Cz'};
+    Subset_right = {'E9','E11','E62','E75','E83','E87','E92','E94','E96','E98','E100','E104','E108','E112','E117','E122','E124','Cz'};
+    
+    OUT_DIR = 'C:\Users\User\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\results\reduced_wd_left';
 
 end
 
@@ -39,7 +41,17 @@ for p = 1:length(P_ID)
     participant = P_ID{p};
     disp(strcat("Participant: ", participant , "_dPLI"));
     
-
+    if REDUCED == "Yes"
+        % take right hemisphere only for WSAS02
+        if participant == "WSAS02"
+            Subset = Subset_right;
+            disp("selected right subset");
+        else
+            Subset = Subset_left;
+            disp("selected left subset");
+        end
+    end
+ 
     % Process each of the three states, since participant WSAS02 is special
     % in the sense that is has the Brain Product headset we check for it
     % to processing it correctly
