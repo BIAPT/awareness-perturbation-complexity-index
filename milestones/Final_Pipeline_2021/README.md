@@ -1,4 +1,7 @@
+
+
 # Adaptive Reconfiguration Index_2021
+
 Development of an index for assessing the level of consciousness of healthy and disorder of consciousness individuals. This pipeline was used for submission in 2021. 
 
 Step 1 and 2 are performed in MATLAB. Step 3 is runs in a python notebook  
@@ -17,13 +20,15 @@ Step 1 and 2 are performed in MATLAB. Step 3 is runs in a python notebook
 
 - running the script will generate one image per participant , such as the one below: 
 
-- ![WSAS19_summary](C:\Users\User\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\results\reduced_wd_best_hemisphere\WSAS19_summary.png)
+- ![Alt text](results/test_summary.png?raw=true "Title")![WSAS19_summary](C:\Users\User\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\results\reduced_wd_best_hemisphere\WSAS19_summary.png)
 
 - It will also save `ARI.txt` which contains the ARI (dPLI-R and Hub-R) for all participants as well as a graphic representation of recovered and non-recovered patients ARI:   
 
   (red: recovered, blue: non-recovered)
 
-- ![DPLI_DRI](C:\Users\User\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\results\reduced_wd_best_hemisphere\DPLI_DRI.png)
+  ![Alt text](results/DPLI_DRI.png?raw=true "Title")
+
+  
 
   ##### step3: (Python notebook)
 
