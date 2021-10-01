@@ -9,24 +9,30 @@
 %% Experiment Variable
 IN_DIR = 'C:\Users\User\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\data';
 MAP_FILE = "C:\Users\User\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\utils\bp_to_egi_mapping_yacine.csv";
-OUT_DIR = 'C:\Users\User\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\results\test';
+OUT_DIR = 'C:\Users\User\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\results\reduced_variable_threshold';
 
 % Here we will skip participant 17 since we do not have recovery
 P_ID = {'WSAS02','WSAS05', 'WSAS09', 'WSAS10', 'WSAS11', 'WSAS12', 'WSAS13', 'WSAS18', 'WSAS19', 'WSAS20', 'WSAS22'};
 P_LABEL = [1,0,1,0,0,0,0,0,1,1,0]; %here 1 means recover and 0 means not recover
 
-REDUCED = "No";
+% do you want the channels reduced to 18 channels (defined below) 
+REDUCED = "Yes";
 
+% Do you want a hard threshold? 
+% If no then use smallest connected graph to find baseline threshold
+use_hard_threshold = "No";
+% only relevant if Yes
+hard_threshold = 0.3;
+% only relevant if No
 threshold_range = 0.70:-0.01:0.01; % More connected to less connected
+
 
 COLOR = 'jet';
 
 if REDUCED == "Yes"
-    %Subset_20 = {'E22','E9','E33','E24','E11','E124','E122','E45','E36','Cz','E104','E108','E58','E52','E62','E92','E96','E70','E83','E75'};
-    Subset_left = {'E11','E13','E22','E24','E28','E33','E36','E37','E45','E47','E52','E57','E58','E62','E68','E70','E75','Cz'};
+    Subset_left = {'E11','E13','E20','E24','E28','E33','E36','E37','E45','E47','E52','E57','E58','E62','E68','E70','E75','Cz'};
     Subset_right = {'E9','E11','E62','E75','E83','E87','E92','E94','E96','E98','E100','E104','E108','E112','E117','E122','E124','Cz'};
-    
-    OUT_DIR = 'C:\Users\User\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\results\reduced_wd_left';
+    OUT_DIR = 'C:\Users\User\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\results\reduced_variable_threshold';
 
 end
 
@@ -37,10 +43,12 @@ end
 dpli_dris = zeros(1, length(P_ID));
 hub_dris = zeros(1, length(P_ID));
 
+baseline_only_dpli = zeros(1, length(P_ID));
+baseline_only_hub = zeros(1, length(P_ID));
+
 for p = 1:length(P_ID)
     participant = P_ID{p};
     disp(strcat("Participant: ", participant , "_dPLI"));
-    
     if REDUCED == "Yes"
         % take right hemisphere only for WSAS02
         if participant == "WSAS02"
@@ -72,7 +80,7 @@ for p = 1:length(P_ID)
     [common_labels, common_region] = get_subset(baseline_r_location, anesthesia_r_location, recovery_r_location, baseline_r_regions, anesthesia_r_regions, recovery_r_regions);
     
     if REDUCED == "Yes"
-    common_labels = intersect(common_labels,Subset, 'stable');
+        common_labels = intersect(common_labels,Subset, 'stable');
     end
 
     % Filter the matrices to have the same size
@@ -98,7 +106,9 @@ for p = 1:length(P_ID)
     
     tmp = recovery_vs_anesthesia';
     recovery_vs_anesthesia_wd = reshape(tmp(~eye(size(tmp))), size(recovery_vs_anesthesia, 2)-1, [])';
-    
+
+    % for Baseline only extract upper triangle from dPLI matrix
+    tmp_baseline_only = triu(baseline_f_dpli,1);
     
     % Calculate the dpli-dri with w1, w2 and w3
     % Weights for analysis
@@ -110,6 +120,9 @@ for p = 1:length(P_ID)
     % inflated
     dpli_dris(p) = dpli_dris(p)/length(baseline_vs_recovery_wd(:));
     % At this point we have the dpli_dri
+    
+    % for baseline only compute the average dPLI in the upper triangle
+    baseline_only_dpli(p) = sum(tmp_baseline_only(:))/((length(tmp_baseline_only)^2)-length(tmp_baseline_only));
 
     %% Calculate the Hub-DRI
     disp(strcat("Participant: ", participant , "_HUB"));
@@ -130,7 +143,7 @@ for p = 1:length(P_ID)
     [common_labels, common_region] = get_subset(baseline_r_labels, anesthesia_r_labels, recovery_r_labels, baseline_r_regions, anesthesia_r_regions, recovery_r_regions);           
     
     if REDUCED == "Yes"
-    common_labels = intersect(common_labels,Subset, 'stable');
+        common_labels = intersect(common_labels,Subset, 'stable');
     end
 
     % Filter the matrices to have the same size
@@ -145,26 +158,29 @@ for p = 1:length(P_ID)
     %% Binarize the three states using the minimally spanning tree and calculate the hub location
     % thereby we calculate the threshold only for baseline data and keep it
     % for the other conditions
-    disp("Baseline Threshold: ")
-    [threshold] = find_smallest_connected_threshold(baseline_f_wpli, threshold_range);
-    [baseline_b_wpli] = binarize_matrix(threshold_matrix(baseline_f_wpli, threshold));
+    
+    if use_hard_threshold == "Yes"
+        threshold = hard_threshold;
+    else
+        [threshold] = find_smallest_connected_threshold(baseline_f_wpli, threshold_range);
+    end
+    
+    disp("use for all the threshold: " + string (threshold))
 
+    % Baseline Threshold    
+    [baseline_b_wpli] = binarize_matrix(threshold_matrix(baseline_f_wpli, threshold));
     % here we are using only the degree and not the betweeness centrality
     [~, baseline_weights] = binary_hub_location(baseline_b_wpli, common_location, 1.0, 0.0);
     baseline_norm_weights = (baseline_weights - mean(baseline_weights))  / std(baseline_weights);
 
-    disp("Anesthesia Threshold: ")    
-    %[threshold] = find_smallest_connected_threshold(anesthesia_f_wpli, threshold_range);
+    % Anesthesia Threshold    
     [anesthesia_b_wpli] = binarize_matrix(threshold_matrix(anesthesia_f_wpli, threshold));
-
     % here we are using only the degree and not the betweeness centrality
     [~, anesthesia_weights] = binary_hub_location(anesthesia_b_wpli, common_location,  1.0, 0.0);
     anesthesia_norm_weights = (anesthesia_weights - mean(anesthesia_weights))  / std(anesthesia_weights);
     
-    disp("Recovery Threshold: ")
-    %[threshold] = find_smallest_connected_threshold(recovery_f_wpli, threshold_range);
+    % Recovery Threshold:
     [recovery_b_wpli] = binarize_matrix(threshold_matrix(recovery_f_wpli, threshold));        
-    
     % here we are using only the degree and not the betweeness centrality
     [~, recovery_weights] = binary_hub_location(recovery_b_wpli, common_location,  1.0, 0.0);
     recovery_norm_weights = (recovery_weights - mean(recovery_weights))  / std(recovery_weights);
@@ -175,9 +191,9 @@ for p = 1:length(P_ID)
     bvr = abs(baseline_norm_weights - recovery_norm_weights);
     bva = abs(baseline_norm_weights - anesthesia_norm_weights);
     rva = abs(recovery_norm_weights - anesthesia_norm_weights);
-    disp(strcat("Cosine BvA: ", string(bva)))
-    disp(strcat("Cosine BvR: ", string(bvr)))
-    disp(strcat("Cosine RvA: ", string(rva)))
+    disp(strcat("Cosine BvA: ", string(sum(bva(:)))))
+    disp(strcat("Cosine BvR: ", string(sum(bvr(:)))))
+    disp(strcat("Cosine RvA: ", string(sum(rva(:)))))
     
     disp("-----")
     % Calculate the hub dri
@@ -186,7 +202,10 @@ for p = 1:length(P_ID)
     w3 = 1.0;
     hub_dris(p) = w1*sum(bva(:)) + w2*sum(rva(:)) - w3*sum(bvr(:));
     hub_dris(p) = hub_dris(p)/length(bvr(:));
-    
+
+    % average Hub amount for the Baseline HUB
+    baseline_only_hub(p) = sum(baseline_norm_weights(:))/length(baseline_norm_weights(:));
+
     plot_dpli_hub(baseline_f_dpli,anesthesia_f_dpli,recovery_f_dpli,baseline_norm_weights,anesthesia_norm_weights,recovery_norm_weights,common_location,participant,OUT_DIR)
 
 end
@@ -218,3 +237,8 @@ end
 RESULTS = table(P_ID(:), dpli_dris(:) , hub_dris(:), 'VariableNames', { 'ID', 'dPLI','Hub'});
 % Write data to text file
 writetable(RESULTS, strcat(OUT_DIR,'/ARI.txt'))
+
+RESULTS = table(P_ID(:), baseline_only_dpli(:), baseline_only_hub(:), 'VariableNames', { 'ID', 'dPLI','Hub'});
+% Write data to text file
+writetable(RESULTS, strcat(OUT_DIR,'/Baseline_only.txt'))
+
