@@ -5,24 +5,26 @@
 % and is able to replicate the results with fifferent electrode numbers
 
 
-
-%% Experiment Variable
-IN_DIR = 'C:\Users\User\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\data';
-MAP_FILE = "C:\Users\User\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\utils\bp_to_egi_mapping_yacine.csv";
-OUT_DIR = 'C:\Users\User\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\results\reduced_variable_threshold';
-
-% Here we will skip participant 17 since we do not have recovery
-P_ID = {'WSAS02','WSAS05', 'WSAS09', 'WSAS10', 'WSAS11', 'WSAS12', 'WSAS13', 'WSAS18', 'WSAS19', 'WSAS20', 'WSAS22'};
-P_LABEL = [1,0,1,0,0,0,0,0,1,1,0]; %here 1 means recover and 0 means not recover
+%FREQUENCY = "alpha";
+FREQUENCY = "theta";
 
 % do you want the channels reduced to 18 channels (defined below) 
-REDUCED = "Yes";
+REDUCED = "No";
+
+%% Experiment Variable
+IN_DIR = 'C:\Users\BIAPT\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\data';
+MAP_FILE = "C:\Users\BIAPT\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\utils\bp_to_egi_mapping_yacine.csv";
+OUT_DIR = 'C:\Users\BIAPT\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\results\new_patient_ARI_'+FREQUENCY;
+
+% Here we will skip participant 17 since we do not have recovery
+P_ID = {'WSAS02','WSAS05', 'WSAS09', 'WSAS10', 'WSAS11', 'WSAS12', 'WSAS13', 'WSAS18', 'WSAS19', 'WSAS20', 'WSAS22', 'WSAS25', 'WSAS27'};
+P_LABEL = [1,0,1,0,0,0,0,0,1,1,0,0,2]; %here 1 means recover and 0 means not recover 2 means unknown (new patient)
 
 % Do you want a hard threshold? 
 % If no then use smallest connected graph to find baseline threshold
 use_hard_threshold = "No";
 % only relevant if Yes
-hard_threshold = 0.3;
+hard_threshold = 0.05;
 % only relevant if No
 threshold_range = 0.70:-0.01:0.01; % More connected to less connected
 
@@ -32,8 +34,7 @@ COLOR = 'jet';
 if REDUCED == "Yes"
     Subset_left = {'E11','E13','E20','E24','E28','E33','E36','E37','E45','E47','E52','E57','E58','E62','E68','E70','E75','Cz'};
     Subset_right = {'E9','E11','E62','E75','E83','E87','E92','E94','E96','E98','E100','E104','E108','E112','E117','E122','E124','Cz'};
-    OUT_DIR = 'C:\Users\User\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\results\reduced_variable_threshold';
-
+    OUT_DIR = 'C:\Users\BIAPT\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\results\new_patient_ARI_'+FREQUENCY+'_reduced';
 end
 
 
@@ -64,13 +65,13 @@ for p = 1:length(P_ID)
     % in the sense that is has the Brain Product headset we check for it
     % to processing it correctly
     if strcmp(participant, "WSAS02")
-        [baseline_r_dpli, baseline_r_location, baseline_r_regions] = process_bp_dpli(strcat(IN_DIR,filesep,'connectivity',filesep,'dpli_alpha_',participant,'_Base.mat'), MAP_FILE);
-        [anesthesia_r_dpli, anesthesia_r_location, anesthesia_r_regions] = process_bp_dpli(strcat(IN_DIR,filesep,'connectivity',filesep,'dpli_alpha_',participant,'_Anes.mat'), MAP_FILE);
-        [recovery_r_dpli, recovery_r_location, recovery_r_regions] = process_bp_dpli(strcat(IN_DIR,filesep,'connectivity',filesep,'dpli_alpha_',participant,'_Reco.mat'), MAP_FILE);
+        [baseline_r_dpli, baseline_r_location, baseline_r_regions] = process_bp_dpli(strcat(IN_DIR,filesep,'connectivity',filesep,'dpli_',FREQUENCY,'_',participant,'_Base.mat'), MAP_FILE);
+        [anesthesia_r_dpli, anesthesia_r_location, anesthesia_r_regions] = process_bp_dpli(strcat(IN_DIR,filesep,'connectivity',filesep,'dpli_',FREQUENCY,'_',participant,'_Anes.mat'), MAP_FILE);
+        [recovery_r_dpli, recovery_r_location, recovery_r_regions] = process_bp_dpli(strcat(IN_DIR,filesep,'connectivity',filesep,'dpli_',FREQUENCY,'_',participant,'_Reco.mat'), MAP_FILE);
     else
-        [baseline_r_dpli, baseline_r_location, baseline_r_regions] = process_dpli(strcat(IN_DIR,filesep,'connectivity',filesep,'dpli_alpha_',participant,'_Base.mat'));
-        [anesthesia_r_dpli, anesthesia_r_location, anesthesia_r_regions] = process_dpli(strcat(IN_DIR,filesep,'connectivity',filesep,'dpli_alpha_',participant,'_Anes.mat'));
-        [recovery_r_dpli, recovery_r_location, recovery_r_regions] = process_dpli(strcat(IN_DIR,filesep,'connectivity',filesep,'dpli_alpha_',participant,'_Reco.mat'));        
+        [baseline_r_dpli, baseline_r_location, baseline_r_regions] = process_dpli(strcat(IN_DIR,filesep,'connectivity',filesep,'dpli_',FREQUENCY,'_',participant,'_Base.mat'));
+        [anesthesia_r_dpli, anesthesia_r_location, anesthesia_r_regions] = process_dpli(strcat(IN_DIR,filesep,'connectivity',filesep,'dpli_',FREQUENCY,'_',participant,'_Anes.mat'));
+        [recovery_r_dpli, recovery_r_location, recovery_r_regions] = process_dpli(strcat(IN_DIR,filesep,'connectivity',filesep,'dpli_',FREQUENCY,'_',participant,'_Reco.mat'));        
     end
     
     % This vector is used for nomarlization
@@ -129,13 +130,13 @@ for p = 1:length(P_ID)
 
     % Process each of the three states
     if strcmp(participant, "WSAS02")
-        [baseline_r_wpli, baseline_r_labels, baseline_r_regions, baseline_r_location] = process_bp_wpli(strcat(IN_DIR,filesep,'connectivity',filesep,'wpli_alpha_',participant,'_Base.mat'), MAP_FILE);
-        [anesthesia_r_wpli, anesthesia_r_labels, anesthesia_r_regions, anesthesia_r_location] = process_bp_wpli(strcat(IN_DIR,filesep,'connectivity',filesep,'wpli_alpha_',participant,'_Anes.mat'), MAP_FILE);
-        [recovery_r_wpli, recovery_r_labels, recovery_r_regions, recovery_r_location] = process_bp_wpli(strcat(IN_DIR,filesep,'connectivity',filesep,'wpli_alpha_',participant,'_Reco.mat'), MAP_FILE);
+        [baseline_r_wpli, baseline_r_labels, baseline_r_regions, baseline_r_location] = process_bp_wpli(strcat(IN_DIR,filesep,'connectivity',filesep,'wpli_',FREQUENCY,'_',participant,'_Base.mat'), MAP_FILE);
+        [anesthesia_r_wpli, anesthesia_r_labels, anesthesia_r_regions, anesthesia_r_location] = process_bp_wpli(strcat(IN_DIR,filesep,'connectivity',filesep,'wpli_',FREQUENCY,'_',participant,'_Anes.mat'), MAP_FILE);
+        [recovery_r_wpli, recovery_r_labels, recovery_r_regions, recovery_r_location] = process_bp_wpli(strcat(IN_DIR,filesep,'connectivity',filesep,'wpli_',FREQUENCY,'_',participant,'_Reco.mat'), MAP_FILE);
     else
-        [baseline_r_wpli, baseline_r_labels, baseline_r_regions, baseline_r_location] = process_wpli(strcat(IN_DIR,filesep,'connectivity',filesep,'wpli_alpha_',participant,'_Base.mat'));
-        [anesthesia_r_wpli, anesthesia_r_labels, anesthesia_r_regions, anesthesia_r_location] = process_wpli(strcat(IN_DIR,filesep,'connectivity',filesep,'wpli_alpha_',participant,'_Anes.mat'));
-        [recovery_r_wpli, recovery_r_labels, recovery_r_regions, recovery_r_location] = process_wpli(strcat(IN_DIR,filesep,'connectivity',filesep,'wpli_alpha_',participant,'_Reco.mat'));              
+        [baseline_r_wpli, baseline_r_labels, baseline_r_regions, baseline_r_location] = process_wpli(strcat(IN_DIR,filesep,'connectivity',filesep,'wpli_',FREQUENCY,'_',participant,'_Base.mat'));
+        [anesthesia_r_wpli, anesthesia_r_labels, anesthesia_r_regions, anesthesia_r_location] = process_wpli(strcat(IN_DIR,filesep,'connectivity',filesep,'wpli_',FREQUENCY,'_',participant,'_Anes.mat'));
+        [recovery_r_wpli, recovery_r_labels, recovery_r_regions, recovery_r_location] = process_wpli(strcat(IN_DIR,filesep,'connectivity',filesep,'wpli_',FREQUENCY,'_',participant,'_Reco.mat'));              
     end
 
     % Filter the matrix to have the same size

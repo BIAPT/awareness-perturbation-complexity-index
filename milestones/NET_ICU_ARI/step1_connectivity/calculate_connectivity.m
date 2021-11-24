@@ -9,25 +9,17 @@ FREQUENCY = "alpha";
 
 % Remote Source Setup
 %
-INPUT_DIR = 'C:\Users\BIAPT\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\data\raw';
-OUTPUT_DIR = 'C:\Users\BIAPT\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\data\';
+INPUT_DIR = 'C:\Users\BIAPT\Documents\GitHub\ARI\milestones\NET_ICU_ARI\data\raw\BIDS_NET_ICU';
+OUTPUT_DIR = 'C:\Users\BIAPT\Documents\GitHub\ARI\milestones\NET_ICU_ARI\data\connectivity\';
 
 NEUROALGO_PATH = 'C:\Users\BIAPT\Documents\GitHub\NeuroAlgo\MATLAB';
 %addpath(genpath(NEUROALGO_PATH)); % Add NA library to our path so that we can use it
 
-% This list contains all participant IDs
-% P_IDS = {'WSAS02', 'WSAS05', 'WSAS09', 'WSAS10', 'WSAS11', 'WSAS12', 'WSAS13','WSAS18', 'WSAS19', 'WSAS20', 'WSAS22', 'WSAS25'};
-% Phase = {'Base', 'Anes', 'Reco'};
+%P_IDS = {'002MG', '003MG', '004MG', '010MG', '011MG', '012MG', '016MG', '017MG', '018MG', '019MG','020MG', '023MG', '024MG', '025MG', '026MG', '027MG'};
+%Phase = {'sedon1', 'sedoff','sedon2'};
 
-%P_IDS = {'WSAS02', 'WSAS05', 'WSAS09', 'WSAS10', 'WSAS11', 'WSAS12', 'WSAS13','WSAS18', 'WSAS19', 'WSAS20', 'WSAS22',...
-%    '002MG', '003MG', '004MG', '004MW', '005MW', '006MW', '007MG', '009MG', '010MG', 'MDFA05', 'MDFA06', 'MDFA11', 'MDFA15', 'MDFA17'};
-%Phase = {'Base', 'Anes'};
-
-% This list contains all participant IDs
-P_IDS = {'WSAS28'};
-Phase = {'Base', 'Anes', 'Reco'};
-
-
+P_IDS = {'025MG', '026MG', '027MG'};
+Phase = {'sedon1', 'sedoff','sedon2'};
 %% d/w pli Parameters:
 p_value = 0.05;
 number_surrogate = 20;
@@ -58,25 +50,35 @@ for p = 1:length(P_IDS)
 
         fprintf("Analyzing functional connectivity of participant '%s' in '%s' \n", p_id,cond);
 
-        %participant_in = strcat(p_id, '_',cond,'_5min.set');
-        participant_in = strcat(p_id, '_',cond,'.set');
+        participant_in = strcat('sub-',p_id,'\eeg\sub-',p_id, '_task-',cond,'_eeg.set');
         participant_out_path_wpli = strcat(OUTPUT_DIR,'wpli_',FREQUENCY,'_',p_id,'_',cond,'.mat');            
         participant_out_path_dpli = strcat(OUTPUT_DIR,'dpli_',FREQUENCY,'_',p_id,'_',cond,'.mat');            
-
-        %participant_channel_path = strcat(OUTPUT_DIR,'step',step_size,'/dPLI_',FREQUENCY,'_step',step_size,'_',p_id,'_channels.mat');            
 
         %% Load data
         recording = load_set(participant_in,INPUT_DIR);
         sampling_rate = recording.sampling_rate;
-        
         frequency_band = [low_frequency high_frequency]; % This is in Hz
+        
+        len_signal = length(recording.data)/sampling_rate;
+        
+        % Crop the signal: only keep the last 5 min
+        if len_signal > 300
+            n1= (len_signal-300)*sampling_rate;  
+            n2= len_signal*sampling_rate;
+            eeg_cropped=recording.data(:,n1:n2);
+        else
+            eeg_cropped=recording.data(:,:);
+        end
+      
+        recording.data = eeg_cropped;
+        recording.length_recording = length(eeg_cropped);
 
         %% calculate FC
         % calculate dPLI with NEUROALGO
-        result_dpli = na_dpli_corrected(recording, frequency_band, window_size, step_size, number_surrogate, p_value);
+        result_dpli = na_dpli_parallel(recording, frequency_band, window_size, step_size, number_surrogate, p_value);
         
         % calculate wPLI with NEUROALGO
-        result_wpli = na_wpli(recording, frequency_band, window_size, step_size, number_surrogate, p_value);
+        result_wpli = na_wpli_parallel(recording, frequency_band, window_size, step_size, number_surrogate, p_value);
         
         %% save data
         save(participant_out_path_wpli,'result_wpli')
