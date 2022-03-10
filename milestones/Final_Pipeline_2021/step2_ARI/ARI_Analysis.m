@@ -5,20 +5,24 @@
 % and is able to replicate the results with fifferent electrode numbers
 
 
-%FREQUENCY = "alpha";
-FREQUENCY = "theta";
+FREQUENCY = "alpha";
+%FREQUENCY = "theta";
 
 % do you want the channels reduced to 18 channels (defined below) 
 REDUCED = "No";
 
 %% Experiment Variable
-IN_DIR = 'C:\Users\BIAPT\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\data';
-MAP_FILE = "C:\Users\BIAPT\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\utils\bp_to_egi_mapping_yacine.csv";
-OUT_DIR = 'C:\Users\BIAPT\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\results\new_patient_ARI_'+FREQUENCY;
+IN_DIR = 'data';
+MAP_FILE = "utils/bp_to_egi_mapping_yacine.csv";
+OUT_DIR = 'results/new_patient_ARI_'+FREQUENCY;
 
 % Here we will skip participant 17 since we do not have recovery
-P_ID = {'WSAS02','WSAS05', 'WSAS09', 'WSAS10', 'WSAS11', 'WSAS12', 'WSAS13', 'WSAS18', 'WSAS19', 'WSAS20', 'WSAS22', 'WSAS25', 'WSAS27'};
-P_LABEL = [1,0,1,0,0,0,0,0,1,1,0,0,2]; %here 1 means recover and 0 means not recover 2 means unknown (new patient)
+P_ID = {'WSAS02','WSAS05', 'WSAS09', 'WSAS10', 'WSAS11', ...
+        'WSAS12', 'WSAS13', 'WSAS18', 'WSAS19', 'WSAS20',...
+        'WSAS22', 'WSAS25', 'WSAS27', 'WSAS28', 'WSAS29'};
+P_LABEL = [1,0,1,0,0,...
+           0,0,0,1,1,...
+           0,0,1,2,2]; %here 1 means recover and 0 means not recover 2 means unknown (new patient)
 
 % Do you want a hard threshold? 
 % If no then use smallest connected graph to find baseline threshold

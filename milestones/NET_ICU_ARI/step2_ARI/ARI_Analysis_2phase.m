@@ -4,17 +4,17 @@
 % it summarizes the material used for the current submission 
 % and is able to replicate the results with fifferent electrode numbers
 
-FREQUENCY = "theta";
+FREQUENCY = "alpha";
 
 %% Experiment Variable
-IN_DIR = 'C:\Users\BIAPT\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\data';
-MAP_FILE = "C:\Users\BIAPT\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\utils\bp_to_egi_mapping_yacine.csv";
-OUT_DIR = "C:\Users\BIAPT\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\results\" + FREQUENCY + "_2phase";
+IN_DIR = '/Users/charlotte/Documents/GitHub/ARI/milestones/NET_ICU_ARI/data';
+MAP_FILE = "C:\Users\charlotte\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\utils\bp_to_egi_mapping_yacine.csv";
+OUT_DIR = "/Users/charlotte/Documents/GitHub/ARI/milestones/NET_ICU_ARI/data/results/" + FREQUENCY;
 
 % Here we will skip participant 17 since we do not have recovery
-P_ID = {'WSAS02','WSAS05', 'WSAS09', 'WSAS10', 'WSAS11', 'WSAS12', 'WSAS13', 'WSAS18', 'WSAS19', 'WSAS20', 'WSAS22',...
-    '002MG', '003MG', '004MG', '004MW', '005MW', '006MW', '007MG', '009MG', '010MG',...
-    'MDFA05', 'MDFA06', 'MDFA11', 'MDFA15', 'MDFA17'};
+P_ID = {'002MG', '003MG', '003MW', '004MG', '004MW', '007MG', '005MW',...
+'009MG', '006MW', '010MG', '011MG', '012MG', '013MG', '014MG', '016MG', ...
+'017MG', '018MG', '019MG', '020MG', '022MG', '023MG', '024MG', '025MG', '026MG', '027MG', '028MG'};
 
 
 %here 
@@ -25,22 +25,11 @@ P_ID = {'WSAS02','WSAS05', 'WSAS09', 'WSAS10', 'WSAS11', 'WSAS12', 'WSAS13', 'WS
 % 4 NET_ICU unknown
 % 5 HEALTHY
 
-P_LABEL = [0,1,0,1,1,1,1,1,0,0,1,2,3,2,3,4,2,3,3,3,5,5,5,5,5 ]; 
-
-REDUCED = "No";
+%P_LABEL = [0,1,0,1,1,1,1,1,0,0,1,2,3,2,3,4,2,3,3,3,5,5,5,5,5 ]; 
 
 threshold_range = 0.70:-0.01:0.01; % More connected to less connected
 
 COLOR = 'jet';
-
-if REDUCED == "Yes"
-    %Subset_20 = {'E22','E9','E33','E24','E11','E124','E122','E45','E36','Cz','E104','E108','E58','E52','E62','E92','E96','E70','E83','E75'};
-    Subset_left = {'E11','E13','E22','E24','E28','E33','E36','E37','E45','E47','E52','E57','E58','E62','E68','E70','E75','Cz'};
-    Subset_right = {'E9','E11','E62','E75','E83','E87','E92','E94','E96','E98','E100','E104','E108','E112','E117','E122','E124','Cz'};
-    
-    OUT_DIR = 'C:\Users\BIAPT\Documents\GitHub\ARI\milestones\Final_Pipeline_2021\results\'+ FREQUENCY + '_2phase_left';
-
-end
 
 
 %% Calculate the dpli-dris
@@ -52,28 +41,9 @@ hub_dris = zeros(1, length(P_ID));
 for p = 1:length(P_ID)
     participant = P_ID{p};
     disp(strcat("Participant: ", participant , "_dPLI"));
-
-    if REDUCED == "Yes"
-        % take right hemisphere only for WSAS02
-        if participant == "WSAS02"
-            Subset = Subset_right;
-            disp("selected right subset");
-        else
-            Subset = Subset_left;
-            disp("selected left subset");
-        end
-    end
-    
-    % Process each of the three states, since participant WSAS02 is special
-    % in the sense that is has the Brain Product headset we check for it
-    % to processing it correctly
-    if strcmp(participant, "WSAS02")
-        [baseline_r_dpli, baseline_r_location, baseline_r_regions] = process_bp_dpli(strcat(IN_DIR,filesep,'connectivity',filesep,FREQUENCY, filesep, 'dpli_',FREQUENCY,'_',participant,'_Base.mat'), MAP_FILE);
-        [anesthesia_r_dpli, anesthesia_r_location, anesthesia_r_regions] = process_bp_dpli(strcat(IN_DIR,filesep,'connectivity',filesep,FREQUENCY, filesep, 'dpli_',FREQUENCY,'_',participant,'_Anes.mat'), MAP_FILE);
-    else
-        [baseline_r_dpli, baseline_r_location, baseline_r_regions] = process_dpli(strcat(IN_DIR,filesep,'connectivity',filesep,FREQUENCY, filesep, 'dpli_',FREQUENCY,'_',participant,'_Base.mat'));
-        [anesthesia_r_dpli, anesthesia_r_location, anesthesia_r_regions] = process_dpli(strcat(IN_DIR,filesep,'connectivity',filesep,FREQUENCY, filesep, 'dpli_',FREQUENCY,'_',participant,'_Anes.mat'));
-    end
+  
+    [sedon1_r_dpli, sedon1_r_location, sedon1_r_regions] = process_dpli(strcat(IN_DIR,filesep,'connectivity', filesep, 'dpli_',FREQUENCY,'_',participant,'_sedon1.mat'));
+    [sedoff_r_dpli, sedoff_r_location, sedoff_r_regions] = process_dpli(strcat(IN_DIR,filesep,'connectivity', filesep, 'dpli_',FREQUENCY,'_',participant,'_sedoff.mat'));
     
     % This vector is used for nomarlization
     %sim_all = [baseline_r_dpli(:); anesthesia_r_dpli(:); recovery_r_dpli(:)];
@@ -82,7 +52,7 @@ for p = 1:length(P_ID)
     [common_labels, common_region] = get_subset_two(baseline_r_location, anesthesia_r_location, baseline_r_regions, anesthesia_r_regions);
     
     if REDUCED == "Yes"
-    common_labels = intersect(common_labels,Subset, 'stable');
+        common_labels = intersect(common_labels,Subset, 'stable');
     end
 
     % Filter the matrices to have the same size

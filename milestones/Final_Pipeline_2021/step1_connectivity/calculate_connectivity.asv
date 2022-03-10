@@ -10,7 +10,7 @@ FREQUENCY = "alpha";
 % Remote Source Setup
 %
 INPUT_DIR = 'Users/charlotte/Documents/GitHub/ARI/milestones/Final_Pipeline_2021/data/raw';
-OUTPUT_DIR = 'data/connectivity/';
+OUTPUT_DIR = 'Users/charlotte/Documents/GitHub/ARI/milestones/Final_Pipeline_2021/data/connectivity';
 
 NEUROALGO_PATH = 'C:/Users/BIAPT/Documents/GitHub/NeuroAlgo/MATLAB';
 %addpath(genpath(NEUROALGO_PATH)); % Add NA library to our path so that we can use it
@@ -24,8 +24,8 @@ NEUROALGO_PATH = 'C:/Users/BIAPT/Documents/GitHub/NeuroAlgo/MATLAB';
 %Phase = {'Base', 'Anes'};
 
 % This list contains all participant IDs
-P_IDS = {'WSAS28'};
-Phase = {'Baseline', 'Anes', 'Reco'};
+P_IDS = {'WSAS29'};
+Phase = {'Base', 'Anes', 'Reco'};
 
 
 %% d/w pli Parameters:
@@ -59,8 +59,7 @@ for p = 1:length(P_IDS)
         fprintf("Analyzing functional connectivity of participant '%s' in '%s' \n", p_id,cond);
 
         %participant_in = strcat(p_id, '_',cond,'_5min.set');
-        participant_in = strcat(p_id, '_',cond,'_CLEAN.set');
-        %participant_in = strcat('sub-',p_id, '_task-',cond,'_eeg','.set');
+        participant_in = strcat('sub-',p_id, '_task-',cond,'_eeg','.set');
         participant_out_path_wpli = strcat(OUTPUT_DIR,'wpli_',FREQUENCY,'_',p_id,'_',cond,'.mat');            
         participant_out_path_dpli = strcat(OUTPUT_DIR,'dpli_',FREQUENCY,'_',p_id,'_',cond,'.mat');            
 

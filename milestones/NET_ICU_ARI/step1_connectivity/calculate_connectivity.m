@@ -9,17 +9,22 @@ FREQUENCY = "alpha";
 
 % Remote Source Setup
 %
-INPUT_DIR = 'C:\Users\BIAPT\Documents\GitHub\ARI\milestones\NET_ICU_ARI\data\raw\BIDS_NET_ICU';
-OUTPUT_DIR = 'C:\Users\BIAPT\Documents\GitHub\ARI\milestones\NET_ICU_ARI\data\connectivity\';
+INPUT_DIR = '/Users/charlotte/Documents/GitHub/ARI/milestones/NET_ICU_ARI/data/raw/BIDS_NET_ICU';
+OUTPUT_DIR = '/Users/charlotte/Documents/GitHub/ARI/milestones/NET_ICU_ARI/data/connectivity/';
 
 NEUROALGO_PATH = 'C:\Users\BIAPT\Documents\GitHub\NeuroAlgo\MATLAB';
 %addpath(genpath(NEUROALGO_PATH)); % Add NA library to our path so that we can use it
 
-%P_IDS = {'002MG', '003MG', '004MG', '010MG', '011MG', '012MG', '016MG', '017MG', '018MG', '019MG','020MG', '023MG', '024MG', '025MG', '026MG', '027MG'};
-%Phase = {'sedon1', 'sedoff','sedon2'};
+%P_IDS = {'002MG', '003MG','004MG','010MG','011MG','012MG','014MG',...
+% '016MG','017MG','018MG','019MG','020MG','023MG','024MG','025MG',...
+% '026MG','027MG','028MG'};
+%P_IDS={'003MW','004MW','007MG','005MW','009MG','006MW','013MG','022MG'};
 
-P_IDS = {'025MG', '026MG', '027MG'};
-Phase = {'sedon1', 'sedoff','sedon2'};
+P_IDS={'022MG'};
+
+%Phase = {'sedon1', 'sedoff','sedon2'};
+Phase = {'sedon2'};
+
 %% d/w pli Parameters:
 p_value = 0.05;
 number_surrogate = 20;
@@ -40,7 +45,7 @@ end
 window_size = 10; % in seconds
 %this parameter is set to 1 (overlapping windows)and 10(non-overlapping windows).
 step_size = 10; % in seconds
-
+DATA_dir = '/Users/charlotte/Documents/GitHub/ARI/milestones/NET_ICU_ARI/data/raw/BIDS_NET_ICU';
 
 %% loop over all particiopants and stepsizes and calculate dpli
 for p = 1:length(P_IDS)
@@ -49,13 +54,13 @@ for p = 1:length(P_IDS)
         cond = Phase{c};
 
         fprintf("Analyzing functional connectivity of participant '%s' in '%s' \n", p_id,cond);
-
-        participant_in = strcat('sub-',p_id,'\eeg\sub-',p_id, '_task-',cond,'_eeg.set');
+        part_in = strcat(INPUT_DIR,'/sub-',p_id,'/eeg/');
+        part_file = strcat('sub-',p_id, '_task-',cond,'_eeg.set');
         participant_out_path_wpli = strcat(OUTPUT_DIR,'wpli_',FREQUENCY,'_',p_id,'_',cond,'.mat');            
         participant_out_path_dpli = strcat(OUTPUT_DIR,'dpli_',FREQUENCY,'_',p_id,'_',cond,'.mat');            
 
         %% Load data
-        recording = load_set(participant_in,INPUT_DIR);
+        recording = load_set(part_file, part_in);
         sampling_rate = recording.sampling_rate;
         frequency_band = [low_frequency high_frequency]; % This is in Hz
         
