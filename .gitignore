@@ -11,3 +11,4 @@ milestones/NET_ICU_ARI/data/*
 Python_ARI/RESULTS/*
 Python_ARI/data/*
 *.pyc
+*.ipynb
