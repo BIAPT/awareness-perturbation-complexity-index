@@ -19,8 +19,15 @@ if __name__ == '__main__':
                         help='path to txt with information about participants')
     parser.add_argument('-frequencyband', type=str,
                         help='lower and upper filer frequency')
+    parser.add_argument('-state1', type=str,
+                        help='First state can be Base or Anes')
+    parser.add_argument('-state2', type=str,
+                        help='First state can be Anes or Reco')
+
 
     args = parser.parse_args()
+    S1 = args.state1
+    S2 = args.state2
 
     # load patient IDS
     P_IDS = pd.read_csv(args.participants, sep='\t')['Patient']
@@ -32,16 +39,16 @@ if __name__ == '__main__':
     for p_id in P_IDS:
 
         # load FC data
-        wpli_Base = np.load(f"{args.input_dir}/wPLI_{args.frequencyband}/wPLI_{args.frequencyband}_{p_id}_Base.npy")
-        wpli_Anes = np.load(f"{args.input_dir}/wPLI_{args.frequencyband}/wPLI_{args.frequencyband}_{p_id}_Anes.npy")
+        wpli_1 = np.load(f"{args.input_dir}/wPLI_{args.frequencyband}/wPLI_{args.frequencyband}_{p_id}_{S1}.npy")
+        wpli_2 = np.load(f"{args.input_dir}/wPLI_{args.frequencyband}/wPLI_{args.frequencyband}_{p_id}_{S2}.npy")
 
         # load FC data
-        dpli_Base = np.load(f"{args.input_dir}/dPLI_{args.frequencyband}/dPLI_{args.frequencyband}_{p_id}_Base.npy")
-        dpli_Anes = np.load(f"{args.input_dir}/dPLI_{args.frequencyband}/dPLI_{args.frequencyband}_{p_id}_Anes.npy")
+        dpli_1 = np.load(f"{args.input_dir}/dPLI_{args.frequencyband}/dPLI_{args.frequencyband}_{p_id}_{S1}.npy")
+        dpli_2 = np.load(f"{args.input_dir}/dPLI_{args.frequencyband}/dPLI_{args.frequencyband}_{p_id}_{S2}.npy")
 
-        dPLI_ARI_tmp, Hub_ARI_tmp = calculate_ARI_2state(wpli_Base, wpli_Anes, dpli_Base, dpli_Anes)
+        dPLI_ARI_tmp, Hub_ARI_tmp = calculate_ARI_2state(wpli_1, wpli_2, dpli_1, dpli_2)
 
-        dirHub_ARI, normdirHub_ARI = calculate_dirhub_ARI_2states(dpli_Base, dpli_Anes)
+        dirHub_ARI, normdirHub_ARI = calculate_dirhub_ARI_2states(dpli_1, dpli_2)
 
         dir_ARI.append(dirHub_ARI)
         dPLI_ARI.append(dPLI_ARI_tmp)
@@ -51,11 +58,11 @@ if __name__ == '__main__':
         # save in progress dataframe
         output_df = {'ID':IDS, 'dPLI_ARI':dPLI_ARI,'Hub_ARI':Hub_ARI,'dirhub_ARI':dir_ARI}
         output_df = pd.DataFrame(output_df)
-        output_df.to_csv('{}/2state_ARI.txt'.format(args.input_dir), index=False, sep=',')
+        output_df.to_csv(f'{args.input_dir}/2state_ARI_{S1}_{S2}_{args.frequencyband}.txt', index=False, sep=',')
 
         print(f'finished {p_id}')
 
     # save in progress dataframe
     output_df = {'ID':IDS, 'dPLI_ARI':dPLI_ARI,'Hub_ARI':Hub_ARI,'dirhub_ARI':dir_ARI}
     output_df = pd.DataFrame(output_df)
-    output_df.to_csv('{}/2state_ARI.txt'.format(args.input_dir), index=False, sep=',')
+    output_df.to_csv(f'{args.input_dir}/2state_ARI_{S1}_{S2}_{args.frequencyband}.txt', index=False, sep=',')

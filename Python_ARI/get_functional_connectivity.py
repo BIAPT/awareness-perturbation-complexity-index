@@ -59,7 +59,7 @@ if __name__ == '__main__':
     parser.add_argument('-id', type = int, # default = None,
                         help='Participant ID to compute')
     parser.add_argument('-mode', type = str,
-                        help='type of connectivity to compute can be wPLI or dPLI')
+                        help='type of connectivity to compute can be wpli or dpli')
     parser.add_argument('-stepsize', type = int,
                         help='in seconds: stepsize for windows of 10 seconds ')
     args = parser.parse_args()
@@ -73,7 +73,7 @@ if __name__ == '__main__':
     os.makedirs(output_dir, exist_ok=True)
 
     # prepare output pdf
-    pdf = PdfPages(os.path.join(output_dir, f"WSAS17_{args.mode}_{args.frequencyband}_step_{args.stepsize}.pdf"))
+    pdf = PdfPages(os.path.join(output_dir, f"WSAS_{args.mode}_{args.frequencyband}_step_{args.stepsize}.pdf"))
 
     # load patient IDS
     info = pd.read_csv(args.participants, sep='\t')
@@ -88,26 +88,26 @@ if __name__ == '__main__':
         epochs_Anes = data_import(args.input_dir, p_id, cond="Anes")
         try:
             epochs_Reco = data_import(args.input_dir, p_id, cond="Reco")
-            Reco = True
+            Reco_exist = True
         except:
-            Reco = False #if no Reco states available
+            Reco_exist = False #if no Reco states available
 
         # find channels that exist in both datasets and drop others
 
-        if Reco:
+        if Reco_exist:
             intersect = reduce(np.intersect1d, (epochs_Base.info['ch_names'], epochs_Anes.info['ch_names'], epochs_Reco.info['ch_names']))
         else:
             intersect = reduce(np.intersect1d, (epochs_Base.info['ch_names'], epochs_Anes.info['ch_names']))
 
         drop_A = set(epochs_Anes.info['ch_names']) ^ set(intersect)
         drop_B = set(epochs_Base.info['ch_names']) ^ set(intersect)
-        if Reco:
+        if Reco_exist:
             drop_R = set(epochs_Reco.info['ch_names']) ^ set(intersect)
 
         epochs_Anes.drop_channels(drop_A)
         epochs_Anes.resample(sfreq=250)
 
-        if Reco:
+        if Reco_exist:
             epochs_Reco.drop_channels(drop_R)
             epochs_Reco.resample(sfreq=250)
 
@@ -119,7 +119,7 @@ if __name__ == '__main__':
 
         Anes = np.array(epochs_Anes._data)
         Base = np.array(epochs_Base._data)
-        if Reco:
+        if Reco_exist:
             Reco = np.array(epochs_Reco._data)
 
         arguments = (WINDOW_LENGTH, args.stepsize, l_freq, h_freq, sfreq)
@@ -127,30 +127,39 @@ if __name__ == '__main__':
 
         fc_Base = connectivity_compute(Base, *arguments, **kwargs)
         fc_Anes = connectivity_compute(Anes, *arguments, **kwargs)
-        if Reco:
+
+        if Reco_exist:
             fc_Reco = connectivity_compute(Reco, *arguments, **kwargs)
 
         average_fc_Base = np.mean(fc_Base, axis=0)
         average_fc_Anes = np.mean(fc_Anes, axis=0)
-        if Reco:
+        if Reco_exist:
             average_fc_Reco = np.mean(fc_Anes, axis=0)
 
         fig, axs = plt.subplots(1, 3, figsize=(15, 5))
 
+        if args.mode == 'wpli':
+            cmin = 0
+            cmax = 0.35
+
+        if args.mode == 'dpli':
+            cmin = 0.5
+            cmax = 0.75
+
         # plot time-averaged wPLI in PDF
-        sns.heatmap(average_fc_Base, cmap='jet', ax=axs[0], vmin=0, vmax=0.25)
-        sns.heatmap(average_fc_Anes, cmap='jet', ax=axs[1], vmin=0, vmax=0.25)
+        sns.heatmap(average_fc_Base, cmap='jet', ax=axs[0], vmin=cmin, vmax=cmax)
+        sns.heatmap(average_fc_Anes, cmap='jet', ax=axs[1], vmin=cmin, vmax=cmax)
         axs[0].set_title(f"{args.mode} {args.frequencyband} {p_id} Base")
         axs[1].set_title(f"{args.mode} {args.frequencyband} {p_id} Anes")
 
-        if Reco:
-            sns.heatmap(average_fc_Reco, cmap='jet', ax=axs[2], vmin=0, vmax=0.25)
+        if Reco_exist:
+            sns.heatmap(average_fc_Reco, cmap='jet', ax=axs[2], vmin=cmin, vmax=cmax)
             axs[2].set_title(f"{args.mode} {args.frequencyband} {p_id} Reco")
         pdf.savefig(fig)
 
         np.save(os.path.join(output_dir, f"{args.mode}_{args.frequencyband}_{p_id}_Base.npy"), fc_Base)
         np.save(os.path.join(output_dir, f"{args.mode}_{args.frequencyband}_{p_id}_Anes.npy"), fc_Anes)
-        if Reco:
+        if Reco_exist:
             np.save(os.path.join(output_dir, f"{args.mode}_{args.frequencyband}_{p_id}_Reco.npy"), fc_Reco)
 
     pdf.close()

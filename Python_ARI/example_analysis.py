@@ -52,6 +52,6 @@ if __name__ == '__main__':
         output_df = {'ID':IDS, 'dPLI_ARI':dPLI_ARI,'Hub_ARI':Hub_ARI}
 
         output_df = pd.DataFrame(output_df)
-        output_df.to_csv('{}/ARI_3states.txt'.format(args.input_dir), index=False, sep=',')
+        output_df.to_csv(f'{args.input_dir}/ARI_3states_{args.frequencyband}.txt', index=False, sep=',')
 
         print(f'finished {p_id}')
