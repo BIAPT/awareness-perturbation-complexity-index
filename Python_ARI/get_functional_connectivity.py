@@ -6,8 +6,9 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_pdf import PdfPages
 import sys
+import warnings
+warnings.filterwarnings("ignore")
 sys.path.append("..")
 from utils.BIAPT_Connectivity_parallel import connectivity_compute
 from functools import reduce
@@ -29,12 +30,38 @@ def data_import(input_dir, p_id, cond):
     #input_fname =  f"{input_dir}/sub-{p_id}/eeg/epochs_{p_id}_{cond}.fif"
     #raw_data = mne.read_epochs(input_fname)
 
-    input_fname =  f"{input_dir}/{p_id}_{cond}_5min.set"
-    raw_data = mne.io.read_raw_eeglab(input_fname)
+    try:
+        input_fname =  f"{input_dir}/{p_id}_{cond}_5min.set"
+        raw_data = mne.io.read_raw_eeglab(input_fname)
+    except:
+        raw_data = None
 
+    if raw_data == None:
+        try:
+            input_fname =  f"{input_dir}/{p_id}_{cond}_eeg.fif"
+            raw_data = mne.read_epochs(input_fname)
+        except:
+            raw_data = None
+
+    if raw_data == None:
+        try:
+            input_fname =  f"{input_dir}/{p_id}_{cond}_5min.fif"
+            raw_data = mne.read_epochs(input_fname)
+        except:
+            raw_data = None
+
+    if raw_data == None:
+        try:
+            input_fname =  f"{input_dir}/sub-{p_id}/eeg/sub-{p_id}_task-{cond}_epoch_eeg.fif"
+            raw_data = mne.read_epochs(input_fname)
+        except:
+            raw_data = None
     # remove channels marked as bad and non-brain channels
-    raw_data.drop_channels(raw_data.info['bads'])
-    raw_data.load_data()
+    if raw_data:
+        raw_data.drop_channels(raw_data.info['bads'])
+        raw_data.load_data()
+
+
 
     #crop data if necessary
     #if len(raw_epochs) > 30:
@@ -62,6 +89,8 @@ if __name__ == '__main__':
                         help='type of connectivity to compute can be wpli or dpli')
     parser.add_argument('-stepsize', type = int,
                         help='in seconds: stepsize for windows of 10 seconds ')
+    parser.add_argument('-conditions', type = str, nargs='+',
+                        help='List of conditions to analyze')
     args = parser.parse_args()
 
     ################################################################
@@ -72,94 +101,57 @@ if __name__ == '__main__':
     output_dir = os.path.join(args.output_dir, f'{args.mode}_{args.frequencyband}')
     os.makedirs(output_dir, exist_ok=True)
 
-    # prepare output pdf
-    pdf = PdfPages(os.path.join(output_dir, f"WSAS_{args.mode}_{args.frequencyband}_step_{args.stepsize}.pdf"))
-
     # load patient IDS
     info = pd.read_csv(args.participants, sep='\t')
     P_IDS = [info['Patient'][args.id]] if args.id is not None else info['Patient']
 
     l_freq, h_freq = FREQUENCIES[args.frequencyband]
 
-    for p_id in P_IDS:
+    conds = args.conditions
 
-        # import data from both conditions
-        epochs_Base = data_import(args.input_dir, p_id, cond="Base")
-        epochs_Anes = data_import(args.input_dir, p_id, cond="Anes")
-        try:
-            epochs_Reco = data_import(args.input_dir, p_id, cond="Reco")
-            Reco_exist = True
-        except:
-            Reco_exist = False #if no Reco states available
+    for p_id in P_IDS:
+        # create second list that only contains conditions whihc exist for this patient
+        c_exist = []
+        for c in conds:
+            # import data from all conditions
+            locals()['epochs_'+c] = data_import(args.input_dir, p_id, cond=c)
+            if locals()['epochs_'+c] == None:
+                print(f'NO DATA FOUND for {c}')
+            else:
+                c_exist.append(c)
+
 
         # find channels that exist in both datasets and drop others
+        all_channels = []
+        for c in c_exist:
+            all_channels.append(locals()['epochs_'+c].info['ch_names'])
 
-        if Reco_exist:
-            intersect = reduce(np.intersect1d, (epochs_Base.info['ch_names'], epochs_Anes.info['ch_names'], epochs_Reco.info['ch_names']))
-        else:
-            intersect = reduce(np.intersect1d, (epochs_Base.info['ch_names'], epochs_Anes.info['ch_names']))
+        intersect = reduce(np.intersect1d, tuple(all_channels))
 
-        drop_A = set(epochs_Anes.info['ch_names']) ^ set(intersect)
-        drop_B = set(epochs_Base.info['ch_names']) ^ set(intersect)
-        if Reco_exist:
-            drop_R = set(epochs_Reco.info['ch_names']) ^ set(intersect)
+        # drop channels which do not intersect between states, and resample to 250 Hz
+        for c in c_exist:
+            locals()['drop_'+c] = set(locals()['epochs_'+c].info['ch_names']) ^ set(intersect)
+            locals()['epochs_'+c].drop_channels(locals()['drop_'+c])
+            locals()['epochs_'+c].resample(sfreq=250)
+            locals()['data_'+c] = np.array(locals()['epochs_'+c]._data)
 
-        epochs_Anes.drop_channels(drop_A)
-        epochs_Anes.resample(sfreq=250)
-
-        if Reco_exist:
-            epochs_Reco.drop_channels(drop_R)
-            epochs_Reco.resample(sfreq=250)
-
-
-        epochs_Base.drop_channels(drop_B)
-        epochs_Base.resample(sfreq=250)
-
-        sfreq = int(epochs_Base.info['sfreq'])
-
-        Anes = np.array(epochs_Anes._data)
-        Base = np.array(epochs_Base._data)
-        if Reco_exist:
-            Reco = np.array(epochs_Reco._data)
+        sfreq = 250
 
         arguments = (WINDOW_LENGTH, args.stepsize, l_freq, h_freq, sfreq)
         kwargs = {"mode": args.mode, "verbose": True, "n_surrogates": N_SURROGATES}
 
-        fc_Base = connectivity_compute(Base, *arguments, **kwargs)
-        fc_Anes = connectivity_compute(Anes, *arguments, **kwargs)
+        # calculate FC for every existing condition
+        for c in c_exist:
 
-        if Reco_exist:
-            fc_Reco = connectivity_compute(Reco, *arguments, **kwargs)
+            # concatenate data if necessary:
+            if len(locals()['data_'+c].shape) == 3:
+                locals()['data_conc_'+c] = np.concatenate(list(locals()['data_'+c]), axis=1)
 
-        average_fc_Base = np.mean(fc_Base, axis=0)
-        average_fc_Anes = np.mean(fc_Anes, axis=0)
-        if Reco_exist:
-            average_fc_Reco = np.mean(fc_Anes, axis=0)
+            #calculate FC
+            locals()['fc_'+c] = connectivity_compute(locals()['data_conc_'+c], *arguments, **kwargs)
+            locals()['average_fc_'+c] = np.mean(locals()['fc_'+c], axis=0)
 
-        fig, axs = plt.subplots(1, 3, figsize=(15, 5))
-
-        if args.mode == 'wpli':
-            cmin = 0
-            cmax = 0.35
-
-        if args.mode == 'dpli':
-            cmin = 0.5
-            cmax = 0.75
-
-        # plot time-averaged wPLI in PDF
-        sns.heatmap(average_fc_Base, cmap='jet', ax=axs[0], vmin=cmin, vmax=cmax)
-        sns.heatmap(average_fc_Anes, cmap='jet', ax=axs[1], vmin=cmin, vmax=cmax)
-        axs[0].set_title(f"{args.mode} {args.frequencyband} {p_id} Base")
-        axs[1].set_title(f"{args.mode} {args.frequencyband} {p_id} Anes")
-
-        if Reco_exist:
-            sns.heatmap(average_fc_Reco, cmap='jet', ax=axs[2], vmin=cmin, vmax=cmax)
-            axs[2].set_title(f"{args.mode} {args.frequencyband} {p_id} Reco")
-        pdf.savefig(fig)
-
-        np.save(os.path.join(output_dir, f"{args.mode}_{args.frequencyband}_{p_id}_Base.npy"), fc_Base)
-        np.save(os.path.join(output_dir, f"{args.mode}_{args.frequencyband}_{p_id}_Anes.npy"), fc_Anes)
-        if Reco_exist:
-            np.save(os.path.join(output_dir, f"{args.mode}_{args.frequencyband}_{p_id}_Reco.npy"), fc_Reco)
-
-    pdf.close()
+        # Save final FC matrices and info
+        for c in c_exist:
+            np.save(os.path.join(output_dir, f"{args.mode}_{args.frequencyband}_{p_id}_{c}_info.npy"), locals()['epochs_'+c].info)
+            np.save(os.path.join(output_dir, f"{args.mode}_{args.frequencyband}_{p_id}_{c}.npy"), locals()['fc_'+c])

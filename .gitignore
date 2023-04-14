@@ -8,7 +8,9 @@ milestones/Final_Pipeline_2021/data/*
 milestones/NET_ICU_ARI/results/*
 milestones/NET_ICU_ARI/data/*
 .DS_Store
+Python_ARI/FIGURES/*
 Python_ARI/RESULTS/*
+Python_ARI/RESULTS_NETICU/*
 Python_ARI/data/*
 *.pyc
 *.ipynb
