@@ -80,17 +80,17 @@ if __name__ == '__main__':
     parser.add_argument('-output_dir', type=str,
                         help='folder name where to save the functional connectivity')
     parser.add_argument('-participants', type=str,
-                        help='path to txt with information about participants')
+                        help='path to txt with information about participants, needs to have one column calles Patient with subject IDs')
     parser.add_argument('-frequencyband', type=str,
-                        help='lower and upper filer frequency')
+                        help='can be delta theta alpha beta gamma or fullband')
     parser.add_argument('-id', type = int, # default = None,
-                        help='Participant ID to compute')
+                        help='Optional parameter if just one participant wanted: Participant ID to compute')
     parser.add_argument('-mode', type = str,
                         help='type of connectivity to compute can be wpli or dpli')
     parser.add_argument('-stepsize', type = int,
-                        help='in seconds: stepsize for windows of 10 seconds ')
+                        help='Optional, default= 10, in seconds: stepsize for windows of 10 seconds ')
     parser.add_argument('-conditions', type = str, nargs='+',
-                        help='List of conditions to analyze')
+                        help='List of conditions to analyze for example Base Anes Reco')
     args = parser.parse_args()
 
     ################################################################

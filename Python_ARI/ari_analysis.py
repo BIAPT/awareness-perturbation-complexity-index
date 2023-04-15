@@ -26,9 +26,19 @@ if __name__ == '__main__':
     parser.add_argument('-participants', type=str,
                         help='path to txt with information about participants')
     parser.add_argument('-frequencyband', type=str,
-                        help='lower and upper filer frequency')
+                        help='can be delta theta alpha beta gamma or fullband')
+    parser.add_argument('-state1', type=str,
+                        help='Baseeline state to compare to (Base) ')
+    parser.add_argument('-state2', type=str,
+                        help='State during Perturbation (Anes)')
+    parser.add_argument('-state3', type=str,
+                        help='Second comparison state, back to Baseline (Reco)')
 
     args = parser.parse_args()
+
+    S1 = args.state1
+    S2 = args.state2
+    S3 = args.state3
 
     # load patient IDS
     P_IDS = pd.read_csv(args.participants, sep='\t')['Patient']
@@ -40,16 +50,16 @@ if __name__ == '__main__':
     for p_id in P_IDS:
 
         # load FC data
-        wpli_Base = np.load(f"{args.input_dir}/wPLI_{args.frequencyband}/wPLI_{args.frequencyband}_{p_id}_Base.npy")
-        wpli_Anes = np.load(f"{args.input_dir}/wPLI_{args.frequencyband}/wPLI_{args.frequencyband}_{p_id}_Anes.npy")
-        wpli_Reco = np.load(f"{args.input_dir}/wPLI_{args.frequencyband}/wPLI_{args.frequencyband}_{p_id}_Reco.npy")
+        wpli_Base = np.load(f"{args.input_dir}/wPLI_{args.frequencyband}/wPLI_{args.frequencyband}_{p_id}_{S1}.npy")
+        wpli_Anes = np.load(f"{args.input_dir}/wPLI_{args.frequencyband}/wPLI_{args.frequencyband}_{p_id}_{S2}.npy")
+        wpli_Reco = np.load(f"{args.input_dir}/wPLI_{args.frequencyband}/wPLI_{args.frequencyband}_{p_id}_{S3}.npy")
 
         # load FC data
-        dpli_Base = np.load(f"{args.input_dir}/dPLI_{args.frequencyband}/dPLI_{args.frequencyband}_{p_id}_Base.npy")
-        dpli_Anes = np.load(f"{args.input_dir}/dPLI_{args.frequencyband}/dPLI_{args.frequencyband}_{p_id}_Anes.npy")
-        dpli_Reco = np.load(f"{args.input_dir}/dPLI_{args.frequencyband}/dPLI_{args.frequencyband}_{p_id}_Reco.npy")
+        dpli_Base = np.load(f"{args.input_dir}/dPLI_{args.frequencyband}/dPLI_{args.frequencyband}_{p_id}_{S1}.npy")
+        dpli_Anes = np.load(f"{args.input_dir}/dPLI_{args.frequencyband}/dPLI_{args.frequencyband}_{p_id}_{S2}.npy")
+        dpli_Reco = np.load(f"{args.input_dir}/dPLI_{args.frequencyband}/dPLI_{args.frequencyband}_{p_id}_{S3}.npy")
 
-        info = np.load(f"{args.input_dir}/wPLI_{args.frequencyband}/wPLI_{args.frequencyband}_{p_id}_Base_info.npy",allow_pickle=True)
+        info = np.load(f"{args.input_dir}/wPLI_{args.frequencyband}/wPLI_{args.frequencyband}_{p_id}_{S1}_info.npy",allow_pickle=True)
         info = info.tolist()
 
         maxtime = 30 # min(dpli_Base.shape[0],dpli_Anes.shape[0],dpli_Reco.shape[0])
