@@ -13,6 +13,4 @@ Python_ARI/RESULTS/*
 Python_ARI/RESULTS_NETICU/*
 Python_ARI/data/*
 *.pyc
-*.ipynb
-*.ipynb
 *.docx
