@@ -1,7 +1,10 @@
-
+*.png
+*.txt
 *.set
 *.fdt
 *.mat
+*.fif
+*.npy
 milestones/Final_Pipeline_2021/results/*
 milestones/Final_Pipeline_2021/data/*
 
@@ -12,7 +15,12 @@ Python_ARI/FIGURES/*
 Python_ARI/RESULTS/*
 Python_ARI/RESULTS_NETICU/*
 Python_ARI/data/*
+Python_ARI/derivative_standard/*
+Python_ARI/test_results/*
+
+
 *.pyc
 *.ipynb
 *.ipynb
 *.docx
+Python_ARI/.ipynb_checkpoints/hub_movie-checkpoint.py

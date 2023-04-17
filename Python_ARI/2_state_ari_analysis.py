@@ -18,6 +18,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Calculates ARI using wPLI and dPLI functional connectivity.')
     parser.add_argument('-input_dir', type=str,
                         help='folder name containing the fc data')
+    parser.add_argument('-output_dir', type=str,
+                        help='folder name to save the ARI results')
     parser.add_argument('-participants', type=str,
                         help='path to txt with information about participants')
     parser.add_argument('-frequencyband', type=str,
@@ -26,7 +28,7 @@ if __name__ == '__main__':
                         help='Baseeline state to compare to ')
     parser.add_argument('-state2', type=str,
                         help='Second comparison state')
-
+    
 
     args = parser.parse_args()
     S1 = args.state1
@@ -53,14 +55,14 @@ if __name__ == '__main__':
         info = info.tolist()
 
         ch_names = info.ch_names
+        
         #""" You can insert your code here which selects the channels you want to use and filters wPLI and dPLI accordingly."""
 
-
         dPLI_ARI_tmp, Hub_ARI_tmp = calculate_ARI_2state(wpli_1, wpli_2, dpli_1, dpli_2)
-
-        # only an experiment
-        #dirHub_ARI, normdirHub_ARI = calculate_dirhub_ARI_2states(dpli_1, dpli_2)
-        #dir_ARI.append(dirHub_ARI)
+            
+            # only an experiment
+            #dirHub_ARI, normdirHub_ARI = calculate_dirhub_ARI_2states(dpli_1, dpli_2)
+            #dir_ARI.append(dirHub_ARI)
 
         dPLI_ARI.append(dPLI_ARI_tmp)
         Hub_ARI.append(Hub_ARI_tmp)
@@ -101,4 +103,4 @@ if __name__ == '__main__':
     # save in progress dataframe
     output_df = {'ID':IDS, 'dPLI_ARI':dPLI_ARI,'Hub_ARI':Hub_ARI}
     output_df = pd.DataFrame(output_df)
-    output_df.to_csv(f'{args.input_dir}/2state_ARI_{S1}_{S2}_{args.frequencyband}.txt', index=False, sep=',')
+    output_df.to_csv(f'{args.out_dir}/2state_ARI_{S1}_{S2}_{args.frequencyband}.txt', index=False, sep=',')
