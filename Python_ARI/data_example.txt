@@ -1,0 +1,3 @@
+Patient	Group_Prog	State
+002MG	WOC	Acute
+
