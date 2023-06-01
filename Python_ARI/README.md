@@ -13,6 +13,7 @@ Alternatively, if you put them in multiple lines you need to end your line with 
 This code calculates wPLI (weighted Phase Lag Index), dPLI (directed Phase Lag Index) for paricipants and conditions.
 To get information about the requited arguments, please type `python get_functional_connectivity.py -h`
 If you feed multiple conditions to the function, only channels which are present in all conditions are kept, so that the output FC matrices for one subject have the same dimension in all three conditions.
+***If you calculate FC for all conditions independently, channel numbers do not match and the ARI code won't work! (SEE ISSUE, Needs to be implemented)***
 
 As an example of how to call this script, see below for *WSAS*:
 
