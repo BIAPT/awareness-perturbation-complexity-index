@@ -1,0 +1,3 @@
+Patient	Group_Prog	State
+WSAS_xx0	Recovered?	Acute
+WSAS_xx1	Recovered?	Acute
