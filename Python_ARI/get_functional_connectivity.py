@@ -62,7 +62,6 @@ def data_import(input_dir, p_id, cond):
         raw_data.load_data()
 
 
-
     #crop data if necessary
     #if len(raw_epochs) > 30:
     #    epochs_cropped = raw_epochs[-30:]
@@ -84,7 +83,7 @@ if __name__ == '__main__':
     parser.add_argument('-frequencyband', type=str,
                         help='can be delta theta alpha beta gamma or fullband')
     parser.add_argument('-id', type = int, # default = None,
-                        help='Optional parameter if just one participant wanted: Participant ID to compute')
+                        help='Optional parameter if just one participant wanted: Row in participants txt file containing participant ID to compute. Note this is not the participant id itself, but the row where the participant is located in the txt file.')
     parser.add_argument('-mode', type = str,
                         help='type of connectivity to compute can be wpli or dpli')
     parser.add_argument('-stepsize', type = int,
@@ -104,9 +103,7 @@ if __name__ == '__main__':
     # load patient IDS
     info = pd.read_csv(args.participants, sep='\t')
     P_IDS = [info['Patient'][args.id]] if args.id is not None else info['Patient']
-
     l_freq, h_freq = FREQUENCIES[args.frequencyband]
-
     conds = args.conditions
 
     for p_id in P_IDS:
