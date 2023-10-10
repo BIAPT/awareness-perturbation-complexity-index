@@ -86,7 +86,7 @@ if __name__ == '__main__':
                         help='Optional parameter if just one participant wanted: Row in participants txt file containing participant ID to compute. Note this is not the participant id itself, but the row where the participant is located in the txt file.')
     parser.add_argument('-mode', type = str,
                         help='type of connectivity to compute can be wpli or dpli')
-    parser.add_argument('-stepsize', type = int,
+    parser.add_argument('-stepsize', type = int, default = 10, 
                         help='Optional, default= 10, in seconds: stepsize for windows of 10 seconds ')
     parser.add_argument('-conditions', type = str, nargs='+',
                         help='List of conditions to analyze for example Base Anes Reco')
